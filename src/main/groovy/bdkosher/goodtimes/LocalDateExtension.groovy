@@ -13,9 +13,9 @@ class LocalDateExtension {
             (Calendar.DAY_OF_WEEK): ChronoField.DAY_OF_WEEK,
             (Calendar.DAY_OF_WEEK_IN_MONTH): ChronoField.ALIGNED_DAY_OF_WEEK_IN_MONTH,            
             (Calendar.DAY_OF_YEAR): ChronoField.DAY_OF_YEAR,
-            (Calendar.WEEK_OF_MONTH): ChronoField.ALINGED_WEEK_IN_MONTH,
-            (Calendar.WEEK_OF_YEAR): ChronoField.ALGINED_WEEK_OF_YEAR,
-            (Calendar.MONTH): ChronoField.MONTH,
+            (Calendar.WEEK_OF_MONTH): ChronoField.ALIGNED_WEEK_OF_MONTH,
+            (Calendar.WEEK_OF_YEAR): ChronoField.ALIGNED_WEEK_OF_YEAR,
+            (Calendar.MONTH): ChronoField.MONTH_OF_YEAR,
             (Calendar.YEAR): ChronoField.YEAR,
             (Calendar.ERA): ChronoField.ERA
         ]    
@@ -41,11 +41,31 @@ class LocalDateExtension {
     }
 
     static next(final LocalDate self) {
-        puls(self, 1)
+        plus(self, 1)
     }
 
     static previous(final LocalDate self) {
         minus(self, 1)
+    }
+
+    static plus(final LocalDate self, Period period) {
+        LocalDate result = LocalDate.ofEpochDay(self.toEpochDay()) // best way to clone?
+        [(ChronoUnit.DAYS): period.days, (ChronoUnit.MONTHS): period.months, (ChronoUnit.YEARS): period.years]
+                .findAll { it.value > 0 }
+                .each { unit, amount ->
+                    result = result.plus(amount, unit)
+                }
+        result
+    }
+
+    static minus(final LocalDate self, Period period) {
+        LocalDate result = LocalDate.ofEpochDay(self.toEpochDay()) // best way to clone?
+        [(ChronoUnit.DAYS): period.days, (ChronoUnit.MONTHS) : period.months, (ChronoUnit.YEARS): period.years]
+                .findAll { it.value > 0 }
+                .each { unit, amount ->
+                    result = result.minus(amount, unit)
+                }
+        result
     }
 
     static int getAt(final LocalDate self, int field) {
