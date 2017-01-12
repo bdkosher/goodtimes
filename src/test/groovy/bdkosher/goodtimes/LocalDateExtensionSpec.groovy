@@ -1,6 +1,8 @@
 package bdkosher.goodtimes
 
 import java.time.*
+import java.time.chrono.*
+import java.time.temporal.*
 import spock.lang.Specification
 
 class LocalDateExtensionSpec extends Specification {
@@ -185,6 +187,22 @@ class LocalDateExtensionSpec extends Specification {
 
         then:
             thrown IllegalArgumentException
+    }
+
+    def "getAt Temporal Field"() {
+        given:
+        LocalDate ld = LocalDate.of(2017, 1, 10)
+
+        expect:
+        ld[ChronoField.YEAR] == 2017
+        ld[ChronoField.MONTH_OF_YEAR] == Month.JANUARY.value
+        ld[ChronoField.DAY_OF_MONTH] == 10
+        ld[ChronoField.DAY_OF_YEAR] == 10
+        ld[ChronoField.ALIGNED_WEEK_OF_MONTH] == 2
+        ld[ChronoField.ALIGNED_WEEK_OF_YEAR] == 2
+        ld[ChronoField.DAY_OF_WEEK] == DayOfWeek.TUESDAY.value
+        ld[ChronoField.ALIGNED_DAY_OF_WEEK_IN_MONTH] == 3
+        ld[ChronoField.ERA] == IsoEra.CE.value        
     }
 
 }

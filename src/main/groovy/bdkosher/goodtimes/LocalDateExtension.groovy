@@ -56,29 +56,24 @@ class LocalDateExtension {
     }
 
     /**
-     * Adds the given period of days, months, and/or years to the LocalDate, returning a new LocalDate instance.
+     * Adds the given TemporalAmount to the LocalDate.
      */
-    static plus(final LocalDate self, Period period) {
-        LocalDate result = LocalDate.ofEpochDay(self.toEpochDay()) // best way to clone?
-        [(ChronoUnit.DAYS): period.days, (ChronoUnit.MONTHS): period.months, (ChronoUnit.YEARS): period.years]
-                .findAll { it.value != 0 }
-                .each { unit, amount ->
-                    result = result.plus(amount, unit)
-                }
-        result
+    static plus(final LocalDate self, TemporalAmount period) {
+        self.plus(period)
     }
 
     /**
-     * Subtracts the given period of days, months, and/or years to the LocalDate, returning a new LocalDate instance.
+     * Subtracts the given TemporalAmount to the LocalDate.
      */
-    static minus(final LocalDate self, Period period) {
-        LocalDate result = LocalDate.ofEpochDay(self.toEpochDay()) // best way to clone?
-        [(ChronoUnit.DAYS): period.days, (ChronoUnit.MONTHS) : period.months, (ChronoUnit.YEARS): period.years]
-                .findAll { it.value != 0 }
-                .each { unit, amount ->
-                    result = result.minus(amount, unit)
-                }
-        result
+    static minus(final LocalDate self, TemporalAmount period) {
+        self.minus(period)
+    }
+
+    /**
+     * Returns a TemporalAmount equivalent to the time between this LocalDate (inclusive) and the provided LocalDate (exclusive).
+     */
+    static minus(final LocalDate self, LocalDate other) {
+        Period.between(self, other)
     }
 
     /**
@@ -106,6 +101,7 @@ class LocalDateExtension {
                 return dayOfWeekToCalendarDay[self.dayOfWeek]
             case Calendar.MONTH:
                 return monthToCalendarMonth[self.month]
+            // XXX support Calendar.ERA for non-GregorianCalendar?
             default:
                 return getAt(self, calendarToTemporalField[field])
         }
