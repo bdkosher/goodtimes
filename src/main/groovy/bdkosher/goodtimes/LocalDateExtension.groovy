@@ -42,6 +42,20 @@ class LocalDateExtension {
     }
 
     /**
+     * The next day.
+     */
+    static LocalDate next(final LocalDate self) {
+        plus(self, 1)
+    }
+
+    /**
+     * The previous day.
+     */
+    static LocalDate previous(final LocalDate self) {
+        minus(self, 1)
+    }    
+
+    /**
      * Adds the given number of days to the LocalDte, returning a new LocalDate instance.
      */
     static plus(final LocalDate self, int days) {

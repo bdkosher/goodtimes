@@ -27,7 +27,25 @@ class LocalDateExtensionSpec extends Specification {
         mod.year == orig.year
         mod.monthValue == orig.monthValue
         mod.dayOfMonth == orig.dayOfMonth - 2
-    }   
+    }
+
+    def "next day"() {
+        given:
+        LocalDate orig = LocalDate.of(2017, 1, 8)
+        LocalDate mod = orig++
+
+        expect:
+        orig.dayOfMonth == mod.dayOfMonth + 1
+    }
+
+    def "previous day"() {
+        given:
+        LocalDate orig = LocalDate.of(2017, 1, 8)
+        LocalDate mod = orig--
+
+        expect:
+        orig.dayOfMonth == mod.dayOfMonth - 1
+    }    
 
     def "plus Period of days only"() {
         given:
@@ -203,6 +221,16 @@ class LocalDateExtensionSpec extends Specification {
         ld[ChronoField.DAY_OF_WEEK] == DayOfWeek.TUESDAY.value
         ld[ChronoField.ALIGNED_DAY_OF_WEEK_IN_MONTH] == 3
         ld[ChronoField.ERA] == IsoEra.CE.value        
+    }
+
+    def "period between two dates"() {
+        given:
+        LocalDate today = LocalDate.now()
+        LocalDate tomorrow = today.plusDays(1)
+        Period period = today - tomorrow
+
+        expect:
+        period.days == 1        
     }
 
 }
