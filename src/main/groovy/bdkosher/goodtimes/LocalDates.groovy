@@ -3,7 +3,7 @@ package bdkosher.goodtimes
 import java.time.*
 
 /**
- * By statically importing this class you can create dates using code like
+ * By statically importing this class you can create dates using code like this--if you dare:
  * <pre>
  * LocalDate thisChristmas = December 25
  * LocalDate halleysCometReturn = July 28, 2061
