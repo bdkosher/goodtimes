@@ -28,22 +28,21 @@ class DateCalendarExtensionSpec extends Specification {
         ld.dayOfMonth == 7
     }
 
-    def "toLocalDate is not impacted by date's own time zone"() {
-        Calendar cal = Calendar.instance.with {
-            set(Calendar.YEAR, 2017)
-            set(Calendar.MONTH, Calendar.JANUARY)
-            set(Calendar.DATE, 7)
-            set(Calendar.HOUR, 23)
-            set(Calendar.MINUTE, 59)
-            set(Calendar.SECOND, 59)
-            delegate
-        }
-
-        expect:
-        TimeZone.availableIDs.each { id ->
-            cal.setTimeZone(TimeZone.getTimeZone(id))
-            assert cal.toLocalDate(cal.zoneId).format(DateTimeFormatter.ISO_LOCAL_DATE) == '2017-01-07' : "Unexpected date for timezone $id"
-            assert false
+    def "toLocalDate is not impacted when date's own ZoneId is passed"() {
+        expect:  
+        TimeZone.availableIDs.collect { id -> TimeZone.getTimeZone(id) }.each { timeZone ->
+            Calendar cal = new GregorianCalendar(timeZone)
+            cal.with {
+                setTimeZone(timeZone)                
+                set(Calendar.YEAR, 2017)
+                set(Calendar.MONTH, Calendar.JANUARY)
+                set(Calendar.DAY_OF_MONTH, 7)
+                //set(Calendar.HOUR, 23)
+                //set(Calendar.MINUTE, 59)
+                //set(Calendar.SECOND, 59)
+            }
+            def localDate = cal.toLocalDate(cal.zoneId).format(DateTimeFormatter.ISO_LOCAL_DATE)
+            assert localDate == '2017-01-07' : "Unexpected date of $localDate for timezone $timeZone (zone id $cal.zoneId)"
         }
     }    
 
