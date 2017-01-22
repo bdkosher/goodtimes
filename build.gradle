@@ -1,4 +1,5 @@
 apply plugin: 'groovy'
+apply plugin: 'jacoco'
 version = '1.0'
 jar.archiveName = "goodtimes-${version}.jar"
 
@@ -13,3 +14,10 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination "${buildDir}/reports/jacoco"
+    }
+}

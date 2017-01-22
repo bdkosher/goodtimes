@@ -1,3 +1,3 @@
 moduleName = goodtimes
 moduleVersion = 1.0
-extensionClasses = bdkosher.goodtimes.DateCalendarExtension, bdkosher.goodtimes.LocalDateExtension
+extensionClasses = bdkosher.goodtimes.DateCalendarExtension, bdkosher.goodtimes.LocalDateExtension, bdkosher.goodtimes.DayOfWeekExtension

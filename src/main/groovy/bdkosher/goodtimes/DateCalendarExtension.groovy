@@ -10,7 +10,7 @@ class DateCalendarExtension {
     private static final DEFAULT_ZONE_ID = ZoneId.systemDefault()
 
     /**
-     * Converts the Date to a Calendar instance.
+     * Converts the Date to a Calendar instance in the default timezone.
      */
     static Calendar toCalendar(final Date date) {
         def cal = Calendar.instance
@@ -35,13 +35,6 @@ class DateCalendarExtension {
     }
 
     /**
-     * Returns the Time Zone of the Date as a java.time.ZoneId.
-     */
-    static ZoneId getZoneId(final Date date) {
-        getZoneId(toCalendar(date))
-    }
-
-    /**
      * Returns the Time Zone of the Calendar as a java.time.ZoneId.
      */
     static ZoneId getZoneId(final Calendar cal) {
@@ -49,13 +42,17 @@ class DateCalendarExtension {
     }
 
     /**
-     * Converts the Date to a LocalDate, using the Date's own Time Zone to adjust the LocalDate accordingly.
+     * Converts the Date to a LocalDate, using the system's Time Zone to adjust the LocalDate accordingly.
      *
      * If the Date is of a different Time Zone than the system Time Zone and depending on its time values, 
      * then the year/month/day values of the LocalDate may differ from the year/month/day values of the Date.
      *
      * An optional ZoneId may be passed to allow the returned LocalDate to be converted as if it were at a
      * Time Zone other than the system default.
+     *
+     * If your intention is to have a LocalDate of the exact year/month/day values, regardless of the Date's
+     * or system's time zone, then use this code:
+     * <code>date.clearTime().toLocalDate(date.zoneId)</code>
      */
     static toLocalDate(final Date self, ZoneId zoneId = DEFAULT_ZONE_ID) {
         toZonedDateTime(self, zoneId).toLocalDate()
@@ -78,7 +75,7 @@ class DateCalendarExtension {
      * then the year/month/day values of the LocalDate may differ from the year/month/day values of the Date.
      */
     static toLocalDate(final Date self, TimeZone timeZone) {
-        toLocalDate(self, timeZone.zoneId)
+        toLocalDate(self, timeZone.toZoneId())
     }    
 
     static toLocalTime(final Date self, ZoneId zoneId = DEFAULT_ZONE_ID) {
@@ -90,7 +87,7 @@ class DateCalendarExtension {
     }
 
     static toLocalTime(final Date self, TimeZone timeZone) {
-        toLocalTime(self, timeZone.zoneId)
+        toLocalTime(self, timeZone.toZoneId())
     }    
 
     static toLocalDateTime(final Date self, ZoneId zoneId = DEFAULT_ZONE_ID) {
@@ -99,6 +96,10 @@ class DateCalendarExtension {
 
     static toLocalDateTime(final Date self, ZoneOffset offset) {
         toOffsetDateTime(self, offset).toLocalDateTime()
+    }
+
+    static toLocalDateTime(final Date self, TimeZone timeZone) {
+        toLocalDateTime(self, timeZone.toZoneId())
     }    
     
     static toZonedDateTime(final Date self, ZoneId zoneId = DEFAULT_ZONE_ID) {
@@ -108,7 +109,6 @@ class DateCalendarExtension {
     static toOffsetDateTime(final Date self, ZoneOffset offset) {
         self.toInstant().atOffset(offset)
     }
-
 
     /**
      * Converts the Calendar to a LocalDate, using the Date's own Time Zone to adjust the LocalDate accordingly.
@@ -161,7 +161,11 @@ class DateCalendarExtension {
 
     static toLocalDateTime(final Calendar self, ZoneOffset offset) {
         toLocalDateTime(self.time, offset)
-    }    
+    }
+
+    static toLocalDateTime(final Calendar self, TimeZone timeZone) {
+        toLocalDateTime(self.time, timeZone)
+    }       
     
     static toZonedDateTime(final Calendar self, ZoneId zoneId = DEFAULT_ZONE_ID) {
         toZonedDateTime(self.time, zoneId)
@@ -171,6 +175,10 @@ class DateCalendarExtension {
         toOffsetDateTime(self.time, offset)
     }    
 
+    /**
+     * Convenience method for obtaining a java.time.Instant from a Calendar. Purely equivalent to
+     * <code>calendar.time.toInstant()</code>
+     */
     static toInstant(final Calendar self) {
         self.time.toInstant()
     }
