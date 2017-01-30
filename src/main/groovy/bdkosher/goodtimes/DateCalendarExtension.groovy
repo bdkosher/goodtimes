@@ -7,8 +7,6 @@ import java.time.*
  */
 class DateCalendarExtension {
 
-    private static final DEFAULT_ZONE_ID = ZoneId.systemDefault()
-
     /**
      * Converts the Date to a Calendar instance in the default timezone.
      */
@@ -42,19 +40,21 @@ class DateCalendarExtension {
     }
 
     /**
-     * Converts the Date to a LocalDate, using the system's Time Zone to adjust the LocalDate accordingly.
-     *
-     * If the Date is of a different Time Zone than the system Time Zone and depending on its time values, 
-     * then the year/month/day values of the LocalDate may differ from the year/month/day values of the Date.
-     *
-     * An optional ZoneId may be passed to allow the returned LocalDate to be converted as if it were at a
-     * Time Zone other than the system default.
-     *
-     * If your intention is to have a LocalDate of the exact year/month/day values, regardless of the Date's
-     * or system's time zone, then use this code:
-     * <code>date.clearTime().toLocalDate(date.zoneId)</code>
+     * Converts the Date to a LocalDate. The extracted year/month/day vales are used. Time Zone and time values
+     * are ignored. If you wish to honor the Time Zone and time values when converting to a LocalDate, use
+     * provide a TimeZone, ZoneId, or ZoneOffset argument to the toLocalDate method.
      */
-    static toLocalDate(final Date self, ZoneId zoneId = DEFAULT_ZONE_ID) {
+    static toLocalDate(final Date self) {
+        toLocalDate(toCalendar(self))
+    }
+
+    /**
+     * Converts the Date to a LocalDate, using the provided ZoneId to adjust the LocalDate accordingly.
+     *
+     * If the Date is of a different Time Zone than the provided Time Zone and depending on its time values, 
+     * then the year/month/day values of the LocalDate may differ from the year/month/day values of the Date.
+     */
+    static toLocalDate(final Date self, ZoneId zoneId) {
         toZonedDateTime(self, zoneId).toLocalDate()
     }
 
@@ -76,50 +76,123 @@ class DateCalendarExtension {
      */
     static toLocalDate(final Date self, TimeZone timeZone) {
         toLocalDate(self, timeZone.toZoneId())
-    }    
+    }
 
-    static toLocalTime(final Date self, ZoneId zoneId = DEFAULT_ZONE_ID) {
+    /**
+     * Converts the Date to a LocalTime. The extracted hour/minute/second/ms values are used. Time Zone and  
+     * date values are ignored. If you wish to honor the Time Zone when converting to a LocalDate, provide a 
+     * TimeZone, ZoneId, or ZoneOffset argument to the toLocalDate method.
+     */
+    static toLocalTime(final Date self) {
+        toLocalTime(toCalendar(self))
+    }
+
+    /**
+     * Converts the Date to a LocalTime, using the provided ZoneId to adjust the LocalTime accordingly.
+     *
+     * If the Date is of a different Time Zone than the provided Time Zone and depending on its time values, 
+     * then the hour/min/sec/ms values of the LocalTime may differ from the hour/min/sec/ms values of the Date.
+     */
+    static toLocalTime(final Date self, ZoneId zoneId ) {
         toZonedDateTime(self, zoneId).toLocalTime()
     }
 
+    /**
+     * Converts the Date to a LocalTime, using the provided ZoneOffset to adjust the LocalTime accordingly.
+     *
+     * If the Date is of a different Time Zone than the provided Time Zone and depending on its time values, 
+     * then the hour/min/sec/ms values of the LocalTime may differ from the hour/min/sec/ms values of the Date.
+     */
     static toLocalTime(final Date self, ZoneOffset offset) {
         toOffsetDateTime(self, offset).toLocalTime()
     }
 
+    /**
+     * Converts the Date to a LocalTime, using the provided TimeZone to adjust the LocalTime accordingly.
+     *
+     * If the Date is of a different Time Zone than the provided Time Zone and depending on its time values, 
+     * then the hour/min/sec/ms values of the LocalTime may differ from the hour/min/sec/ms values of the Date.
+     */
     static toLocalTime(final Date self, TimeZone timeZone) {
         toLocalTime(self, timeZone.toZoneId())
-    }    
+    }
 
-    static toLocalDateTime(final Date self, ZoneId zoneId = DEFAULT_ZONE_ID) {
+    /**
+     * Converts the Date to a LocalDateTime. The extracted date and time values are used. The time zone
+     * is ignored. If you wish to honor the Time Zone  when converting to a LocalDateTime, provide a
+     * TimeZone, ZoneId, or ZoneOffset argument to the toLocalDateTime method.
+     */
+    static toLocalDateTime(final Date self) {
+        toLocalDateTime(toCalendar(self))
+    }
+
+    /**
+     * Converts the Date to a LocalDateTime, using the provided ZoneId to adjust the LocalDateTime accordingly.
+     *
+     * If the Date is of a different Time Zone than the provided Time Zone and depending on its date and time values, 
+     * then the date and time values of the LocalDateTime may differ from the date and time values of the Date.
+     */
+    static toLocalDateTime(final Date self, ZoneId zoneId) {
         toZonedDateTime(self, zoneId).toLocalDateTime()
     }
 
+    /**
+     * Converts the Date to a LocalDateTime, using the provided ZoneOffset to adjust the LocalDateTime accordingly.
+     *
+     * If the Date is of a different Time Zone than the provided Time Zone and depending on its date and time values, 
+     * then the date and time values of the LocalDateTime may differ from the date and time values of the Date.
+     */
     static toLocalDateTime(final Date self, ZoneOffset offset) {
         toOffsetDateTime(self, offset).toLocalDateTime()
     }
 
+    /**
+     * Converts the Date to a LocalDateTime, using the provided TimeZone to adjust the LocalDateTime accordingly.
+     *
+     * If the Date is of a different Time Zone than the provided Time Zone and depending on its date and time values, 
+     * then the date and time values of the LocalDateTime may differ from the date and time values of the Date.
+     */
     static toLocalDateTime(final Date self, TimeZone timeZone) {
         toLocalDateTime(self, timeZone.toZoneId())
     }    
     
-    static toZonedDateTime(final Date self, ZoneId zoneId = DEFAULT_ZONE_ID) {
+    /**
+     * Converts the Date to a ZonedDateTime according to the system default ZoneId. Pass in a different ZoneId to 
+     * translate the returned ZoneDateTime to that time zone.
+     */
+    static toZonedDateTime(final Date self, ZoneId zoneId = ZoneId.systemDefault()) {
         self.toInstant().atZone(zoneId)
     }
 
+    /**
+     * Converts the Date to an OffsetDate time according to the provided ZoneOffset.
+     */
     static toOffsetDateTime(final Date self, ZoneOffset offset) {
         self.toInstant().atOffset(offset)
     }
 
     /**
+     * Converts the Calendar to a LocalDate. The extracted year/month/day vales are used. Time Zone and time values
+     * are ignored. If you wish to honor the Time Zone and time values when converting to a LocalDate, use
+     * provide a TimeZone, ZoneId, or ZoneOffset argument to the toLocalDate method.
+     */
+    static toLocalDate(final Calendar self) {
+        int year = self.get(Calendar.YEAR)
+        int month = self.get(Calendar.MONTH) + 1
+        int dayOfMonth = self.get(Calendar.DAY_OF_MONTH)
+        LocalDate.of(year, month, dayOfMonth)
+    }
+
+    /**
      * Converts the Calendar to a LocalDate, using the Date's own Time Zone to adjust the LocalDate accordingly.
      *
-     * If the Calendar is of a different Time Zone than the system Time Zone and depending on its time values, 
+     * If the Calendar is of a different Time Zone than the provided Time Zone and depending on its time values, 
      * then the year/month/day values of the LocalDate may differ from the year/month/day values of the Date.
      *
      * An optional ZoneId may be passed to allow the returned LocalDate to be converted as if it were at a
      * Time Zone other than the system default.
      */
-    static toLocalDate(final Calendar self, ZoneId zoneId = DEFAULT_ZONE_ID) {
+    static toLocalDate(final Calendar self, ZoneId zoneId) {
         toLocalDate(self.time, zoneId)
     }
 
@@ -141,36 +214,103 @@ class DateCalendarExtension {
      */
     static toLocalDate(final Calendar self, TimeZone timeZone) {
         toLocalDate(self.time, timeZone)
-    }    
+    }
 
-    static toLocalTime(final Calendar self, ZoneId zoneId = DEFAULT_ZONE_ID) {
+    /**
+     * Converts the Calendar to a LocalTime. The extracted hour/minute/second/ms values are used. Time Zone and  
+     * date values are ignored. If you wish to honor the Time Zone when converting to a LocalDate, provide a 
+     * TimeZone, ZoneId, or ZoneOffset argument to the toLocalDate method.
+     */
+    static toLocalTime(final Calendar self) {
+        int hour = Calendar.get(Calendar.HOUR)
+        int minute = Calendar.get(Calendar.MINUTE)
+        int second = Calendar.get(Calendar.SECOND)
+        int ms = Calendar.get(Calendar.MILLISECOND)
+        LocalTime.of(hour, minute, second, ms)
+    }
+
+    /**
+     * Converts the Calendar to a LocalTime, using the provided ZoneId to adjust the LocalTime accordingly.
+     *
+     * If the DCalendarate is of a different Time Zone than the provided Time Zone and depending on its time values, 
+     * then the hour/min/sec/ms values of the LocalTime may differ from the hour/min/sec/ms values of the Calendar.
+     */
+    static toLocalTime(final Calendar self, ZoneId zoneId) {
         toLocalTime(self.time, zoneId)
     }
 
+    /**
+     * Converts the Calendar to a LocalTime, using the provided ZoneOffset to adjust the LocalTime accordingly.
+     *
+     * If the DCalendarate is of a different Time Zone than the provided Time Zone and depending on its time values, 
+     * then the hour/min/sec/ms values of the LocalTime may differ from the hour/min/sec/ms values of the Calendar.
+     */
     static toLocalTime(final Calendar self, ZoneOffset offset) {
         toLocalTime(self.time, offset)
     }
 
+    /**
+     * Converts the Calendar to a LocalTime, using the provided TimeZone to adjust the LocalTime accordingly.
+     *
+     * If the DCalendarate is of a different Time Zone than the provided Time Zone and depending on its time values, 
+     * then the hour/min/sec/ms values of the LocalTime may differ from the hour/min/sec/ms values of the Calendar.
+     */
     static toLocalTime(final Calendar self, TimeZone timeZone) {
         toLocalTime(self.time, timeZone)
-    }        
+    }
 
-    static toLocalDateTime(final Calendar self, ZoneId zoneId = DEFAULT_ZONE_ID) {
+    /**
+     * Converts the Calendar to a LocalDateTime. The extracted date and time values are used. The time zone
+     * is ignored. If you wish to honor the Time Zone  when converting to a LocalDateTime, provide a
+     * TimeZone, ZoneId, or ZoneOffset argument to the toLocalDateTime method.
+     */
+    static toLocalDateTime(final Calendar self) {
+        def localDate = toLocalDate(self)
+        def localTime = toLocalTime(self)
+        LocalDateTime.of(localDate, localTime)
+    }
+
+    /**
+     * Converts the Calendar to a LocalDateTime, using the provided ZoneId to adjust the LocalDateTime accordingly.
+     *
+     * If the Calendar is of a different Time Zone than the provided Time Zone and depending on its date and time values, 
+     * then the date and time values of the LocalDateTime may differ from the date and time values of the Calendar.
+     */
+    static toLocalDateTime(final Calendar self, ZoneId zoneId) {
         toLocalDateTime(self.time, zoneId)
     }
 
+    /**
+     * Converts the Calendar to a LocalDateTime, using the provided ZoneOffset to adjust the LocalDateTime accordingly.
+     *
+     * If the Calendar is of a different Time Zone than the provided Time Zone and depending on its date and time values, 
+     * then the date and time values of the LocalDateTime may differ from the date and time values of the Calendar.
+     */
     static toLocalDateTime(final Calendar self, ZoneOffset offset) {
         toLocalDateTime(self.time, offset)
     }
 
+    /**
+     * Converts the Calendar to a LocalDateTime, using the provided TimeZone to adjust the LocalDateTime accordingly.
+     *
+     * If the Calendar is of a different Time Zone than the provided Time Zone and depending on its date and time values, 
+     * then the date and time values of the LocalDateTime may differ from the date and time values of the Calendar.
+     */
     static toLocalDateTime(final Calendar self, TimeZone timeZone) {
         toLocalDateTime(self.time, timeZone)
     }       
     
-    static toZonedDateTime(final Calendar self, ZoneId zoneId = DEFAULT_ZONE_ID) {
+    /**
+     * Converts the Calendar to a ZonedDateTime according to the system default ZoneId. Pass in a different ZoneId to 
+     * translate the returned ZoneDateTime to that time zone.
+     */
+    static toZonedDateTime(final Calendar self, ZoneId zoneId = ZoneId.systemDefault()) {
         toZonedDateTime(self.time, zoneId)
     }
 
+    /**
+     * Converts the Calendar to an OffsetDate time according to the provided ZoneOffset.
+     */
     static toOffsetDateTime(final Calendar self, ZoneOffset offset) {
         toOffsetDateTime(self.time, offset)
     }    
