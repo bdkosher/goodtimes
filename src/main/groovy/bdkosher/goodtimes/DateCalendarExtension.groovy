@@ -8,35 +8,60 @@ import java.time.*
 class DateCalendarExtension {
 
     /**
-     * Converts the Date to a Calendar instance in the default timezone.
+     * A mapping of Calendar constants representing days of the week to their corresponding java.time.DayOfWeek enum
      */
-    static Calendar toCalendar(final Date date) {
-        def cal = Calendar.instance
-        cal.time = date
-        cal
-    }
+    static final Map<Integer, DayOfWeek> daysOfWeek = ['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY']
+            .collectEntries { day -> [Calendar."$day", java.time.DayOfWeek."$day"] }
 
     /**
      * Returns the Time Zone of the Date as a java.time.ZoneOffset.
      */
-    static ZoneOffset getZoneOffset(final Date date) {
-        getZoneOffset(toCalendar(date))
+    static ZoneOffset getZoneOffset(final Date self) {
+        getZoneOffset(self.toCalendar())
     }
 
     /**
      * Returns the Time Zone offset of the Calendar as a java.time.ZoneOffset.
      */
-    static ZoneOffset getZoneOffset(final Calendar cal) {
-        int offsetMs = cal.get(Calendar.ZONE_OFFSET) 
-        offsetMs += cal.get(Calendar.DST_OFFSET)
+    static ZoneOffset getZoneOffset(final Calendar self) {
+        int offsetMs = self.get(Calendar.ZONE_OFFSET) 
+        offsetMs += self.get(Calendar.DST_OFFSET)
         ZoneOffset.ofTotalSeconds(offsetMs / 1000)
     }
 
     /**
      * Returns the Time Zone of the Calendar as a java.time.ZoneId.
      */
-    static ZoneId getZoneId(final Calendar cal) {
-        cal.timeZone.toZoneId()
+    static ZoneId getZoneId(final Calendar self) {
+        self.timeZone.toZoneId()
+    }
+
+    /**
+     * Returns the ISO-8601 year (represented as a java.time.Year) of the Calendar.
+     */
+    static getYear(final Calendar self) {
+        Year.of(self.get(Calendar.YEAR))
+    }
+
+    /**
+     * Returns the month (represented as a java.time.Month) of the Calendar.
+     */
+    static getMonth(final Calendar self) {
+        Month.of(self.get(Calendar.MONTH) + 1)
+    }        
+
+    /**
+     * Returns the java.time.YearMonth of the Calendar.
+     */
+    static getYearMonth(final Calendar self) {
+        getYear(self).atMonth(getMonth(self))
+    }
+
+    /**
+     * Returns the day of the week (represented as a java.time.DayOfWeek) of the Calendar.
+     */
+    static getDayOfWeek(final Calendar self) {
+        daysOfWeek[self.get(Calendar.DAY_OF_WEEK)]
     }
 
     /**
@@ -45,7 +70,7 @@ class DateCalendarExtension {
      * provide a TimeZone, ZoneId, or ZoneOffset argument to the toLocalDate method.
      */
     static toLocalDate(final Date self) {
-        toLocalDate(toCalendar(self))
+        toLocalDate(self.toCalendar())
     }
 
     /**
@@ -84,7 +109,7 @@ class DateCalendarExtension {
      * TimeZone, ZoneId, or ZoneOffset argument to the toLocalDate method.
      */
     static toLocalTime(final Date self) {
-        toLocalTime(toCalendar(self))
+        toLocalTime(self.toCalendar())
     }
 
     /**
@@ -123,7 +148,7 @@ class DateCalendarExtension {
      * TimeZone, ZoneId, or ZoneOffset argument to the toLocalDateTime method.
      */
     static toLocalDateTime(final Date self) {
-        toLocalDateTime(toCalendar(self))
+        toLocalDateTime(self.toCalendar())
     }
 
     /**

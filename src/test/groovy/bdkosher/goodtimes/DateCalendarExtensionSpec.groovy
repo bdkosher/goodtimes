@@ -6,12 +6,15 @@ import spock.lang.Specification
 
 class DateCalendarExtensionSpec extends Specification {
 
-    def "Date to Calendar"() {
+    def "Calendar getters"() {
         given:
-        Date d = new Date()
+        Calendar cal = Date.parse('yyyyMMdd', '20170204').toCalendar()
 
         expect:
-        d.toCalendar().time == d
+        cal.year == Year.of(2017)
+        cal.month == Month.FEBRUARY
+        cal.yearMonth == YearMonth.of(2017, Month.FEBRUARY)
+        cal.dayOfWeek == DayOfWeek.SATURDAY
     }
 
     def "Calendar toLocalDate"() {
