@@ -6,6 +6,12 @@ import spock.lang.Specification
 
 class DateCalendarExtensionSpec extends Specification {
 
+    def eachTimeZone(Closure closure) {
+        TimeZone.availableIDs.collect { id -> TimeZone.getTimeZone(id) }.each { timeZone ->
+            closure(timeZone)
+        }
+    }
+
     def "Calendar getters"() {
         given:
         Calendar cal = Date.parse('yyyyMMdd', '20170204').toCalendar()
@@ -28,7 +34,7 @@ class DateCalendarExtensionSpec extends Specification {
         ld.dayOfMonth == 7
     }
 
-    def "Date toLocalDate in system default timezone"() {
+    def "Date toLocalDate"() {
         given:
         Date date = Date.parse('yyyyMMdd', '20170107')
         LocalDate ld = date.toLocalDate()
@@ -39,37 +45,34 @@ class DateCalendarExtensionSpec extends Specification {
         ld.dayOfMonth == 7
     }
 
-    def "toLocalDate is not impacted when Calendar's own ZoneId is passed"() {
+    def "toLocalDate is not impacted by Calendar's time zone"() {
         expect:  
-        TimeZone.availableIDs.collect { id -> TimeZone.getTimeZone(id) }.each { timeZone ->
+        eachTimeZone { timeZone ->
             Calendar cal = new GregorianCalendar(timeZone)
-            cal.with {
-                setTimeZone(timeZone)                
+            cal.with {       
                 set(Calendar.YEAR, 2017)
                 set(Calendar.MONTH, Calendar.JANUARY)
                 set(Calendar.DAY_OF_MONTH, 7)
-                // this test case does not hold true at times close to the end of the day
                 clearTime()
             }
-            def localDate = cal.toLocalDate(cal.zoneId).format(DateTimeFormatter.ISO_LOCAL_DATE)
-            assert localDate == '2017-01-07' : "Unexpected calendar date of $localDate for timezone $timeZone (cal's zone id=$cal.zoneId)"    
+            def localDate = cal.toLocalDate().format(DateTimeFormatter.ISO_LOCAL_DATE)
+            assert localDate == '2017-01-07' : "Unexpected calendar date of $localDate for time zone $timeZone (cal's zone id=$cal.zoneId)"    
         }
     }
 
-    def "toLocalDate is not impacted when date's own TimeZone is passed"() {
+    def "toLocalDate is not impacted by Date's time zone"() {
         expect:  
-        TimeZone.availableIDs.collect { id -> TimeZone.getTimeZone(id) }.each { timeZone ->
+        eachTimeZone { timeZone ->
             Calendar cal = new GregorianCalendar(timeZone)
-            cal.with {
-                setTimeZone(timeZone)                
+            cal.with {      
                 set(Calendar.YEAR, 2017)
                 set(Calendar.MONTH, Calendar.JANUARY)
                 set(Calendar.DAY_OF_MONTH, 7)
                 clearTime()
             }
-            def localDate = cal.toLocalDate(timeZone).format(DateTimeFormatter.ISO_LOCAL_DATE)
-            assert localDate == '2017-01-07' : "Unexpected calendar date of $localDate for timezone $timeZone"
+            def localDate = cal.toLocalDate().format(DateTimeFormatter.ISO_LOCAL_DATE)
+            assert localDate == '2017-01-07' : "Unexpected calendar date of $localDate for time zone $timeZone"
         }
-    }       
+    }
 
 }    
