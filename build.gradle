@@ -18,6 +18,9 @@ jacocoTestReport {
     reports {
         xml.enabled false
         csv.enabled false
-        html.destination "${buildDir}/reports/jacoco"
+        html {
+            enabled true
+            destination "${buildDir}/reports/jacoco"
+        }
     }
 }

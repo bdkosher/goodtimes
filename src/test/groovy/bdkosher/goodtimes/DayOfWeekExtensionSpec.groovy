@@ -40,6 +40,54 @@ class DayOfWeekExtensionSpec extends Specification {
         FRIDAY    | THURSDAY
         SATURDAY  | FRIDAY
     }
+
+    @Unroll("#days days after #day should be #future_day")
+    def "plus(number of days)"() {
+        expect:
+        day + days == future_day
+
+        where:
+        day       | days | future_day
+        SUNDAY    | 0    | SUNDAY
+        SUNDAY    | 1    | MONDAY
+        SUNDAY    | 2    | TUESDAY
+        SUNDAY    | 3    | WEDNESDAY
+        SUNDAY    | 4    | THURSDAY
+        SUNDAY    | 5    | FRIDAY
+        SUNDAY    | 6    | SATURDAY
+        SUNDAY    | 7    | SUNDAY
+        SUNDAY    | 14   | SUNDAY
+        SUNDAY    | 20   | SATURDAY
+        SUNDAY    | 21   | SUNDAY
+        SUNDAY    | 22   | MONDAY
+        SUNDAY    | -6   | MONDAY
+        SUNDAY    | -7   | SUNDAY
+        SUNDAY    | -8   | SATURDAY
+    }
+
+    @Unroll("#days days before #day should be #past_day")
+    def "minus(number of days)"() {
+        expect:
+        day - days == past_day
+
+        where:
+        day       | days | past_day
+        SUNDAY    | 0    | SUNDAY
+        SUNDAY    | 1    | SATURDAY
+        SUNDAY    | 2    | FRIDAY
+        SUNDAY    | 3    | THURSDAY
+        SUNDAY    | 4    | WEDNESDAY
+        SUNDAY    | 5    | TUESDAY
+        SUNDAY    | 6    | MONDAY
+        SUNDAY    | 7    | SUNDAY
+        SUNDAY    | 14   | SUNDAY
+        SUNDAY    | 20   | MONDAY
+        SUNDAY    | 21   | SUNDAY
+        SUNDAY    | 22   | SATURDAY
+        SUNDAY    | -6   | SATURDAY
+        SUNDAY    | -7   | SUNDAY
+        SUNDAY    | -8   | MONDAY
+    }
     
     def "range of a week full of days, starting Monday"() {
         expect:
