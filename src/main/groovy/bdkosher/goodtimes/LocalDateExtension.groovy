@@ -2,6 +2,7 @@ package bdkosher.goodtimes
 
 import java.time.*
 import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 import java.time.temporal.*
 
 /**
@@ -26,19 +27,34 @@ class LocalDateExtension {
     /* Maps java.time.DayOfWeek enum values to their equivalent Calendar field integer value. */
     private static final Map<DayOfWeek, Integer> dayOfWeekToCalendarDay = DayOfWeek.values().collectEntries { [it, Calendar.@"$it"]}
 
-    /* Maps java.time.DayOfWeek enum values to their equivalent Calendar field integer value. */
+    /* Maps java.time.Month enum values to their equivalent Calendar field integer value. */
     private static final Map<Month, Integer> monthToCalendarMonth = Month.values().collectEntries { [it, Calendar.@"$it"]}
 
-    /*static downto(final LocalDate self, LocalDate to, Closure closure) {
-        
-    }*/
-
-    static format(final LocalDate self, String format, ZoneId zone = ZoneId.systemDefault(), Locale locale = Locale.default) {
-        self.format(DateTimeFormatter.ofPattern(format, locale).withZone(zone))
+    static downto(final LocalDate self, LocalDate to, Closure closure) {
+        if (to > self) {
+            throw new GroovyRuntimeException("The argument ($to) to downto() cannot be later than the value ($self) it's called on.")
+        }
+        def paramTypes = closure.parameterTypes
+        boolean acceptsDate = paramTypes.length > 0 && paramTypes[0].isAssignableFrom(LocalDate)
+        def from = self
+        while (from >= to) {
+            acceptsDate ? closure(self) : closure()
+            from = from - 1
+        }
     }
 
-    static format(final LocalDate self, String format, TimeZone timeZone) {
-        format(self, format, timeZone.toZoneId())
+    /**
+     * Formats the LocalDate with the given pattern and optional locale. The default Locale is used if none is provided.
+     */
+    static format(final LocalDate self, String pattern, Locale locale = Locale.default) {
+        self.format(DateTimeFormatter.ofPattern(pattern, locale))
+    }
+
+    /**
+     * Formats the LocalDate in the localized date style.
+     */
+    static format(final LocalDate self, FormatStyle dateStyle) {
+        self.format(DateTimeFormatter.ofLocalizedDate(dateStyle))
     }
 
     /**

@@ -223,14 +223,79 @@ class LocalDateExtensionSpec extends Specification {
         ld[ChronoField.ERA] == IsoEra.CE.value        
     }
 
-    def "period between two dates"() {
+    def "period between today and tomorrow is one day"() {
         given:
         LocalDate today = LocalDate.now()
         LocalDate tomorrow = today.plusDays(1)
         Period period = today - tomorrow
 
         expect:
-        period.days == 1        
+        period.days == 1
+        period.months == 0
+        period.years == 0
     }
 
+    def "format with default Locale"() {
+        given:
+        LocalDate d = LocalDate.of(2017, Month.FEBRUARY, 20)
+        String pattern = 'EEEE, MMMM d'
+
+        expect:
+        d.format(pattern) == 'Monday, February 20'
+    }
+
+    def "period between tomorrow and today is negative one day"() {
+        given:
+        LocalDate today = LocalDate.now()
+        LocalDate tomorrow = today.plusDays(1)
+        Period period = tomorrow - today
+
+        expect:
+        period.days == -1
+        period.months == 0
+        period.years == 0           
+    }
+
+    def "downto() cannot be called with date larger than this date"() {
+        setup:
+        LocalDate today = LocalDate.now()
+        LocalDate tomorrow = today + 1
+
+        when:
+        today.downto(tomorrow) { d -> 
+            throw new Exception('This closure body should never get executed.') 
+        }
+
+        then:
+        thrown GroovyRuntimeException
+    }
+
+    def "downto() is called once when the two dates are the same"() {
+        setup:
+        LocalDate today = LocalDate.now()
+        boolean closureCalledOnce = false
+
+        when:
+        today.downto(today) { d -> 
+            closureCalledOnce = true
+        }
+
+        then:
+        closureCalledOnce
+    }
+
+    def "downto() can be passed no-arg closure"() {
+        setup:
+        LocalDate today = LocalDate.now()
+        LocalDate dayBeforeYesterday = today - 2
+        int count = 0
+
+        when:
+        today.downto(dayBeforeYesterday) {
+            count++
+        }
+
+        then:
+        count == 3
+    }
 }

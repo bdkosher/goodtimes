@@ -11,54 +11,51 @@ import java.time.*
  */
 class LocalDates {
 
-    private static final int THIS_YEAR = Year.now().value
-
-    static January(int day, int year = THIS_YEAR) {
+    static January(int day, int year = Year.now().value) {
         LocalDate.of(year, Month.JANUARY, day)
     }
 
-    static February(int day, int year = THIS_YEAR) {
+    static February(int day, int year = Year.now().value) {
         LocalDate.of(year, Month.FEBRUARY, day)
     }
 
-    static March(int day, int year = THIS_YEAR) {
+    static March(int day, int year = Year.now().value) {
         LocalDate.of(year, Month.MARCH, day)
     }
 
-    static April(int day, int year = THIS_YEAR) {
+    static April(int day, int year = Year.now().value) {
         LocalDate.of(year, Month.APRIL, day)
     }
 
-    static May(int day, int year = THIS_YEAR) {
+    static May(int day, int year = Year.now().value) {
         LocalDate.of(year, Month.MAY, day)
     }
 
-    static June(int day, int year = THIS_YEAR) {
+    static June(int day, int year = Year.now().value) {
         LocalDate.of(year, Month.JUNE, day)
     }
 
-    static July(int day, int year = THIS_YEAR) {
+    static July(int day, int year = Year.now().value) {
         LocalDate.of(year, Month.JULY, day)
     }
 
-    static August(int day, int year = THIS_YEAR) {
+    static August(int day, int year = Year.now().value) {
         LocalDate.of(year, Month.AUGUST, day)
     }
 
-    static September(int day, int year = THIS_YEAR) {
+    static September(int day, int year = Year.now().value) {
         LocalDate.of(year, Month.SEPTEMBER, day)
     }
 
-    static October(int day, int year = THIS_YEAR) {
+    static October(int day, int year = Year.now().value) {
         LocalDate.of(year, Month.OCTOBER, day)
     }
 
-    static November(int day, int year = THIS_YEAR) {
+    static November(int day, int year = Year.now().value) {
         LocalDate.of(year, Month.NOVEMBER, day)
     }
 
-    static December(int day, int year = THIS_YEAR) {
+    static December(int day, int year = Year.now().value) {
         LocalDate.of(year, Month.DECEMBER, day)
-    }                                            
-
+    }
 }
