@@ -30,7 +30,10 @@ class LocalDateExtension {
     /* Maps java.time.Month enum values to their equivalent Calendar field integer value. */
     private static final Map<Month, Integer> monthToCalendarMonth = Month.values().collectEntries { [it, Calendar.@"$it"]}
 
-    static downto(final LocalDate self, LocalDate to, Closure closure) {
+    /**
+     * Iterates from this LocalDate down to the given LocalDate, inclusive, decrementing by one day each time.
+     */
+    static void downto(final LocalDate self, LocalDate to, Closure closure) {
         if (to > self) {
             throw new GroovyRuntimeException("The argument ($to) to downto() cannot be later than the value ($self) it's called on.")
         }
@@ -44,17 +47,40 @@ class LocalDateExtension {
     }
 
     /**
+     * Iterates from this LocalDate down to the given LocalDate, inclusive, decrementing by one day each time.
+     */
+    static void upto(final LocalDate self, LocalDate to, Closure closure) {
+        if (to < self) {
+            throw new GroovyRuntimeException("The argument ($to) to upto() cannot be earlier than the value ($self) it's called on.")
+        }
+        def paramTypes = closure.parameterTypes
+        boolean acceptsDate = paramTypes.length > 0 && paramTypes[0].isAssignableFrom(LocalDate)
+        def from = self
+        while (from <= to) {
+            acceptsDate ? closure(self) : closure()
+            from = from + 1
+        }
+    }    
+
+    /**
      * Formats the LocalDate with the given pattern and optional locale. The default Locale is used if none is provided.
      */
-    static format(final LocalDate self, String pattern, Locale locale = Locale.default) {
+    static String format(final LocalDate self, String pattern, Locale locale = Locale.default) {
         self.format(DateTimeFormatter.ofPattern(pattern, locale))
     }
 
     /**
      * Formats the LocalDate in the localized date style.
      */
-    static format(final LocalDate self, FormatStyle dateStyle) {
+    static String format(final LocalDate self, FormatStyle dateStyle) {
         self.format(DateTimeFormatter.ofLocalizedDate(dateStyle))
+    }
+
+    /**
+     * Return a string representation of the 'day' portion of this date according to the locale-specific FormatStyle#SHORT default format.
+     */
+    static String getDateString(final LocalDate self) {
+        format(self, FormatStyle.SHORT)
     }
 
     /**
@@ -74,35 +100,21 @@ class LocalDateExtension {
     /**
      * Adds the given number of days to the LocalDte, returning a new LocalDate instance.
      */
-    static plus(final LocalDate self, int days) {
+    static LocalDate plus(final LocalDate self, int days) {
         self.plusDays(days)
     }
 
     /**
      * Subtracts the given number of days to the LocalDte, returning a new LocalDate instance.
      */
-    static minus(final LocalDate self, int days) {
+    static LocalDate minus(final LocalDate self, int days) {
         self.minusDays(days)
-    }
-
-    /**
-     * Adds the given TemporalAmount to the LocalDate.
-     */
-    static plus(final LocalDate self, TemporalAmount period) {
-        self.plus(period)
-    }
-
-    /**
-     * Subtracts the given TemporalAmount to the LocalDate.
-     */
-    static minus(final LocalDate self, TemporalAmount period) {
-        self.minus(period)
     }
 
     /**
      * Returns a TemporalAmount equivalent to the time between this LocalDate (inclusive) and the provided LocalDate (exclusive).
      */
-    static minus(final LocalDate self, LocalDate other) {
+    static Period minus(final LocalDate self, LocalDate other) {
         Period.between(self, other)
     }
 
@@ -111,7 +123,7 @@ class LocalDateExtension {
      * This checks if this date can be queried for the specified field. If false, then calling the getAt method will throw an exception.
      * Note that the supported Calendar fields are a subset of the supported ChronoField values.
      */
-    static isSupported(final LocalDate self, int calendarField) {
+    static boolean isSupported(final LocalDate self, int calendarField) {
         TemporalField temporalField = calendarToTemporalField[calendarField]
         temporalField != null && self.isSupported(temporalField)
     }
@@ -140,7 +152,7 @@ class LocalDateExtension {
     /**
      * Returns the value corresponding to the given TemporarlField, provided it is supported by LocalDate as per its isSupported method.
      */
-    static getAt(final LocalDate self, TemporalField field) {
+    static int getAt(final LocalDate self, TemporalField field) {
         self.get(field)
     }
 
@@ -148,7 +160,7 @@ class LocalDateExtension {
      * Converts a LocalDate to a (mostly) equivalent instance of java.util.Date. The time value of the returned Date is cleared,
      * and the TimeZone and Locale are set to system defaults unless explicitly specified.
      */
-    static toDate(final LocalDate self, TimeZone timeZone = null, Locale locale = null) {
+    static Date toDate(final LocalDate self, TimeZone timeZone = null, Locale locale = null) {
         toCalendar(self, timeZone, locale).time
     }
 
@@ -156,10 +168,10 @@ class LocalDateExtension {
      * Converts a LocalDate to a (mostly) equivalent instance of java.util.Calendar. The time value of the returned Calender is cleared,
      * and the TimeZone and Locale are set to system defaults unless explicitly specified.
      */
-    static toCalendar(final LocalDate self, TimeZone timeZone = null, Locale locale = null) {
+    static Calendar toCalendar(final LocalDate self, TimeZone timeZone = null, Locale locale = null) {
         int day = self.dayOfMonth
         int month = self.monthValue - 1
-        int year = self.year - 1900
+        int year = self.year
         Calendar cal = timeZone 
                 ? (locale ? Calendar.getInstance(timeZone, locale) : Calendar.getInstance(timeZone)) 
                 : (locale ? Calendar.getInstance(locale) : Calendar.instance)

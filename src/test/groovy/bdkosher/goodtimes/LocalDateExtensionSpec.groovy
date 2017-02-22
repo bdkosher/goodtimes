@@ -2,10 +2,33 @@ package bdkosher.goodtimes
 
 import java.time.*
 import java.time.chrono.*
+import java.time.format.*
 import java.time.temporal.*
 import spock.lang.Specification
 
 class LocalDateExtensionSpec extends Specification {
+
+    def "toDate works decently enough as you could expect"() {
+        given:
+        LocalDate ld = LocalDate.of(2017, 2, 21)
+
+        when:
+        Date d = ld.toDate()
+
+        then:
+        d.format('yyyy-MM-dd HH:mm:ss.SSS') == '2017-02-21 00:00:00.000'
+    }
+
+    def "toDate works decently enough as you could expect with specified time zone"() {
+        given:
+        LocalDate ld = LocalDate.of(2017, 2, 21)
+
+        when:
+        Date d = ld.toDate(TimeZone.getTimeZone('EST'))
+
+        then:
+        d.format('yyyy-MM-dd HH:mm:ss.SSS z') == '2017-02-21 00:00:00.000 EST'
+    }    
 
     def "plus days"() {
         given:
@@ -31,20 +54,20 @@ class LocalDateExtensionSpec extends Specification {
 
     def "next day"() {
         given:
-        LocalDate orig = LocalDate.of(2017, 1, 8)
-        LocalDate mod = orig++
+        LocalDate date = LocalDate.of(2017, 1, 8)
+        LocalDate tomorrow = date.next()
 
         expect:
-        orig.dayOfMonth == mod.dayOfMonth + 1
+        tomorrow.dayOfMonth == date.dayOfMonth + 1
     }
 
     def "previous day"() {
         given:
-        LocalDate orig = LocalDate.of(2017, 1, 8)
-        LocalDate mod = orig--
+        LocalDate date = LocalDate.of(2017, 1, 8)
+        LocalDate yesterday = date.previous()
 
         expect:
-        orig.dayOfMonth == mod.dayOfMonth - 1
+        yesterday.dayOfMonth == date.dayOfMonth - 1
     }    
 
     def "plus Period of days only"() {
@@ -235,13 +258,29 @@ class LocalDateExtensionSpec extends Specification {
         period.years == 0
     }
 
-    def "format with default Locale"() {
+    def "format by pattern with US Locale"() {
         given:
         LocalDate d = LocalDate.of(2017, Month.FEBRUARY, 20)
         String pattern = 'EEEE, MMMM d'
 
         expect:
-        d.format(pattern) == 'Monday, February 20'
+        d.format(pattern, Locale.US) == 'Monday, February 20'
+    }
+
+    def "format by FormatStyle"() {
+        given:
+        LocalDate d = LocalDate.of(2017, Month.FEBRUARY, 20)
+
+        expect:
+        d.format(FormatStyle.FULL) == d.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL))
+    }
+
+    def "getDateString is just an alias for format FormatStyle.SHORT "() {
+        given:
+        LocalDate d = LocalDate.of(2017, Month.FEBRUARY, 21)
+
+        expect:
+        d.dateString == d.format(FormatStyle.SHORT)
     }
 
     def "period between tomorrow and today is negative one day"() {
@@ -256,7 +295,7 @@ class LocalDateExtensionSpec extends Specification {
         period.years == 0           
     }
 
-    def "downto() cannot be called with date larger than this date"() {
+    def "downto() cannot be called with date after this date"() {
         setup:
         LocalDate today = LocalDate.now()
         LocalDate tomorrow = today + 1
@@ -298,4 +337,47 @@ class LocalDateExtensionSpec extends Specification {
         then:
         count == 3
     }
+
+    def "upto() cannot be called with date before this date"() {
+        setup:
+        LocalDate today = LocalDate.now()
+        LocalDate yesterday = today - 1
+
+        when:
+        today.upto(yesterday) { d -> 
+            throw new Exception('This closure body should never get executed.') 
+        }
+
+        then:
+        thrown GroovyRuntimeException
+    }
+
+    def "upto() is called once when the two dates are the same"() {
+        setup:
+        LocalDate today = LocalDate.now()
+        boolean closureCalledOnce = false
+
+        when:
+        today.upto(today) { d -> 
+            closureCalledOnce = true
+        }
+
+        then:
+        closureCalledOnce
+    }
+
+    def "upto() can be passed no-arg closure"() {
+        setup:
+        LocalDate today = LocalDate.now()
+        LocalDate dayAfterTomorrow = today + 2
+        int count = 0
+
+        when:
+        today.upto(dayAfterTomorrow) {
+            count++
+        }
+
+        then:
+        count == 3
+    }    
 }
