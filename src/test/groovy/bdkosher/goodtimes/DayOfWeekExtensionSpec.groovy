@@ -1,7 +1,6 @@
 package bdkosher.goodtimes
 
-import java.time.*
-import java.time.format.*
+import java.time.DayOfWeek
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -89,10 +88,4 @@ class DayOfWeekExtensionSpec extends Specification {
         SUNDAY    | -8   | MONDAY
     }
     
-    def "range of a week full of days, starting Monday"() {
-        expect:
-        (MONDAY..SUNDAY).collect { it.value }.sum() == (1..7).sum()
-        // TODO: figure out how to possibly support a range starting with SUNDAY
-        //(SUNDAY..SATURDAY).collect { it.value }.sum() == (1..7).sum()
-    }
 }

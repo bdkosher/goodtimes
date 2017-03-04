@@ -1,11 +1,16 @@
 package bdkosher.goodtimes
 
 import java.time.*
+import groovy.transform.PackageScope
 
 /**
  * Extension methods for java.time.DayOfWeek
  */
 class DayOfWeekExtension {
+
+    /* Maps java.time.DayOfWeek enum values to their equivalent Calendar field integer value. */
+    @PackageScope
+    static final Map<DayOfWeek, Integer> dayOfWeekToCalendarDay = DayOfWeek.values().collectEntries { [it, Calendar.@"$it"]}    
 
     /** 
      * Returns the DayOfWeek that is {@code days} many days after this DayOfWeek.
@@ -34,6 +39,14 @@ class DayOfWeekExtension {
      */
     static DayOfWeek previous(final DayOfWeek self) {
         minus(self, 1)
+    }
+
+    /**
+     * Returns the value of the day-of-week constant defined in the java.util.Calendar class. For example,
+     * <code>assert DayOfWeek.MONDAY.calendarValue() == Calendar.MONDAY</code>
+     */
+    static int calendarValue(final DayOfWeek self) {
+        dayOfWeekToCalendarDay[self]
     }
 
 }

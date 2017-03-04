@@ -5,13 +5,16 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.time.temporal.*
 
+import groovy.transform.PackageScope
+
 /**
  * Aims to mimic the Groovy JDK extension methods available for java.util.Date and java.util.Calendar instances.
  */
 class LocalDateExtension {
 
     /* LocalDate-applicable Calendar fields mapped to their equivalent java.time TemporalField */
-    private static final Map<Integer, TemporalField> calendarToTemporalField = [
+    @PackageScope
+    static final Map<Integer, TemporalField> calendarToTemporalField = [
         (Calendar.DATE): ChronoField.DAY_OF_MONTH,        
         (Calendar.DAY_OF_MONTH): ChronoField.DAY_OF_MONTH,
         (Calendar.DAY_OF_WEEK): ChronoField.DAY_OF_WEEK,
@@ -23,12 +26,6 @@ class LocalDateExtension {
         (Calendar.YEAR): ChronoField.YEAR,
         (Calendar.ERA): ChronoField.ERA // consider removal due to GregorianCalendar assumptions
     ]    
-
-    /* Maps java.time.DayOfWeek enum values to their equivalent Calendar field integer value. */
-    private static final Map<DayOfWeek, Integer> dayOfWeekToCalendarDay = DayOfWeek.values().collectEntries { [it, Calendar.@"$it"]}
-
-    /* Maps java.time.Month enum values to their equivalent Calendar field integer value. */
-    private static final Map<Month, Integer> monthToCalendarMonth = Month.values().collectEntries { [it, Calendar.@"$it"]}
 
     /**
      * Iterates from this LocalDate down to the given LocalDate, inclusive, decrementing by one day each time.
@@ -140,12 +137,12 @@ class LocalDateExtension {
         }
         switch (field) {
             case Calendar.DAY_OF_WEEK:
-                return dayOfWeekToCalendarDay[self.dayOfWeek]
+                return self.dayOfWeek.calendarValue()
             case Calendar.MONTH:
-                return monthToCalendarMonth[self.month]
+                return self.month.calendarValue()
             // XXX support Calendar.ERA for non-GregorianCalendar?
             default:
-                return getAt(self, calendarToTemporalField[field])
+                return self.get(calendarToTemporalField[field])
         }
     }
 
