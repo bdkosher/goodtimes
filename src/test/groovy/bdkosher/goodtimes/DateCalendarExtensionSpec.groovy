@@ -75,4 +75,13 @@ class DateCalendarExtensionSpec extends Specification {
         }
     }
 
+    def "Calendar.toInstant() same as Date"() {
+        given:
+        Calendar c = Calendar.instance
+        Date d = c.time
+
+        expect:
+        c.toInstant() == d.toInstant()
+    }
+
 }    

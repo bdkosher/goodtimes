@@ -15,10 +15,10 @@ class LocalDateExtension {
     /* LocalDate-applicable Calendar fields mapped to their equivalent java.time TemporalField */
     @PackageScope
     static final Map<Integer, TemporalField> calendarToTemporalField = [
-        (Calendar.DATE): ChronoField.DAY_OF_MONTH,        
+        (Calendar.DATE): ChronoField.DAY_OF_MONTH,
         (Calendar.DAY_OF_MONTH): ChronoField.DAY_OF_MONTH,
         (Calendar.DAY_OF_WEEK): ChronoField.DAY_OF_WEEK,
-        (Calendar.DAY_OF_WEEK_IN_MONTH): ChronoField.ALIGNED_DAY_OF_WEEK_IN_MONTH,            
+        (Calendar.DAY_OF_WEEK_IN_MONTH): ChronoField.ALIGNED_DAY_OF_WEEK_IN_MONTH,
         (Calendar.DAY_OF_YEAR): ChronoField.DAY_OF_YEAR,
         (Calendar.WEEK_OF_MONTH): ChronoField.ALIGNED_WEEK_OF_MONTH,
         (Calendar.WEEK_OF_YEAR): ChronoField.ALIGNED_WEEK_OF_YEAR,
@@ -162,7 +162,7 @@ class LocalDateExtension {
     }
 
     /**
-     * Converts a LocalDate to a (mostly) equivalent instance of java.util.Calendar. The time value of the returned Calender is cleared,
+     * Converts a LocalDate to a (mostly) equivalent instance of java.util.Calendar. The time value of the returned Calendar is cleared,
      * and the TimeZone and Locale are set to system defaults unless explicitly specified.
      */
     static Calendar toCalendar(final LocalDate self, TimeZone timeZone = null, Locale locale = null) {

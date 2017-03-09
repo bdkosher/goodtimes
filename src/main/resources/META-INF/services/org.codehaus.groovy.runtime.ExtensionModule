@@ -1,4 +1,4 @@
 moduleName = goodtimes
 moduleVersion = 1.0
-extensionClasses = bdkosher.goodtimes.DateCalendarExtension, bdkosher.goodtimes.LocalDateExtension, bdkosher.goodtimes.DayOfWeekExtension, bdkosher.goodtimes.MonthExtension
+extensionClasses = bdkosher.goodtimes.DateCalendarExtension, bdkosher.goodtimes.LocalDateExtension, bdkosher.goodtimes.LocalTimeExtension, bdkosher.goodtimes.DayOfWeekExtension, bdkosher.goodtimes.MonthExtension
 staticExtensionClasses = bdkosher.goodtimes.DayOfWeekStaticExtension, bdkosher.goodtimes.MonthStaticExtension

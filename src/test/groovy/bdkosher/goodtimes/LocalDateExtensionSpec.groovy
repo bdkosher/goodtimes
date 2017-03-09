@@ -216,7 +216,7 @@ class LocalDateExtensionSpec extends Specification {
         ld[Calendar.MILLISECOND]
 
         then:
-            thrown IllegalArgumentException
+        thrown IllegalArgumentException
     }
 
     def "getAt invalid Calendar field"() {
@@ -227,7 +227,7 @@ class LocalDateExtensionSpec extends Specification {
         ld[Integer.MAX_VALUE]
 
         then:
-            thrown IllegalArgumentException
+        thrown IllegalArgumentException
     }
 
     def "getAt Temporal Field"() {
