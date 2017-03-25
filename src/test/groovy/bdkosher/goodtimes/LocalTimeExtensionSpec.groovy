@@ -8,7 +8,7 @@ import spock.lang.Specification
 
 class LocalTimeExtensionSpec extends Specification {
 
-    def "toDate works decently enough as you coult expect"() {
+    def "toDate works decently enough as you could expect"() {
         given:
         LocalTime time = LocalTime.of(12, 34, 56)
 
@@ -16,7 +16,7 @@ class LocalTimeExtensionSpec extends Specification {
         Date date = time.toDate()
 
         then:
-        date.format('hh:mm:ss.SSS') == '12:34:56.000'
+        date.format('HH:mm:ss.SSS') == '12:34:56.000'
     }
 
     def "plus seconds"() {
@@ -263,7 +263,7 @@ class LocalTimeExtensionSpec extends Specification {
         t.format(FormatStyle.SHORT) == t.format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT))
     }
 
-    def "getTimeString is just an alias for format FormatStyle.SHORT "() {
+    def "getTimeString is just an alias for format FormatStyle.SHORT"() {
         given:
         LocalTime t = LocalTime.of(12, 34, 56)
 
@@ -287,8 +287,8 @@ class LocalTimeExtensionSpec extends Specification {
         LocalTime later = now + 1
 
         when:
-        now.downto(later) { d -> 
-            throw new Exception('This closure body shoult never get executed.') 
+        now.downto(later) { t -> 
+            throw new Exception('This closure body should never get executed.') 
         }
 
         then:
@@ -301,7 +301,7 @@ class LocalTimeExtensionSpec extends Specification {
         boolean closureCalledOnce = false
 
         when:
-        now.downto(now) { d -> 
+        now.downto(now) { t -> 
             closureCalledOnce = true
         }
 
@@ -324,14 +324,26 @@ class LocalTimeExtensionSpec extends Specification {
         count == 61
     }
 
+    def "downto() closure passed decreasing arg"() {
+        setup:
+        LocalTime higher = LocalTime.of(0, 0, 3)
+        LocalTime lower = LocalTime.of(0, 0, 1)
+        int iter = higher.second
+
+        expect:
+        higher.downto(lower) { t ->
+            assert iter-- == t.second
+        }
+    }
+
     def "upto() cannot be called with date before this date"() {
         setup:
         LocalTime now = LocalTime.now()
         LocalTime oneSecondAgo = now - 1
 
         when:
-        now.upto(oneSecondAgo) { d -> 
-            throw new Exception('This closure body shoult never get executed.') 
+        now.upto(oneSecondAgo) { t -> 
+            throw new Exception('This closure body should never get executed.') 
         }
 
         then:
@@ -344,7 +356,7 @@ class LocalTimeExtensionSpec extends Specification {
         boolean closureCalledOnce = false
 
         when:
-        now.upto(now) { d -> 
+        now.upto(now) { t -> 
             closureCalledOnce = true
         }
 
@@ -365,5 +377,17 @@ class LocalTimeExtensionSpec extends Specification {
 
         then:
         count == 61
-    }    
+    }
+
+    def "upto() closure passed increasing arg"() {
+        setup:
+        LocalTime lower = LocalTime.of(0, 0, 0)
+        LocalTime higher = LocalTime.of(0, 0, 2)
+        int iter = lower.second
+
+        expect:
+        lower.upto(higher) { t ->
+            assert iter++ == t.second
+        }        
+    }
 }

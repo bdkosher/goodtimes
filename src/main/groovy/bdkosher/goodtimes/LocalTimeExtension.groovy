@@ -19,7 +19,7 @@ class LocalTimeExtension {
         (Calendar.MINUTE): ChronoField.MINUTE_OF_HOUR,
         (Calendar.SECOND): ChronoField.SECOND_OF_MINUTE,
         (Calendar.MILLISECOND): ChronoField.MILLI_OF_SECOND
-    ]
+    ].asImmutable()
 
     @PackageScope
     static final Set<TemporalField> LONG_TYPED_FIELDS = EnumSet.of(ChronoField.MICRO_OF_DAY, ChronoField.NANO_OF_DAY).asImmutable()
@@ -35,7 +35,7 @@ class LocalTimeExtension {
         boolean acceptsDate = paramTypes.length > 0 && paramTypes[0].isAssignableFrom(LocalTime)
         def from = self
         while (from >= to) {
-            acceptsDate ? closure(self) : closure()
+            acceptsDate ? closure(from) : closure()
             from = from - 1
         }
     }
@@ -51,7 +51,7 @@ class LocalTimeExtension {
         boolean acceptsDate = paramTypes.length > 0 && paramTypes[0].isAssignableFrom(LocalTime)
         def from = self
         while (from <= to) {
-            acceptsDate ? closure(self) : closure()
+            acceptsDate ? closure(from) : closure()
             from = from + 1
         }
     }    
@@ -71,35 +71,35 @@ class LocalTimeExtension {
     }
 
     /**
-     * Return a string representation of the 'day' portion of this time according to the locale-specific FormatStyle#SHORT default format.
+     * Return a string representation of this time according to the locale-specific FormatStyle#SHORT default format.
      */
     static String getTimeString(final LocalTime self) {
         format(self, FormatStyle.SHORT)
     }
 
     /**
-     * The next day.
+     * The next second.
      */
     static LocalTime next(final LocalTime self) {
         plus(self, 1)
     }
 
     /**
-     * The previous day.
+     * The previous second.
      */
     static LocalTime previous(final LocalTime self) {
         minus(self, 1)
     }    
 
     /**
-     * Adds the given number of seconds to the LocalDte, returning a new LocalTime instance.
+     * Adds the given number of seconds to the LocalTime, returning a new LocalTime instance.
      */
     static LocalTime plus(final LocalTime self, int seconds) {
         self.plusSeconds(seconds)
     }
 
     /**
-     * Subtracts the given number of days to the LocalDte, returning a new LocalTime instance.
+     * Subtracts the given number of seconds to the LocalTime, returning a new LocalTime instance.
      */
     static LocalTime minus(final LocalTime self, int seconds) {
         self.minusSeconds(seconds)
@@ -157,7 +157,7 @@ class LocalTimeExtension {
                 ? (locale ? Calendar.getInstance(timeZone, locale) : Calendar.getInstance(timeZone)) 
                 : (locale ? Calendar.getInstance(locale) : Calendar.instance)
         cal.with {
-            set(Calendar.HOUR, self.hour)
+            set(Calendar.HOUR_OF_DAY, self.hour)
             set(Calendar.MINUTE, self.minute)
             set(Calendar.SECOND, self.second)
             set(Calendar.MILLISECOND, milli)

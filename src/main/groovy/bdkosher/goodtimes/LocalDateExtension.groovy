@@ -25,7 +25,10 @@ class LocalDateExtension {
         (Calendar.MONTH): ChronoField.MONTH_OF_YEAR,
         (Calendar.YEAR): ChronoField.YEAR,
         (Calendar.ERA): ChronoField.ERA // consider removal due to GregorianCalendar assumptions
-    ]    
+    ] .asImmutable()
+
+    @PackageScope
+    static final Set<TemporalField> LONG_TYPED_FIELDS = EnumSet.of(ChronoField.PROLEPTIC_MONTH, ChronoField.EPOCH_DAY).asImmutable()
 
     /**
      * Iterates from this LocalDate down to the given LocalDate, inclusive, decrementing by one day each time.
@@ -38,7 +41,7 @@ class LocalDateExtension {
         boolean acceptsDate = paramTypes.length > 0 && paramTypes[0].isAssignableFrom(LocalDate)
         def from = self
         while (from >= to) {
-            acceptsDate ? closure(self) : closure()
+            acceptsDate ? closure(from) : closure()
             from = from - 1
         }
     }
@@ -54,7 +57,7 @@ class LocalDateExtension {
         boolean acceptsDate = paramTypes.length > 0 && paramTypes[0].isAssignableFrom(LocalDate)
         def from = self
         while (from <= to) {
-            acceptsDate ? closure(self) : closure()
+            acceptsDate ? closure(from) : closure()
             from = from + 1
         }
     }    
@@ -74,7 +77,7 @@ class LocalDateExtension {
     }
 
     /**
-     * Return a string representation of the 'day' portion of this date according to the locale-specific FormatStyle#SHORT default format.
+     * Return a string representation of this date according to the locale-specific FormatStyle#SHORT default format.
      */
     static String getDateString(final LocalDate self) {
         format(self, FormatStyle.SHORT)
@@ -95,14 +98,14 @@ class LocalDateExtension {
     }    
 
     /**
-     * Adds the given number of days to the LocalDte, returning a new LocalDate instance.
+     * Adds the given number of days to the LocalDate, returning a new LocalDate instance.
      */
     static LocalDate plus(final LocalDate self, int days) {
         self.plusDays(days)
     }
 
     /**
-     * Subtracts the given number of days to the LocalDte, returning a new LocalDate instance.
+     * Subtracts the given number of days to the LocalDate, returning a new LocalDate instance.
      */
     static LocalDate minus(final LocalDate self, int days) {
         self.minusDays(days)
@@ -131,7 +134,7 @@ class LocalDateExtension {
      * and call this method with Calendar.MONTH, then Calendar.JANUARY will be returned, even though this integer value is not identical
      * to the value of java.time.Month.JANUARY.getValue(). The same is true for the days of the week and java.time.DayOfWeek.
      */
-    static int getAt(final LocalDate self, int field) {
+    static getAt(final LocalDate self, int field) {
         if (!isSupported(self, field)) {
             throw new IllegalArgumentException("$field is an unrecognized or unsupported java.util.Calendar field value.")
         }
@@ -149,8 +152,8 @@ class LocalDateExtension {
     /**
      * Returns the value corresponding to the given TemporarlField, provided it is supported by LocalDate as per its isSupported method.
      */
-    static int getAt(final LocalDate self, TemporalField field) {
-        self.get(field)
+    static getAt(final LocalDate self, TemporalField field) {
+        LONG_TYPED_FIELDS.contains(field) ? self.getLong(field) : self.get(field)
     }
 
     /**

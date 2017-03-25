@@ -236,9 +236,12 @@ class LocalDateExtensionSpec extends Specification {
 
         expect:
         ld[ChronoField.YEAR] == 2017
+        ld[ChronoField.YEAR_OF_ERA] == 2017
         ld[ChronoField.MONTH_OF_YEAR] == Month.JANUARY.value
+        ld[ChronoField.PROLEPTIC_MONTH] == 24204
         ld[ChronoField.DAY_OF_MONTH] == 10
         ld[ChronoField.DAY_OF_YEAR] == 10
+        ld[ChronoField.EPOCH_DAY] == 17176
         ld[ChronoField.ALIGNED_WEEK_OF_MONTH] == 2
         ld[ChronoField.ALIGNED_WEEK_OF_YEAR] == 2
         ld[ChronoField.DAY_OF_WEEK] == DayOfWeek.TUESDAY.value
@@ -338,6 +341,18 @@ class LocalDateExtensionSpec extends Specification {
         count == 3
     }
 
+    def "downto() closure passed decreasing arg"() {
+        setup:
+        LocalDate higher = LocalDate.of(2017, Month.JULY, 4)
+        LocalDate lower = LocalDate.of(2017, Month.JULY, 1)
+        int iter = higher.day
+
+        expect:
+        higher.downto(lower) { d ->
+            assert iter-- == d.day
+        }
+    }    
+
     def "upto() cannot be called with date before this date"() {
         setup:
         LocalDate today = LocalDate.now()
@@ -379,5 +394,17 @@ class LocalDateExtensionSpec extends Specification {
 
         then:
         count == 3
+    }
+
+    def "upto() closure passed increasing arg"() {
+        setup:
+        LocalDate lower = LocalDate.of(2017, Month.JULY, 1)
+        LocalDate higher = LocalDate.of(2017, Month.JULY, 4)
+        int iter = lower.day
+
+        expect:
+        lower.upto(higher) { t ->
+            assert iter++ == t.day
+        }        
     }    
 }
