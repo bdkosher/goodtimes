@@ -406,5 +406,40 @@ class LocalDateExtensionSpec extends Specification {
         lower.upto(higher) { t ->
             assert iter++ == t.day
         }        
+    }
+
+    def "leftShifting a LocalTime produces a LocalDateTime"() {
+        given:
+        LocalDate date = LocalDate.of(2017, Month.JULY, 4)
+        LocalTime time = LocalTime.of(12, 34, 56)
+
+        when:
+        LocalDateTime datetime = date << time
+
+        then:
+        datetime.year == date.year
+        datetime.month == date.month
+        datetime.dayOfMonth == date.day
+        datetime.hour == time.hour
+        datetime.minute == time.minute
+        datetime.second == time.second
+    }
+
+    def "leftShifting an OffsetTime produces a OffsetDateTime"() {
+        given:
+        LocalDate date = LocalDate.of(2017, Month.JULY, 4)
+        OffsetTime offsetTime = OffsetTime.of(LocalTime.of(12, 34, 56), ZoneOffset.UTC)
+
+        when:
+        OffsetDateTime datetime = date << offsetTime
+
+        then:
+        datetime.year == date.year
+        datetime.month == date.month
+        datetime.dayOfMonth == date.day
+        datetime.hour == offsetTime.hour
+        datetime.minute == offsetTime.minute
+        datetime.second == offsetTime.second
+        datetime.offset == ZoneOffset.UTC
     }    
 }

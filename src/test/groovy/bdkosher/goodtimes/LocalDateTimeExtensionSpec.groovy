@@ -297,6 +297,14 @@ class LocalDateTimeExtensionSpec extends Specification {
         ldt[ChronoField.NANO_OF_SECOND] == 0
     }
 
+    def "getDay method works"() {
+        given:
+        LocalDateTime dt = LocalDateTime.now()
+
+        expect:
+        dt.day == dt.dayOfMonth
+    }
+
     def "format by pattern with US Locale"() {
         given:
         LocalDateTime dt = LocalDateTime.of(2017, Month.MARCH, 25, 12, 34, 56)
@@ -328,7 +336,7 @@ class LocalDateTimeExtensionSpec extends Specification {
 
         expect:
         dt.timeString == dt.toLocalTime().format(FormatStyle.SHORT)
-    }    
+    }
 
     def "downto() cannot be called with date after this date"() {
         setup:
@@ -439,4 +447,57 @@ class LocalDateTimeExtensionSpec extends Specification {
             assert iter++ == t.second
         }        
     }
+
+    def "left shifting a ZoneOffset produces an OffsetDateTime"() {
+        given:
+        LocalDateTime datetime = LocalDateTime.of(2017, Month.JULY, 4, 12, 34, 56)
+
+        when:
+        OffsetDateTime odt = datetime << ZoneOffset.UTC
+
+        then:
+        odt.year == datetime.year
+        odt.month == datetime.month
+        odt.dayOfMonth == datetime.day
+        odt.hour == datetime.hour
+        odt.minute == datetime.minute
+        odt.second == datetime.second
+        odt.offset == ZoneOffset.UTC
+    }
+
+    def "left shifting a ZoneId produces an ZonedDateTime"() {
+        given:
+        LocalDateTime datetime = LocalDateTime.of(2017, Month.JULY, 4, 12, 34, 56)
+        ZoneId zoneId = ZoneId.of(ZoneId.availableZoneIds[0])
+
+        when:
+        ZonedDateTime odt = datetime << zoneId
+
+        then:
+        odt.year == datetime.year
+        odt.month == datetime.month
+        odt.dayOfMonth == datetime.day
+        odt.hour == datetime.hour
+        odt.minute == datetime.minute
+        odt.second == datetime.second
+        odt.zone == zoneId
+    }
+
+    def "left shifting a TimeZone produces an ZonedDateTime"() {
+        given:
+        LocalDateTime datetime = LocalDateTime.of(2017, Month.JULY, 4, 12, 34, 56)
+        TimeZone timeZone = TimeZone.default
+
+        when:
+        ZonedDateTime odt = datetime << timeZone
+
+        then:
+        odt.year == datetime.year
+        odt.month == datetime.month
+        odt.dayOfMonth == datetime.day
+        odt.hour == datetime.hour
+        odt.minute == datetime.minute
+        odt.second == datetime.second
+        odt.zone == timeZone.toZoneId()
+    }     
 }

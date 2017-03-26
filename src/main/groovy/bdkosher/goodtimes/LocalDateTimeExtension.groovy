@@ -146,6 +146,34 @@ class LocalDateTimeExtension {
     }
 
     /**
+     * Returns {@code getDayOfMonth()}.
+     */
+    static int getDay(final LocalDateTime self) {
+        self.dayOfMonth
+    }
+
+    /**
+     * Returns an OffsetDateTime of this date time and the given zone offset.
+     */
+    static OffsetDateTime leftShift(final LocalDateTime self, ZoneOffset offset) {
+        OffsetDateTime.of(self, offset)
+    }
+
+    /**
+     * Returns a ZonedDateTime of this date time and the given zoneId.
+     */
+    static ZonedDateTime leftShift(final LocalDateTime self, ZoneId zone) {
+        ZonedDateTime.of(self, zone)
+    }
+
+    /**
+     * Returns a ZonedDateTime of this date time and the given time zone.
+     */
+    static ZonedDateTime leftShift(final LocalDateTime self, TimeZone timeZone) {
+        leftShift(self, timeZone.toZoneId())
+    }
+
+    /**
      * Converts a LocalDateTime to a (mostly) equivalent instance of java.util.Date. The time value of the returned Date is cleared,
      * and the TimeZone and Locale are set to system defaults unless explicitly specified.
      */

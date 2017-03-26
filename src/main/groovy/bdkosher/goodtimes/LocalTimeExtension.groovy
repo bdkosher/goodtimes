@@ -140,6 +140,13 @@ class LocalTimeExtension {
     }
 
     /**
+     * Returns a LocalDateTime of this LocalTime and the given LocalDate.
+     */
+    static LocalDateTime leftShift(final LocalTime self, LocalDate date) {
+        LocalDateTime.of(date, self)
+    }    
+
+    /**
      * Converts a LocalTime to a (mostly) equivalent instance of java.util.Date. The day-month-year value of the returned Date is now,
      * and the TimeZone and Locale are set to system defaults unless explicitly specified. Time is truncated to nearest millisecond.
      */

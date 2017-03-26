@@ -390,4 +390,21 @@ class LocalTimeExtensionSpec extends Specification {
             assert iter++ == t.second
         }        
     }
+
+    def "leftShifting a LocalDate produces a LocalDateTime"() {
+        given:
+        LocalTime time = LocalTime.of(12, 34, 56)
+        LocalDate date = LocalDate.of(2017, Month.JULY, 4)
+        
+        when:
+        LocalDateTime datetime = time << date
+
+        then:
+        datetime.year == date.year
+        datetime.month == date.month
+        datetime.dayOfMonth == date.day
+        datetime.hour == time.hour
+        datetime.minute == time.minute
+        datetime.second == time.second
+    }    
 }

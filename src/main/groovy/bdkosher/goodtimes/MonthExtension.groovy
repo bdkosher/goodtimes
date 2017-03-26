@@ -49,4 +49,11 @@ class MonthExtension {
         monthToCalendarMonth[self]
     }
 
+    /**
+     * Returns a java.time.MonthDay for the given day of the month.
+     */
+    static MonthDay leftShift(final Month self, int dayOfMonth) {
+        MonthDay.of(self, dayOfMonth)
+    }
+
 }

@@ -107,5 +107,12 @@ class MonthExtensionSpec extends Specification {
         JANUARY    | -13    | FEBRUARY
     }
     
+    def "leftShifting a day yields a MonthDay"() {
+        when:
+        def md = Month.JANUARY << 1
 
+        then:
+        md.month == Month.JANUARY
+        md.dayOfMonth == 1
+    }
 }

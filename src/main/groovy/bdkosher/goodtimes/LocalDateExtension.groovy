@@ -157,6 +157,27 @@ class LocalDateExtension {
     }
 
     /**
+     * Returns {@code getDayOfMonth()}. Note that even without this extension method, localDate.day works because day is a field in LocalDate.
+     */
+    static int getDay(final LocalDate self) {
+        self.dayOfMonth
+    }    
+
+    /**
+     * Returns a LocalDateTime of this LocalDate and the given LocalTime.
+     */
+    static LocalDateTime leftShift(final LocalDate self, LocalTime time) {
+        LocalDateTime.of(self, time)
+    }
+
+    /**
+     * Returns an OffsetDateTime of this LocalDate and the given OffsetTime.
+     */
+    static OffsetDateTime leftShift(final LocalDate self, OffsetTime time) {
+        time.atDate(self)
+    }
+
+    /**
      * Converts a LocalDate to a (mostly) equivalent instance of java.util.Date. The time value of the returned Date is cleared,
      * and the TimeZone and Locale are set to system defaults unless explicitly specified.
      */
