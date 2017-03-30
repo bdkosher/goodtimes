@@ -236,14 +236,28 @@ class LocalTimeExtensionSpec extends Specification {
         lt[ChronoField.NANO_OF_SECOND] == 0
     }
 
-    def "duration between now and an-hour-from-now is one hour"() {
+    def "duration between T and an-hour-from-T is 1 hour when T is more than an hour from midnight"() {
         given:
-        LocalTime now = LocalTime.now()
-        LocalTime hourFromNow = now.plusHours(1)
-        Duration duration = now - hourFromNow
+        LocalTime t = LocalTime.of(0, 0, 0)
+        LocalTime hourFromT = t.plusHours(1)
 
-        expect:
+        when:
+        Duration duration = t - hourFromT
+
+        then:
         duration.seconds == 60 * 60
+    }
+
+    def "duration between an-hour-from-T and T is -1 hour when T is more than an hour from midnight"() {
+        given:
+        LocalTime t = LocalTime.of(0, 0, 0)
+        LocalTime hourFromT = t.plusHours(1)
+
+        when:
+        Duration duration = hourFromT - t
+
+        then:
+        duration.seconds == -1 * 60 * 60
     }
 
     def "format by pattern with US Locale"() {
@@ -269,16 +283,6 @@ class LocalTimeExtensionSpec extends Specification {
 
         expect:
         t.timeString == t.format(FormatStyle.SHORT)
-    }
-
-    def "duration between an-hour-from-now and now is negative one hour"() {
-        given:
-        LocalTime now = LocalTime.now()
-        LocalTime hourFromNow = now.plusHours(1)
-        Duration duration = hourFromNow - now
-
-        expect:
-        duration.seconds == -1 * 60 * 60
     }
 
     def "downto() cannot be called with date after this date"() {

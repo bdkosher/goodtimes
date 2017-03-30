@@ -117,7 +117,7 @@ class LocalDateExtension {
     static Period minus(final LocalDate self, LocalDate other) {
         Period.between(self, other)
     }
-
+ 
     /**
      * Checks if the specified java.util.Calendar field is supported.
      * This checks if this date can be queried for the specified field. If false, then calling the getAt method will throw an exception.
@@ -150,7 +150,7 @@ class LocalDateExtension {
     }
 
     /**
-     * Returns the value corresponding to the given TemporarlField, provided it is supported by LocalDate as per its isSupported method.
+     * Returns the value corresponding to the given TemporalField, provided it is supported by LocalDate as per its isSupported method.
      */
     static getAt(final LocalDate self, TemporalField field) {
         LONG_TYPED_FIELDS.contains(field) ? self.getLong(field) : self.get(field)

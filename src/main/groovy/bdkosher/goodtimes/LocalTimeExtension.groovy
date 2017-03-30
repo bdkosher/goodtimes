@@ -133,7 +133,7 @@ class LocalTimeExtension {
     }
 
     /**
-     * Returns the value corresponding to the given TemporarlField, provided it is supported by LocalTime as per its isSupported method.
+     * Returns the value corresponding to the given TemporalField, provided it is supported by LocalTime as per its isSupported method.
      */
     static getAt(final LocalTime self, TemporalField field) {
         LONG_TYPED_FIELDS.contains(field) ? self.getLong(field) : self.get(field)

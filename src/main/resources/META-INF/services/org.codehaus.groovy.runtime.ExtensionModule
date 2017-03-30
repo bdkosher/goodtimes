@@ -9,5 +9,6 @@ extensionClasses = \
     bdkosher.goodtimes.MonthExtension, \
     bdkosher.goodtimes.MonthDayExtension, \
     bdkosher.goodtimes.YearExtension, \
-    bdkosher.goodtimes.YearMonthExtension
+    bdkosher.goodtimes.YearMonthExtension, \
+    bdkosher.goodtimes.PeriodExtension
 staticExtensionClasses = bdkosher.goodtimes.DayOfWeekStaticExtension, bdkosher.goodtimes.MonthStaticExtension
