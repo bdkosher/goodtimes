@@ -14,19 +14,13 @@ class DateCalendarExtension {
             .collectEntries { day -> [Calendar."$day", java.time.DayOfWeek."$day"] }
 
     /**
-     * Returns the Time Zone of the Date as a java.time.ZoneOffset.
-     */
-    static ZoneOffset getZoneOffset(final Date self) {
-        getZoneOffset(self.toCalendar())
-    }
-
-    /**
      * Returns the Time Zone offset of the Calendar as a java.time.ZoneOffset.
      */
     static ZoneOffset getZoneOffset(final Calendar self) {
         int offsetMs = self.get(Calendar.ZONE_OFFSET) 
         offsetMs += self.get(Calendar.DST_OFFSET)
-        ZoneOffset.ofTotalSeconds(offsetMs / 1000)
+        int offsetSec = offsetMs / 1000
+        ZoneOffset.ofTotalSeconds(offsetSec)
     }
 
     /**
