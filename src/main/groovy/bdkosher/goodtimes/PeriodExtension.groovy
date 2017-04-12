@@ -9,7 +9,7 @@ class PeriodExtension {
      * Describes this Period as a Map of ChronoUnit keys (YEARS, MONTHS, DAYS) and int values.
      */
     static describe(final Period self) {
-        [(ChronoUnit.DAYS): self.days, (ChronoUnit.MONTHS) : self.months, (ChronoUnit.YEARS): self.years]
+        [(ChronoUnit.DAYS): self.days, (ChronoUnit.MONTHS): self.months, (ChronoUnit.YEARS): self.years]
     }
 
     /**

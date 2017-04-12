@@ -166,5 +166,18 @@ class PeriodExtensionSpec extends Specification {
         p[ChronoUnit.YEARS] == 2
         p[ChronoUnit.MONTHS] == 3
         p[ChronoUnit.DAYS] == 4
-    }  
+    }
+
+    def "multiply works as expected"() {
+        given:
+        Period p = Period.of(2, 3, 4)
+
+        when:
+        Period doubled = p * 2
+
+        then:
+        doubled.years == 4
+        doubled.months == 6
+        doubled.days == 8
+    }
 }
