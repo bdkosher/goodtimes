@@ -112,6 +112,13 @@ class LocalDateTimeExtension {
     }
 
     /**
+     * Returns a Duration equivalent to the time between this LocalTime (inclusive) and the provided LocalTime (exclusive).
+     */
+    static Duration minus(final LocalDateTime self, LocalDateTime other) {
+        Duration.between(self, other)
+    }    
+
+    /**
      * Checks if the specified java.util.Calendar field is supported.
      * This checks if this date can be queried for the specified field. If false, then calling the getAt method will throw an exception.
      * Note that the supported Calendar fields are a subset of the supported ChronoField values.

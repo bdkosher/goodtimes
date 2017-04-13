@@ -305,6 +305,30 @@ class LocalDateTimeExtensionSpec extends Specification {
         dt.day == dt.dayOfMonth
     }
 
+    def "duration between earlier and later LocalDateTime is positive"() {
+        given:
+        LocalDateTime earlier = LocalDateTime.now()
+        LocalDateTime later = earlier.plusSeconds(1)
+
+        when:
+        Duration duration = earlier - later
+
+        then:
+        duration.seconds == 1
+    }
+
+    def "duration between later and earlier LocalDateTime is negative"() {
+        given:
+        LocalDateTime earlier = LocalDateTime.now()
+        LocalDateTime later = earlier.plusSeconds(1)
+
+        when:
+        Duration duration = later - earlier
+
+        then:
+        duration.negative
+    }    
+
     def "format by pattern with US Locale"() {
         given:
         LocalDateTime dt = LocalDateTime.of(2017, Month.MARCH, 25, 12, 34, 56)
@@ -337,6 +361,14 @@ class LocalDateTimeExtensionSpec extends Specification {
         expect:
         dt.timeString == dt.toLocalTime().format(FormatStyle.SHORT)
     }
+
+    def "getDateTimeString is just an alias for LocalTime format FormatStyle.SHORT"() {
+        given:
+        LocalDateTime dt = LocalDateTime.of(2017, Month.MARCH, 25, 12, 34, 56)
+
+        expect:
+        dt.dateTimeString == dt.format(FormatStyle.SHORT)
+    }    
 
     def "downto() cannot be called with date after this date"() {
         setup:
