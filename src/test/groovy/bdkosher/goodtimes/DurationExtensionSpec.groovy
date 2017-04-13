@@ -6,6 +6,72 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 class DurationExtensionSpec extends Specification {
+    
+    def "next() increases Duration by one second"() {
+        given:
+        Duration d = Duration.parse('PT1S')
+
+        when:
+        d++
+
+        then:
+        d.seconds == 2
+    }
+
+    def "previous() decreases Duration by one second"() {
+        given:
+        Duration d = Duration.parse('PT1S')
+
+        when:
+        d--
+
+        then:
+        d.seconds == 0
+    }
+
+    def "plus(positive long) increases Duration"() {
+        given:
+        Duration orig = Duration.ZERO
+
+        when:
+        Duration mod = orig + 7
+
+        then:
+        mod.seconds == 7
+    }
+
+    def "plus(negative long) decreases Duration"() {
+        given:
+        Duration orig = Duration.ZERO
+
+        when:
+        Duration mod = orig + -7
+
+        then:
+        mod.seconds == -7
+    }
+
+    def "minus(positive long) decreases Duration"() {
+        given:
+        Duration orig = Duration.ZERO
+
+        when:
+        Duration mod = orig - 7
+
+        then:
+        mod.seconds == -7
+    }
+
+    def "minus(negative long) increases Duration"() {
+        given:
+        Duration orig = Duration.ZERO
+
+        when:
+        Duration mod = orig - -7
+
+        then:
+        mod.seconds == 7
+    }    
 
     def "positive() will turn a negative duration positive"() {
         given:

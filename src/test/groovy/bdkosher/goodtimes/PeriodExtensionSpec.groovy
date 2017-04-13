@@ -7,6 +7,28 @@ import spock.lang.Unroll
 
 class PeriodExtensionSpec extends Specification {
 
+    def "next() increases Period by one day"() {
+        given:
+        Period p = Period.ofDays(1)
+
+        when:
+        p++
+
+        then:
+        p.days == 2
+    }
+
+    def "previous() decreases Period by one day"() {
+        given:
+        Period p = Period.ofDays(1)
+
+        when:
+        p--
+
+        then:
+        p.days == 0
+    }    
+
     def "copyWith empty map clones the Period"() {
         given:
         Period p = Period.of(2, 3, 4)
