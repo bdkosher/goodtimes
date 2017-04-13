@@ -26,9 +26,11 @@ class DateCalendarExtensionSpec extends Specification {
     def "Calendar toLocalDate"() {
         given:
         Calendar cal = Date.parse('yyyyMMdd', '20170107').toCalendar()
+
+        when:
         LocalDate ld = cal.toLocalDate()
 
-        expect:
+        then:
         ld.year == 2017
         ld.monthValue == 1
         ld.dayOfMonth == 7
@@ -73,53 +75,47 @@ class DateCalendarExtensionSpec extends Specification {
         ld.dayOfMonth == 7
     }
 
-    def "Calendar toLocalDate passed a ZoneId that would impact day of month'"() {
+    def "Calendar toLocalDate passed a ZoneId that would impact day of month"() {
         given:
-        TimeZone timeZone = TimeZone.getTimeZone(TimeZone.getAvailableIDs(0).head())
+        TimeZone timeZone = TimeZone.getTimeZone('IST')
         Calendar cal = new GregorianCalendar(timeZone).with {       
             set(Calendar.YEAR, 2017)
             set(Calendar.MONTH, Calendar.JANUARY)
             set(Calendar.DAY_OF_MONTH, 7)
-            set(Calendar.HOUR, 23)
-            set(Calendar.MINUTE, 59)
-            set(Calendar.SECOND, 59)
-            delegate
+            clearTime()
         }
 
         when:
-        ZoneId zoneId = ZoneId.ofOffset("UTC", ZoneOffset.ofHours(-1)) // minus one hour
+        ZoneId zoneId = TimeZone.getTimeZone('HAST').toZoneId()
         LocalDate ld = cal.toLocalDate(zoneId)
 
         then:
         ld.year == 2017
         ld.monthValue == 1
-        ld.dayOfMonth == 7 + 1
+        ld.dayOfMonth == 7 - 1
     }        
 
-    def "Date toLocalDate passed a ZoneId that would impact day of month'"() {
+    def "Date toLocalDate passed a ZoneId that would impact day of month"() {
         given:
-        TimeZone timeZone = TimeZone.getTimeZone(TimeZone.getAvailableIDs(0).head())
+        TimeZone timeZone = TimeZone.getTimeZone('IST')
         Date date = new GregorianCalendar(timeZone).with {       
             set(Calendar.YEAR, 2017)
             set(Calendar.MONTH, Calendar.JANUARY)
             set(Calendar.DAY_OF_MONTH, 7)
-            set(Calendar.HOUR, 23)
-            set(Calendar.MINUTE, 59)
-            set(Calendar.SECOND, 59)
-            delegate
+            clearTime()
         }.time
 
         when:
-        ZoneId zoneId = ZoneId.ofOffset("UTC", ZoneOffset.ofHours(-1)) // minus one hour
+        ZoneId zoneId = TimeZone.getTimeZone('HAST').toZoneId()
         LocalDate ld = date.toLocalDate(zoneId)
 
         then:
         ld.year == 2017
         ld.monthValue == 1
-        ld.dayOfMonth == 7 + 1
+        ld.dayOfMonth == 7 - 1
     }
 
-    def "Calendar toLocalDate passed a ZoneOffset that wouldn't impact day of month'"() {
+    def "Calendar toLocalDate passed a ZoneOffset that wouldn't impact day of month"() {
         given:
         Calendar cal = Date.parse('yyyyMMdd', '20170107').toCalendar()
 
@@ -133,7 +129,7 @@ class DateCalendarExtensionSpec extends Specification {
         ld.dayOfMonth == 7
     }
 
-    def "Date toLocalDate passed a ZoneOffset that wouldn't impact day of month'"() {
+    def "Date toLocalDate passed a ZoneOffset that wouldn't impact day of month"() {
         given:
         Date date = Date.parse('yyyyMMdd', '20170107')
 
@@ -147,53 +143,47 @@ class DateCalendarExtensionSpec extends Specification {
         ld.dayOfMonth == 7
     }
 
-    def "Calendar toLocalDate passed a ZoneOffset that would impact day of month'"() {
+    def "Calendar toLocalDate passed a ZoneOffset that would impact day of month"() {
         given:
-        TimeZone timeZone = TimeZone.getTimeZone(TimeZone.getAvailableIDs(0).head())
+        TimeZone timeZone = TimeZone.getTimeZone('IST')
         Calendar cal = new GregorianCalendar(timeZone).with {       
             set(Calendar.YEAR, 2017)
             set(Calendar.MONTH, Calendar.JANUARY)
             set(Calendar.DAY_OF_MONTH, 7)
-            set(Calendar.HOUR, 23)
-            set(Calendar.MINUTE, 59)
-            set(Calendar.SECOND, 59)
-            delegate
+            clearTime()
         }
 
         when:
-        ZoneOffset zoneOffset = ZoneOffset.ofHours(-1) // minus one hour
+        ZoneOffset zoneOffset = ZoneOffset.ofHours(-10) // HAST
         LocalDate ld = cal.toLocalDate(zoneOffset)
 
         then:
         ld.year == 2017
         ld.monthValue == 1
-        ld.dayOfMonth == 7 + 1
+        ld.dayOfMonth == 7 - 1
     }
 
-    def "Date toLocalDate passed a ZoneOffset that would impact day of month'"() {
+    def "Date toLocalDate passed a ZoneOffset that would impact day of month"() {
         given:
-        TimeZone timeZone = TimeZone.getTimeZone(TimeZone.getAvailableIDs(0).head())
+        TimeZone timeZone = TimeZone.getTimeZone('IST')
         Date date = new GregorianCalendar(timeZone).with {       
             set(Calendar.YEAR, 2017)
             set(Calendar.MONTH, Calendar.JANUARY)
             set(Calendar.DAY_OF_MONTH, 7)
-            set(Calendar.HOUR, 23)
-            set(Calendar.MINUTE, 59)
-            set(Calendar.SECOND, 59)
-            delegate
+            clearTime()
         }.time
 
         when:
-        ZoneOffset zoneOffset = ZoneOffset.ofHours(-1) // minus one hour
+        ZoneOffset zoneOffset = ZoneOffset.ofHours(-10) // HAST
         LocalDate ld = date.toLocalDate(zoneOffset)
 
         then:
         ld.year == 2017
         ld.monthValue == 1
-        ld.dayOfMonth == 7 + 1
+        ld.dayOfMonth == 7 - 1
     }
 
-    def "Calendar toLocalDate passed a TimeZone that wouldn't impact day of month'"() {
+    def "Calendar toLocalDate passed a TimeZone that wouldn't impact day of month"() {
         given:
         Calendar cal = Date.parse('yyyyMMdd', '20170107').toCalendar()
 
@@ -206,7 +196,7 @@ class DateCalendarExtensionSpec extends Specification {
         ld.dayOfMonth == 7
     }
 
-    def "Date toLocalDate passed a TimeZone that wouldn't impact day of month'"() {
+    def "Date toLocalDate passed a TimeZone that wouldn't impact day of month"() {
         given:
         Date date = Date.parse('yyyyMMdd', '20170107')
 
@@ -219,50 +209,44 @@ class DateCalendarExtensionSpec extends Specification {
         ld.dayOfMonth == 7
     }
 
-    def "Calendar toLocalDate passed a TimeZone that would impact day of month'"() {
+    def "Calendar toLocalDate passed a TimeZone that would impact day of month"() {
         given:
-        TimeZone timeZone = TimeZone.getTimeZone(TimeZone.getAvailableIDs(0).head())
+        TimeZone timeZone = TimeZone.getTimeZone('IST')
         Calendar cal = new GregorianCalendar(timeZone).with {       
             set(Calendar.YEAR, 2017)
             set(Calendar.MONTH, Calendar.JANUARY)
             set(Calendar.DAY_OF_MONTH, 7)
-            set(Calendar.HOUR, 23)
-            set(Calendar.MINUTE, 59)
-            set(Calendar.SECOND, 59)
-            delegate
+            clearTime()
         }
 
         when:
-        TimeZone minusOneHour = TimeZone.getTimeZone(TimeZone.getAvailableIDs(-1 * 60 * 60 * 1000).head())
+        TimeZone minusOneHour = TimeZone.getTimeZone('HAST')
         LocalDate ld = cal.toLocalDate(minusOneHour)
 
         then:
         ld.year == 2017
         ld.monthValue == 1
-        ld.dayOfMonth == 7 + 1
+        ld.dayOfMonth == 7 - 1
     }
 
-    def "Date toLocalDate passed a TimeZone that would impact day of month'"() {
+    def "Date toLocalDate passed a TimeZone that would impact day of month"() {
         given:
-        TimeZone timeZone = TimeZone.getTimeZone(TimeZone.getAvailableIDs(0).head())
+        TimeZone timeZone = TimeZone.getTimeZone('IST')
         Date date = new GregorianCalendar(timeZone).with {       
             set(Calendar.YEAR, 2017)
             set(Calendar.MONTH, Calendar.JANUARY)
             set(Calendar.DAY_OF_MONTH, 7)
-            set(Calendar.HOUR, 23)
-            set(Calendar.MINUTE, 59)
-            set(Calendar.SECOND, 59)
-            delegate
+            clearTime()
         }.time
 
         when:
-        TimeZone minusOneHour = TimeZone.getTimeZone(TimeZone.getAvailableIDs(-1 * 60 * 60 * 1000).head())
+        TimeZone minusOneHour = TimeZone.getTimeZone('HAST')
         LocalDate ld = date.toLocalDate(minusOneHour)
 
         then:
         ld.year == 2017
         ld.monthValue == 1
-        ld.dayOfMonth == 7 + 1
+        ld.dayOfMonth == 7 - 1
     }
 
     def "toLocalDate is not impacted by Calendar's time zone"() {
@@ -295,7 +279,34 @@ class DateCalendarExtensionSpec extends Specification {
         }
     }
 
-    def "Calendar.toInstant() same as Date"() {
+    def "Calendar toLocalTime"() {
+        given:
+        Calendar cal = Calendar.instance
+
+        when:
+        LocalTime lt = cal.toLocalTime()
+
+        then:
+        lt.hour == cal.get(Calendar.HOUR)
+        lt.minute == cal.get(Calendar.MINUTE)
+        lt.second == cal.get(Calendar.SECOND)
+    }
+
+    def "Date toLocalTime"() {
+        given:
+        Calendar cal = Calendar.instance
+        Date date = cal.time
+
+        when:
+        LocalTime lt = date.toLocalTime()
+
+        then:
+        lt.hour == cal.get(Calendar.HOUR)
+        lt.minute == cal.get(Calendar.MINUTE)
+        lt.second == cal.get(Calendar.SECOND)
+    }    
+
+    def "Calendar.toInstant() same as Date.toInstant()"() {
         given:
         Calendar c = Calendar.instance
         Date d = c.time

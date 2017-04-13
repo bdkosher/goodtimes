@@ -241,10 +241,10 @@ class DateCalendarExtension {
      * TimeZone, ZoneId, or ZoneOffset argument to the toLocalDate method.
      */
     static toLocalTime(final Calendar self) {
-        int hour = Calendar.get(Calendar.HOUR)
-        int minute = Calendar.get(Calendar.MINUTE)
-        int second = Calendar.get(Calendar.SECOND)
-        int ms = Calendar.get(Calendar.MILLISECOND)
+        int hour = self.get(Calendar.HOUR)
+        int minute = self.get(Calendar.MINUTE)
+        int second = self.get(Calendar.SECOND)
+        int ms = self.get(Calendar.MILLISECOND)
         LocalTime.of(hour, minute, second, ms)
     }
 
