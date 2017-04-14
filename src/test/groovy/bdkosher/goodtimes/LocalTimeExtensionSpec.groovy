@@ -22,9 +22,11 @@ class LocalTimeExtensionSpec extends Specification {
     def "plus seconds"() {
         given:
         LocalTime orig = LocalTime.of(12, 34, 56)
+
+        when:
         LocalTime mod = orig + 2
 
-        expect:
+        then:
         mod.hour == orig.hour
         mod.minute == orig.minute
         mod.second == orig.second + 2
@@ -34,9 +36,11 @@ class LocalTimeExtensionSpec extends Specification {
     def "minus seconds"() {
         given:
         LocalTime orig = LocalTime.of(12, 34, 56)
+
+        when:
         LocalTime mod = orig - 2
 
-        expect:
+        then:
         mod.hour == orig.hour
         mod.minute == orig.minute
         mod.second == orig.second - 2
@@ -46,27 +50,33 @@ class LocalTimeExtensionSpec extends Specification {
     def "next second"() {
         given:
         LocalTime orig = LocalTime.of(12, 34, 56)
+
+        when:
         LocalTime next = orig.next()
 
-        expect:
+        then:
         next.second == orig.second + 1
     }
 
     def "previous second"() {
         given:
         LocalTime orig = LocalTime.of(12, 34, 56)
+
+        when:
         LocalTime prev = orig.previous()
 
-        expect:
+        then:
         prev.second == orig.second - 1
     }    
 
     def "plus Duration of seconds only"() {
         given:
         LocalTime orig = LocalTime.of(12, 34, 56)
+
+        when:
         LocalTime mod = orig + Duration.ofSeconds(1)
 
-        expect:
+        then:
         mod.hour == orig.hour
         mod.minute == orig.minute
         mod.second == orig.second + 1
@@ -75,9 +85,11 @@ class LocalTimeExtensionSpec extends Specification {
     def "plus Duration of negative seconds only"() {
         given:
         LocalTime orig = LocalTime.of(12, 23, 56)
+
+        when:
         LocalTime mod = orig + Duration.ofSeconds(-1)
 
-        expect:
+        then:
         mod.hour == orig.hour
         mod.minute == orig.minute
         mod.second == orig.second - 1
@@ -86,9 +98,11 @@ class LocalTimeExtensionSpec extends Specification {
     def "plus Duration of minutes only"() {
         given:
         LocalTime orig = LocalTime.of(12, 34, 56)
+
+        when:
         LocalTime mod = orig + Duration.ofMinutes(1)
 
-        expect:
+        then:
         mod.hour == orig.hour
         mod.minute == orig.minute + 1
         mod.second == orig.second
@@ -97,9 +111,11 @@ class LocalTimeExtensionSpec extends Specification {
     def "plus Duration of hours only"() {
         given:
         LocalTime orig = LocalTime.of(12, 34, 56)
+
+        when:
         LocalTime mod = orig + Duration.ofHours(1)
 
-        expect: 
+        then: 
         mod.hour == orig.hour + 1
         mod.minute == orig.minute
         mod.second == orig.second
@@ -108,9 +124,11 @@ class LocalTimeExtensionSpec extends Specification {
     def "plus Duration of hours, minutes, and seconds"() {
         given:
         LocalTime orig = LocalTime.of(12, 34, 56)
+
+        when:
         LocalTime mod = orig + Duration.ofHours(1).plusMinutes(1).plusSeconds(1)
 
-        expect:
+        then:
         mod.hour == orig.hour + 1
         mod.minute == orig.minute + 1
         mod.second == orig.second + 1
@@ -119,9 +137,11 @@ class LocalTimeExtensionSpec extends Specification {
     def "plus Duration of negative hours, minutes, and seconds"() {
         given:
         LocalTime orig = LocalTime.of(12, 34, 56)
+
+        when:
         LocalTime mod = orig + Duration.ofHours(-1).plusMinutes(-1).plusSeconds(-1)
 
-        expect:
+        then:
         mod.hour == orig.hour - 1
         mod.minute == orig.minute - 1
         mod.second == orig.second - 1
@@ -130,9 +150,11 @@ class LocalTimeExtensionSpec extends Specification {
     def "minus Duration of seconds only"() {
         given:
         LocalTime orig = LocalTime.of(12, 34, 56)
+
+        when:
         LocalTime mod = orig - Duration.ofSeconds(1)
 
-        expect:
+        then:
         mod.hour == orig.hour
         mod.minute == orig.minute
         mod.second == orig.second - 1
@@ -141,9 +163,11 @@ class LocalTimeExtensionSpec extends Specification {
     def "minus Duration of minutes only"() {
         given:
         LocalTime orig = LocalTime.of(12, 34, 56)
+
+        when:
         LocalTime mod = orig - Duration.ofMinutes(1)
 
-        expect:
+        then:
         mod.hour == orig.hour
         mod.minute == orig.minute - 1
         mod.second == orig.second
@@ -152,34 +176,14 @@ class LocalTimeExtensionSpec extends Specification {
     def "minus Duration of hours only"() {
         given:
         LocalTime orig = LocalTime.of(12, 34, 56)
+
+        when:
         LocalTime mod = orig - Duration.ofHours(1)
 
-        expect:
+        then:
         mod.hour == orig.hour - 1
         mod.minute == orig.minute
         mod.second == orig.second
-    }
-
-    def "minus Duration of days, months, and hours"() {
-        given:
-        LocalTime orig = LocalTime.of(12, 34, 56)
-        LocalTime mod = orig - Duration.ofHours(1).plusMinutes(1).plusSeconds(1)
-
-        expect:
-        mod.hour == orig.hour - 1
-        mod.minute == orig.minute - 1
-        mod.second == orig.second - 1
-    }
-
-    def "minus Duration of negative days, months, and hours"() {
-        given:
-        LocalTime orig = LocalTime.of(12, 34, 56)
-        LocalTime mod = orig -Duration.ofHours(-1).plusMinutes(-1).plusSeconds(-1)
-
-        expect:
-        mod.hour == orig.hour + 1
-        mod.minute == orig.minute + 1
-        mod.second == orig.second + 1
     }
 
     def "getAt Calendar field"() {
@@ -194,7 +198,7 @@ class LocalTimeExtensionSpec extends Specification {
     }
 
     def "getAt unsupported Calendar field"() {
-        setup:
+        given:
         LocalTime lt = LocalTime.of(12, 34, 56)
 
         when:
@@ -205,7 +209,7 @@ class LocalTimeExtensionSpec extends Specification {
     }
 
     def "getAt invalid Calendar field"() {
-        setup:
+        given:
         LocalTime lt = LocalTime.of(12, 34, 56)
 
         when:
@@ -369,7 +373,7 @@ class LocalTimeExtensionSpec extends Specification {
     }
 
     def "upto() can be passed no-arg closure"() {
-        setup:
+        given:
         LocalTime now = LocalTime.now()
         LocalTime oneMinuteFromNow = now + 60
         int count = 0
@@ -384,7 +388,7 @@ class LocalTimeExtensionSpec extends Specification {
     }
 
     def "upto() closure passed increasing arg"() {
-        setup:
+        given:
         LocalTime lower = LocalTime.of(0, 0, 0)
         LocalTime higher = LocalTime.of(0, 0, 2)
         int iter = lower.second

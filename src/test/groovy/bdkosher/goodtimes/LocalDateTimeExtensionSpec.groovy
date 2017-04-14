@@ -22,9 +22,11 @@ class LocalDateTimeExtensionSpec extends Specification {
     def "plus seconds"() {
         given:
         LocalDateTime orig = LocalDateTime.of(2017, Month.MARCH, 25, 12, 34, 56)
+
+        when:
         LocalDateTime mod = orig + 2
 
-        expect:
+        then:
         mod.year == orig.year
         mod.month == orig.month
         mod.dayOfMonth == orig.dayOfMonth
@@ -37,9 +39,11 @@ class LocalDateTimeExtensionSpec extends Specification {
     def "minus seconds"() {
         given:
         LocalDateTime orig = LocalDateTime.of(2017, Month.MARCH, 25, 12, 34, 56)
+
+        when:
         LocalDateTime mod = orig - 2
 
-        expect:
+        then:
         mod.year == orig.year
         mod.month == orig.month
         mod.dayOfMonth == orig.dayOfMonth
@@ -52,27 +56,33 @@ class LocalDateTimeExtensionSpec extends Specification {
     def "next second"() {
         given:
         LocalDateTime orig = LocalDateTime.of(2017, Month.MARCH, 25, 12, 34, 56)
+
+        when:
         LocalDateTime next = orig.next()
 
-        expect:
+        then:
         next.second == orig.second + 1
     }
 
     def "previous second"() {
         given:
         LocalDateTime orig = LocalDateTime.of(2017, Month.MARCH, 25, 12, 34, 56)
+
+        when:
         LocalDateTime prev = orig.previous()
 
-        expect:
+        then:
         prev.second == orig.second - 1
     }    
 
     def "plus Duration of seconds only"() {
         given:
         LocalDateTime orig = LocalDateTime.of(2017, Month.MARCH, 25, 12, 34, 56)
+
+        when:
         LocalDateTime mod = orig + Duration.ofSeconds(1)
 
-        expect:
+        then:
         mod.year == orig.year
         mod.month == orig.month
         mod.dayOfMonth == orig.dayOfMonth
@@ -84,9 +94,11 @@ class LocalDateTimeExtensionSpec extends Specification {
     def "plus Duration of negative seconds only"() {
         given:
         LocalDateTime orig = LocalDateTime.of(2017, Month.MARCH, 25, 12, 23, 56)
+
+        when:
         LocalDateTime mod = orig + Duration.ofSeconds(-1)
 
-        expect:
+        then:
         mod.year == orig.year
         mod.month == orig.month
         mod.dayOfMonth == orig.dayOfMonth
@@ -98,9 +110,11 @@ class LocalDateTimeExtensionSpec extends Specification {
     def "plus Duration of minutes only"() {
         given:
         LocalDateTime orig = LocalDateTime.of(2017, Month.MARCH, 25, 12, 34, 56)
+
+        when:
         LocalDateTime mod = orig + Duration.ofMinutes(1)
 
-        expect:
+        then:
         mod.year == orig.year
         mod.month == orig.month
         mod.dayOfMonth == orig.dayOfMonth
@@ -112,9 +126,11 @@ class LocalDateTimeExtensionSpec extends Specification {
     def "plus Duration of hours only"() {
         given:
         LocalDateTime orig = LocalDateTime.of(2017, Month.MARCH, 25, 12, 34, 56)
+
+        when:
         LocalDateTime mod = orig + Duration.ofHours(1)
 
-        expect:
+        then:
         mod.year == orig.year
         mod.month == orig.month
         mod.dayOfMonth == orig.dayOfMonth
@@ -126,9 +142,11 @@ class LocalDateTimeExtensionSpec extends Specification {
     def "plus Duration of hours, minutes, and seconds"() {
         given:
         LocalDateTime orig = LocalDateTime.of(2017, Month.MARCH, 25, 12, 34, 56)
+
+        when:
         LocalDateTime mod = orig + Duration.ofHours(1).plusMinutes(1).plusSeconds(1)
 
-        expect:
+        then:
         mod.year == orig.year
         mod.month == orig.month
         mod.dayOfMonth == orig.dayOfMonth
@@ -140,9 +158,11 @@ class LocalDateTimeExtensionSpec extends Specification {
     def "plus Duration of negative hours, minutes, and seconds"() {
         given:
         LocalDateTime orig = LocalDateTime.of(2017, Month.MARCH, 25, 12, 34, 56)
+
+        when:
         LocalDateTime mod = orig + Duration.ofHours(-1).plusMinutes(-1).plusSeconds(-1)
 
-        expect:
+        then:
         mod.year == orig.year
         mod.month == orig.month
         mod.dayOfMonth == orig.dayOfMonth
@@ -154,9 +174,11 @@ class LocalDateTimeExtensionSpec extends Specification {
     def "minus Duration of seconds only"() {
         given:
         LocalDateTime orig = LocalDateTime.of(2017, Month.MARCH, 25, 12, 34, 56)
+
+        when:
         LocalDateTime mod = orig - Duration.ofSeconds(1)
 
-        expect:
+        then:
         mod.year == orig.year
         mod.month == orig.month
         mod.dayOfMonth == orig.dayOfMonth
@@ -168,9 +190,11 @@ class LocalDateTimeExtensionSpec extends Specification {
     def "minus Duration of minutes only"() {
         given:
         LocalDateTime orig = LocalDateTime.of(2017, Month.MARCH, 25, 12, 34, 56)
+
+        when:
         LocalDateTime mod = orig - Duration.ofMinutes(1)
 
-        expect:
+        then:
         mod.year == orig.year
         mod.month == orig.month
         mod.dayOfMonth == orig.dayOfMonth
@@ -182,9 +206,11 @@ class LocalDateTimeExtensionSpec extends Specification {
     def "minus Duration of hours only"() {
         given:
         LocalDateTime orig = LocalDateTime.of(2017, Month.MARCH, 25, 12, 34, 56)
+
+        when:
         LocalDateTime mod = orig - Duration.ofHours(1)
 
-        expect:
+        then:
         mod.year == orig.year
         mod.month == orig.month
         mod.dayOfMonth == orig.dayOfMonth
@@ -196,9 +222,11 @@ class LocalDateTimeExtensionSpec extends Specification {
     def "minus Duration of days, months, and hours"() {
         given:
         LocalDateTime orig = LocalDateTime.of(2017, Month.MARCH, 25, 12, 34, 56)
+
+        when:
         LocalDateTime mod = orig - Duration.ofHours(1).plusMinutes(1).plusSeconds(1)
 
-        expect:
+        then:
         mod.year == orig.year
         mod.month == orig.month
         mod.dayOfMonth == orig.dayOfMonth
@@ -210,9 +238,11 @@ class LocalDateTimeExtensionSpec extends Specification {
     def "minus Duration of negative days, months, and hours"() {
         given:
         LocalDateTime orig = LocalDateTime.of(2017, Month.MARCH, 25, 12, 34, 56)
+
+        when:
         LocalDateTime mod = orig -Duration.ofHours(-1).plusMinutes(-1).plusSeconds(-1)
 
-        expect:
+        then:
         mod.year == orig.year
         mod.month == orig.month
         mod.dayOfMonth == orig.dayOfMonth
@@ -243,7 +273,7 @@ class LocalDateTimeExtensionSpec extends Specification {
     }
 
     def "getAt unsupported Calendar field"() {
-        setup:
+        given:
         LocalDateTime ldt = LocalDateTime.of(2017, Month.MARCH, 25, 12, 34, 56)
 
         when:
@@ -254,7 +284,7 @@ class LocalDateTimeExtensionSpec extends Specification {
     }
 
     def "getAt invalid Calendar field"() {
-        setup:
+        given:
         LocalDateTime ldt = LocalDateTime.of(2017, Month.MARCH, 25, 12, 34, 56)
 
         when:
@@ -371,7 +401,7 @@ class LocalDateTimeExtensionSpec extends Specification {
     }    
 
     def "downto() cannot be called with date after this date"() {
-        setup:
+        given:
         LocalDateTime now = LocalDateTime.now()
         LocalDateTime later = now + 1
 
@@ -385,7 +415,7 @@ class LocalDateTimeExtensionSpec extends Specification {
     }
 
     def "downto() is called once when the two dates are the same"() {
-        setup:
+        given:
         LocalDateTime now = LocalDateTime.now()
         boolean closureCalledOnce = false
 
@@ -399,7 +429,7 @@ class LocalDateTimeExtensionSpec extends Specification {
     }
 
     def "downto() can be passed no-arg closure"() {
-        setup:
+        given:
         LocalDateTime now = LocalDateTime.now()
         LocalDateTime oneMinuteAgo = now - 60
         int count = 0
@@ -414,7 +444,7 @@ class LocalDateTimeExtensionSpec extends Specification {
     }
 
     def "downto() closure passed decreasing arg"() {
-        setup:
+        given:
         LocalDateTime higher = LocalDateTime.of(2017, Month.MARCH, 25, 0, 0, 3)
         LocalDateTime lower = LocalDateTime.of(2017, Month.MARCH, 25, 0, 0, 1)
         int iter = higher.second
@@ -426,7 +456,7 @@ class LocalDateTimeExtensionSpec extends Specification {
     }
 
     def "upto() cannot be called with date before this date"() {
-        setup:
+        given:
         LocalDateTime now = LocalDateTime.now()
         LocalDateTime oneSecondAgo = now - 1
 
@@ -440,7 +470,7 @@ class LocalDateTimeExtensionSpec extends Specification {
     }
 
     def "upto() is called once when the two dates are the same"() {
-        setup:
+        given:
         LocalDateTime now = LocalDateTime.now()
         boolean closureCalledOnce = false
 
@@ -454,7 +484,7 @@ class LocalDateTimeExtensionSpec extends Specification {
     }
 
     def "upto() can be passed no-arg closure"() {
-        setup:
+        given:
         LocalDateTime now = LocalDateTime.now()
         LocalDateTime oneMinuteFromNow = now + 60
         int count = 0
@@ -469,7 +499,7 @@ class LocalDateTimeExtensionSpec extends Specification {
     }
 
     def "upto() closure passed increasing arg"() {
-        setup:
+        given:
         LocalDateTime lower = LocalDateTime.of(2017, Month.MARCH, 25, 0, 0, 0)
         LocalDateTime higher = LocalDateTime.of(2017, Month.MARCH, 25, 0, 0, 2)
         int iter = lower.second

@@ -3,7 +3,7 @@ Java 8 Date/Time API enhancements for Groovy
 
 ![goodtimes logo](https://raw.githubusercontent.com/bdkosher/goodtimes/master/logo.gif)
 
-Groovy provides useful extension methods for working with [`java.util.Date`](http://docs.groovy-lang.org/latest/html/groovy-jdk/java/util/Date.html) and [`java.util.Calendar`](http://docs.groovy-lang.org/latest/html/groovy-jdk/java/util/Calendar.html) but as of yet does not include extension methods for the newer Java 8 Date/Time API classes. Groovy will likely will not add methods for the Date/Time API until at least version 3.0, which will require a Java 8 minimum.
+Groovy provides useful extension methods for working with [`java.util.Date`](http://docs.groovy-lang.org/latest/html/groovy-jdk/java/util/Date.html) and [`java.util.Calendar`](http://docs.groovy-lang.org/latest/html/groovy-jdk/java/util/Calendar.html) but as of yet does not include extension methods for the newer Java 8 Date/Time API classes.
 
 Goodtimes primarily provides extension methods for the classes in the `java.time` package, as well as extra methods on `java.util.Date` and `java.time.Calendar` for converting to `java.time` types, such as `Date` into a `LocalDate` or `Calendar` into `LocalDateTime`.
 
@@ -20,7 +20,8 @@ Until goodtimes is published in a public Maven repository, the library needs to 
 
 ## Sample Usage
 
-    // bridging to new API from old
+Bridging to new API from old:
+
     Calendar cal = Calendar.instance
 
     Instant instant = cal.toInstant()
@@ -28,4 +29,13 @@ Until goodtimes is published in a public Maven repository, the library needs to 
     LocalTime localTime = cal.toLocalTime()
     LocalDateTime localDateTime = cal.toLocalDateTime()
 
+Dealing with `LocalDate` types:
+
+    LocalDate now = LocalDate.now()
+
+    LocalDate tomorrow = now++
+    LocalDate yesterday = now - 1
+    LocalDate decadeFromNow = now + Period.ofYears(10)
+    Period twoDays = yesterday - tomorrow
+    LocalDateTime datetime = now << LocalTime.now()
     

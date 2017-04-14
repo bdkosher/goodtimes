@@ -11,7 +11,8 @@ extensionClasses = \
     bdkosher.goodtimes.YearExtension, \
     bdkosher.goodtimes.YearMonthExtension, \
     bdkosher.goodtimes.PeriodExtension, \
-    bdkosher.goodtimes.DurationExtension
+    bdkosher.goodtimes.DurationExtension, \
+    bdkosher.goodtimes.InstantExtension
 staticExtensionClasses = \
     bdkosher.goodtimes.DayOfWeekStaticExtension, \
     bdkosher.goodtimes.MonthStaticExtension

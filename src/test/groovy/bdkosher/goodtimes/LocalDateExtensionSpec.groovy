@@ -44,9 +44,11 @@ class LocalDateExtensionSpec extends Specification {
     def "minus days"() {
         given:
         LocalDate orig = LocalDate.of(2017, 1, 8)
+
+        when:
         LocalDate mod = orig - 2
 
-        expect:
+        then:
         mod.year == orig.year
         mod.monthValue == orig.monthValue
         mod.dayOfMonth == orig.dayOfMonth - 2
@@ -55,27 +57,33 @@ class LocalDateExtensionSpec extends Specification {
     def "next day"() {
         given:
         LocalDate date = LocalDate.of(2017, 1, 8)
+
+        when:
         LocalDate tomorrow = date.next()
 
-        expect:
+        then:
         tomorrow.dayOfMonth == date.dayOfMonth + 1
     }
 
     def "previous day"() {
         given:
         LocalDate date = LocalDate.of(2017, 1, 8)
+
+        when:
         LocalDate yesterday = date.previous()
 
-        expect:
+        then:
         yesterday.dayOfMonth == date.dayOfMonth - 1
     }    
 
     def "plus Period of days only"() {
         given:
         LocalDate orig = LocalDate.of(2017, 1, 8)
+
+        when:
         LocalDate mod = orig + Period.ofDays(1)
 
-        expect:
+        then:
         mod.year == orig.year
         mod.monthValue == orig.monthValue
         mod.dayOfMonth == orig.dayOfMonth + 1
@@ -84,9 +92,11 @@ class LocalDateExtensionSpec extends Specification {
     def "plus Period of negative days only"() {
         given:
         LocalDate orig = LocalDate.of(2017, 1, 8)
+
+        when:
         LocalDate mod = orig + Period.ofDays(-1)
 
-        expect:
+        then:
         mod.year == orig.year
         mod.monthValue == orig.monthValue
         mod.dayOfMonth == orig.dayOfMonth - 1
@@ -95,9 +105,11 @@ class LocalDateExtensionSpec extends Specification {
     def "plus Period of months only"() {
         given:
         LocalDate orig = LocalDate.of(2017, 1, 8)
+
+        when:
         LocalDate mod = orig + Period.ofMonths(1)
 
-        expect:
+        then:
         mod.year == orig.year
         mod.monthValue == orig.monthValue + 1
         mod.dayOfMonth == orig.dayOfMonth
@@ -106,9 +118,11 @@ class LocalDateExtensionSpec extends Specification {
     def "plus Period of years only"() {
         given:
         LocalDate orig = LocalDate.of(2017, 1, 8)
+
+        when:
         LocalDate mod = orig + Period.ofYears(1)
 
-        expect:
+        then:
         mod.year == orig.year + 1
         mod.monthValue == orig.monthValue
         mod.dayOfMonth == orig.dayOfMonth
@@ -117,9 +131,11 @@ class LocalDateExtensionSpec extends Specification {
     def "plus Period of days, months, and years"() {
         given:
         LocalDate orig = LocalDate.of(2017, 1, 8)
+
+        when:
         LocalDate mod = orig + Period.of(1, 1, 1)
 
-        expect:
+        then:
         mod.year == orig.year + 1
         mod.monthValue == orig.monthValue + 1
         mod.dayOfMonth == orig.dayOfMonth + 1
@@ -128,9 +144,11 @@ class LocalDateExtensionSpec extends Specification {
     def "plus Period of negative days, months, and years"() {
         given:
         LocalDate orig = LocalDate.of(2017, 2, 8)
+
+        when:
         LocalDate mod = orig + Period.of(-1, -1, -1)
 
-        expect:
+        then:
         mod.year == orig.year - 1
         mod.monthValue == orig.monthValue - 1
         mod.dayOfMonth == orig.dayOfMonth - 1
@@ -139,9 +157,11 @@ class LocalDateExtensionSpec extends Specification {
     def "minus Period of days only"() {
         given:
         LocalDate orig = LocalDate.of(2017, 1, 8)
+
+        when:
         LocalDate mod = orig - Period.ofDays(1)
 
-        expect:
+        then:
         mod.year == orig.year
         mod.monthValue == orig.monthValue
         mod.dayOfMonth == orig.dayOfMonth - 1
@@ -150,9 +170,11 @@ class LocalDateExtensionSpec extends Specification {
     def "minus Period of months only"() {
         given:
         LocalDate orig = LocalDate.of(2017, 2, 8)
+
+        when:
         LocalDate mod = orig - Period.ofMonths(1)
 
-        expect:
+        then:
         mod.year == orig.year
         mod.monthValue == orig.monthValue - 1
         mod.dayOfMonth == orig.dayOfMonth
@@ -161,9 +183,11 @@ class LocalDateExtensionSpec extends Specification {
     def "minus Period of years only"() {
         given:
         LocalDate orig = LocalDate.of(2017, 2, 8)
+
+        when:
         LocalDate mod = orig - Period.ofYears(1)
 
-        expect:
+        then:
         mod.year == orig.year - 1
         mod.monthValue == orig.monthValue
         mod.dayOfMonth == orig.dayOfMonth
@@ -172,9 +196,11 @@ class LocalDateExtensionSpec extends Specification {
     def "minus Period of days, months, and years"() {
         given:
         LocalDate orig = LocalDate.of(2017, 2, 8)
+
+        when:
         LocalDate mod = orig - Period.of(1, 1, 1)
 
-        expect:
+        then:
         mod.year == orig.year - 1
         mod.monthValue == orig.monthValue - 1
         mod.dayOfMonth == orig.dayOfMonth - 1
@@ -183,9 +209,11 @@ class LocalDateExtensionSpec extends Specification {
     def "minus Period of negative days, months, and years"() {
         given:
         LocalDate orig = LocalDate.of(2017, 2, 8)
+
+        when:
         LocalDate mod = orig - Period.of(-1, -1, -1)
 
-        expect:
+        then:
         mod.year == orig.year + 1
         mod.monthValue == orig.monthValue + 1
         mod.dayOfMonth == orig.dayOfMonth + 1
@@ -209,7 +237,7 @@ class LocalDateExtensionSpec extends Specification {
     }
 
     def "getAt unsupported Calendar field"() {
-        setup:
+        given:
         LocalDate ld = LocalDate.of(2017, 1, 10)
 
         when:
@@ -220,7 +248,7 @@ class LocalDateExtensionSpec extends Specification {
     }
 
     def "getAt invalid Calendar field"() {
-        setup:
+        given:
         LocalDate ld = LocalDate.of(2017, 1, 10)
 
         when:
@@ -253,9 +281,11 @@ class LocalDateExtensionSpec extends Specification {
         given:
         LocalDate today = LocalDate.now()
         LocalDate tomorrow = today.plusDays(1)
+
+        when:
         Period period = today - tomorrow
 
-        expect:
+        then:
         period.days == 1
         period.months == 0
         period.years == 0
@@ -290,16 +320,18 @@ class LocalDateExtensionSpec extends Specification {
         given:
         LocalDate today = LocalDate.now()
         LocalDate tomorrow = today.plusDays(1)
+
+        when:
         Period period = tomorrow - today
 
-        expect:
+        then:
         period.days == -1
         period.months == 0
         period.years == 0           
     }
 
     def "downto() cannot be called with date after this date"() {
-        setup:
+        given:
         LocalDate today = LocalDate.now()
         LocalDate tomorrow = today + 1
 
@@ -313,7 +345,7 @@ class LocalDateExtensionSpec extends Specification {
     }
 
     def "downto() is called once when the two dates are the same"() {
-        setup:
+        given:
         LocalDate today = LocalDate.now()
         boolean closureCalledOnce = false
 
@@ -327,7 +359,7 @@ class LocalDateExtensionSpec extends Specification {
     }
 
     def "downto() can be passed no-arg closure"() {
-        setup:
+        given:
         LocalDate today = LocalDate.now()
         LocalDate dayBeforeYesterday = today - 2
         int count = 0
@@ -342,7 +374,7 @@ class LocalDateExtensionSpec extends Specification {
     }
 
     def "downto() closure passed decreasing arg"() {
-        setup:
+        given:
         LocalDate higher = LocalDate.of(2017, Month.JULY, 4)
         LocalDate lower = LocalDate.of(2017, Month.JULY, 1)
         int iter = higher.day
@@ -354,7 +386,7 @@ class LocalDateExtensionSpec extends Specification {
     }    
 
     def "upto() cannot be called with date before this date"() {
-        setup:
+        given:
         LocalDate today = LocalDate.now()
         LocalDate yesterday = today - 1
 
@@ -368,7 +400,7 @@ class LocalDateExtensionSpec extends Specification {
     }
 
     def "upto() is called once when the two dates are the same"() {
-        setup:
+        given:
         LocalDate today = LocalDate.now()
         boolean closureCalledOnce = false
 
@@ -382,7 +414,7 @@ class LocalDateExtensionSpec extends Specification {
     }
 
     def "upto() can be passed no-arg closure"() {
-        setup:
+        given:
         LocalDate today = LocalDate.now()
         LocalDate dayAfterTomorrow = today + 2
         int count = 0
@@ -397,7 +429,7 @@ class LocalDateExtensionSpec extends Specification {
     }
 
     def "upto() closure passed increasing arg"() {
-        setup:
+        given:
         LocalDate lower = LocalDate.of(2017, Month.JULY, 1)
         LocalDate higher = LocalDate.of(2017, Month.JULY, 4)
         int iter = lower.day
