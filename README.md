@@ -13,29 +13,110 @@ Goodtimes requires Java 8 or later.
 
 ## Installation
 
-Until goodtimes is published in a public Maven repository, the library needs to be built from source and added to the classpath.
+Until goodtimes is published in a public Maven repository, the library needs to be built from source and added to the runtime classpath.
 
     gradlew install
-    cp build/libs/goodtimes-0.1.jar $MY_APP_CLASSPATH
+    cp build/libs/goodtimes-0.1.jar $USER_HOME/.groovy/lib
 
-## Sample Usage
+## Overloaded Operators
 
-Bridging to new API from old:
+Most extension methods are used to overload operators on the `java.time` types.
 
-    Calendar cal = Calendar.instance
+### The `++` and `--` Operators
 
-    Instant instant = cal.toInstant()
-    LocalDate localDate = cal.toLocalDate()
-    LocalTime localTime = cal.toLocalTime()
-    LocalDateTime localDateTime = cal.toLocalDateTime()
+Increment or decrement `Instant`, `LocalTime`, `LocalDateTime`, `Year` and `Duration` by 1 second,. For  `LocalDate`, `Period`, and `DayOfWeek`, increment or decrement by a day.
 
-Dealing with `LocalDate` types:
+```groovy
+    def now = LocalTime.now()
+    def today = LocalDate.now()
 
-    LocalDate now = LocalDate.now()
-
+    LocalTime oneSecondAgo = --now
     LocalDate tomorrow = now++
-    LocalDate yesterday = now - 1
-    LocalDate decadeFromNow = now + Period.ofYears(10)
-    Period twoDays = yesterday - tomorrow
-    LocalDateTime datetime = now << LocalTime.now()
-    
+```
+
+### The `+` and `-` Operators
+
+Add seconds using a `long` or `int` primitive directly to  `Instant`, `LocalTime`, `LocalDateTime`, and `Duration`. Add or substract days for `LocalDate`, `Period`, and `DayOfWeek`.
+
+```groovy
+    def now = LocalDateTime.now()
+    def today = LocalDate.now()
+
+    LocalDateTime oneMinuteAgo = now - 60
+    LocalDate oneWeekFromNow = now + 7
+```    
+
+The `-` operator can be used to create a `Period` from two `LocalDate` values or a `Duration` from two `Instant`, `LocalTime`, or `LocalDateTime` values.
+
+```groovy
+    def today = LocalDate.now()
+    def tomorrow = today + 1
+
+    Period oneDay = today - tomorrow
+    Period negOneDay = tomorrow - today
+```
+
+### The `[]` Operator
+
+Delegates to the `get()` or `getLong()` methods, enabling retrieval of the specified `TemporalField` of `Instant`, `LocalTime`, and `LocalDateTime`. For `Period` and `Duration`, allows retrieval of the specified `TemporalUnit`. Although `Duration.getLong()` only supports `ChronoUnit.SECONDS` and `ChronoUnit.NANOS` but `[]` works for additional `ChronoUnit` enums.
+
+```groovy
+    def sixtySeconds = Duration.parse('PT60S')
+    assert sixtySeconds[ChronoUnit.MINUTES] == 1
+```
+
+### The `<<` Operator
+
+Left shifting can be used to merge two smaller types into an aggregate type. For example, left-shifting a `LocalTime` into a `LocalDate` (or vice versa) results in a `LocalDateTime`.
+
+```groovy
+    def thisYear = Year.of(2017)
+
+    YearMonth december2017 = thisYear << Month.DECEMBER
+    LocalDate christmas = december2017 << 25
+    LocalDateTime christmasAtNoon = christmas << LocalDate.of(12, 0, 0)
+    ZonedDateTime chirstmasAtNoonInNYC = christmasAtNoon << ZoneId.of('America/New_York')
+    OffsetDateTime chirstmasAtNoonInGreenwich = christmasAtNoon << ZoneOffset.UTC
+```
+
+### The `*` and `/` Operators
+
+A `Period` and `Duration` can be multiplied by a scalar. Only a `Duration` can be divided.
+
+```groovy
+    def week = Period.ofDays(7)
+    def minute = Duration.ofMinutes(1)
+
+    Period fortnight = week * 2
+    Duration thirtySeconds = minute / 2
+```
+
+### The `+` and `-` Operators
+
+A `Period`, `Duration`, or `Year` can be forced positive or negated via the `+` and `-` operators.
+
+```groovy
+    def oneWeek = Period.ofDays(7)
+    def oneHour = Duration.ofHours(1)
+
+    assert +oneWeek == oneWeek
+    assert -oneHour == Duration.ofHours(-1)
+```    
+
+## Bridging Over From `java.util.Date` and `java.util.Calendar`
+
+Extension methods exist on `Date` and `Calendar` that converted to their reasonably equivalent `java.time` types.
+
+```groovy
+    def cal = Calendar.instance
+    def date = new Date()
+
+    Instant i1 = cal.toInstant()
+    Instant i2 = date.toInstant()
+    LocalDate ld1 = cal.toLocalDate()
+    LocalDate ld2 = date.toLocalDate()
+    LocalTime lt1 = cal.toLocalTime()
+    LocalTime lt2 = date.toLocalTime()
+    LocalDateTime ldt1 = cal.toLocalDateTime()
+    LocalDateTime ldt2 = date.toLocalDateTime()
+```
