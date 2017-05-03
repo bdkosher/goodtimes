@@ -174,6 +174,30 @@ class InstantExtensionSpec extends Specification {
         mod.epochSecond == orig.epochSecond - (60 * 60)
     }
 
+    def "subtracting Instants produces a positive Duration"() {
+        given:
+        Instant now = Instant.now()
+        Instant later = now.plusSeconds(1000)
+
+        when:
+        Duration duration = now - later
+
+        then:
+        duration.seconds == 1000
+    }
+
+    def "subtracting Instants produces a positive Duration"() {
+        given:
+        Instant now = Instant.now()
+        Instant later = now.plusSeconds(1000)
+
+        when:
+        Duration duration = later - now
+
+        then:
+        duration.seconds == -1000
+    }
+
     def "getAt Temporal Field"() {
         given:
         Instant instant = Instant.EPOCH
