@@ -7,6 +7,9 @@ import static java.time.temporal.ChronoUnit.*
 
 import groovy.transform.PackageScope
 
+/**
+ * Extension methods for jave.time.Duration
+ */
 class DurationExtension {
 
     @PackageScope

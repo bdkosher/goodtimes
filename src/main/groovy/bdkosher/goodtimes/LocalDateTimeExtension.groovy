@@ -8,6 +8,8 @@ import java.time.temporal.*
 import groovy.transform.PackageScope
 
 /**
+ * Extension methods for java.time.LocalDateTime
+ *
  * Aims to mimic the Groovy JDK extension methods available for java.util.Date and java.util.Calendar instances.
  */
 class LocalDateTimeExtension {

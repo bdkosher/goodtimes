@@ -1,6 +1,12 @@
 apply plugin: 'groovy'
 apply plugin: 'jacoco'
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+group = 'com.github.bdkosher'
+archivesBaseName = 'goodtimes'
 version = '0.1'
+
 jar.archiveName = "goodtimes-${version}.jar"
 
 repositories {
@@ -12,6 +18,24 @@ dependencies {
 
     testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
     testCompile 'junit:junit:4.12'
+}
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from groovydoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+signing {
+    sign configurations.archives
 }
 
 jacoco {
@@ -43,4 +67,47 @@ groovydoc {
         <div class="custom-footer">
             Generated on: ${new Date().format('yyyy-MM-dd HH:mm:ss')}
         </div>""".stripIndent()
+}
+
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+        authentication(userName: findProperty('ossrhUsername'), password: findProperty('ossrhPassword'))
+      }
+
+      snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+        authentication(userName: findProperty('ossrhUsername'), password: findProperty('ossrhPassword'))
+      }
+
+      pom.project {
+        name 'goodtimes'
+        packaging 'jar'
+        description 'Java 8 Date/Time API enhancements for Groovy'
+        url 'https://github.com/bdkosher/goodtimes'
+
+        scm {
+          connection 'scm:git:git://github.com//bdkosher/goodtimes.git'
+          developerConnection 'scm:git:ssh://github.com:bdkosher/goodtimes.git'
+          url 'https://github.com/bdkosher/goodtimes/tree/master'
+        }
+
+        licenses {
+          license {
+            name 'The Apache License, Version 2.0'
+            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+          }
+        }
+
+        developers {
+          developer {
+            id 'bdkosher'
+            name 'Joe Wolf'
+          }
+        }
+      }
+    }
+  }
 }

@@ -4,6 +4,9 @@ import java.time.*
 import java.time.temporal.TemporalField
 import org.codehaus.groovy.runtime.DefaultGroovyMethods
 
+/**
+ * Extension methods for java.time.MonthDay
+ */
 class MonthDayExtension {
 
     /**

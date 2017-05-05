@@ -1,6 +1,7 @@
 package bdkosher.goodtimes
 
 import java.time.*
+import groovy.transform.PackageScope
 
 /**
  * Extension methods for converting or inspecting java.util.Date and java.util.Calendar instances as Java 8 Date/Time types.
@@ -10,6 +11,7 @@ class DateCalendarExtension {
     /**
      * A mapping of Calendar constants representing days of the week to their corresponding java.time.DayOfWeek enum
      */
+    @PackageScope
     static final Map<Integer, DayOfWeek> daysOfWeek = ['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY']
             .collectEntries { day -> [Calendar."$day", java.time.DayOfWeek."$day"] }
 

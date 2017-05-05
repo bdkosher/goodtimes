@@ -3,6 +3,9 @@ package bdkosher.goodtimes
 import java.time.Period
 import java.time.temporal.*
 
+/**
+ * Extension methods for java.time.Period.
+ */
 class PeriodExtension {
 
     /**

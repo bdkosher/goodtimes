@@ -3,6 +3,9 @@ package bdkosher.goodtimes
 import java.time.*
 import org.codehaus.groovy.runtime.DefaultGroovyMethods
 
+/**
+ * Extension methods for java.time.Year
+ */
 class YearExtension {
 
     /**
