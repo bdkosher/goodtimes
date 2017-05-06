@@ -2,10 +2,11 @@ apply plugin: 'groovy'
 apply plugin: 'jacoco'
 apply plugin: 'maven'
 apply plugin: 'signing'
+apply plugin: 'project-report'
 
 group = 'com.github.bdkosher'
 archivesBaseName = 'goodtimes'
-version = '1.0'
+version = '1.1-SNAPSHOT'
 
 jar.archiveName = "goodtimes-${version}.jar"
 

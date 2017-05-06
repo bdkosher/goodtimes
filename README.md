@@ -1,5 +1,5 @@
 # Goodtimes
-*Java 8 Date/Time API enhancements for Groovy*
+*Java 8 Date/Time API enhancements for Groovy*  [![Maven Central](https://img.shields.io/maven-central/v/com.github.bdkosher/goodtimes.svg)](http://repo1.maven.org/maven2/com/github/bdkosher/goodtimes/1.0/goodtimes-1.0.jar)  [![GitHub release](https://img.shields.io/github/tag/bdkosher/goodtimes.svg)](https://github.com/bdkosher/goodtimes/releases/tag/v1.0)
 
 ![goodtimes logo](https://raw.githubusercontent.com/bdkosher/goodtimes/master/logo.gif)
 
@@ -23,7 +23,7 @@ Goodtimes requires Java 8 or later.
 
 ## Installation
 
-Add the goodtimes jar to your classpath in your preferred way and you're set.
+Add the goodtimes jar to the classpath in your preferred way and you're set.
 
 ### Grape
 ```groovy
@@ -54,6 +54,8 @@ Clone the repo or [download a source release](https://github.com/bdkosher/goodti
 ```
 
 ## API Features
+
+Consult the [goodtimes 1.0 Groovydocs](http://bdkosher.github.io/goodtimes/v1.0/groovydoc/) for complete API information. See the [Groovy metaprogramming documentation](http://groovy-lang.org/metaprogramming.html#_instance_methods) for details on how these methods manifest themselves at runtime.
 
 ### Overloaded Operators
 
