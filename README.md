@@ -5,11 +5,12 @@
 
 The [Groovy JDK](http://groovy-lang.org/gdk.html) adds useful methods to [`java.util.Date`](http://docs.groovy-lang.org/latest/html/groovy-jdk/java/util/Date.html) and [`java.util.Calendar`](http://docs.groovy-lang.org/latest/html/groovy-jdk/java/util/Calendar.html) but as of yet does not include comparable methods for the newer Java 8 Date/Time API classes.
 
-Goodtimes fills this gap by providing such  methods for classes in the `java.time` package, as well as methods on `java.util.Date` and `java.time.Calendar` for converting to `java.time` equivalents.
+Goodtimes fills this gap by providing these `java.time` extension methods, as well as new methods on `java.util.Date` and `java.time.Calendar` for converting to `java.time` equivalents.
 
 ## Contents
  * [Prerequisites](#prerequisites)
  * [Installation](#installation)
+ * [Building from Source](#building-from-source) 
  * [API Features](#api-features)
    * [Overloaded Operators](#overloaded-operators)
    * [Groovy JDK Mimicking Methods](#groovy-jdk-mimicking-methods)
@@ -22,11 +23,34 @@ Goodtimes requires Java 8 or later.
 
 ## Installation
 
-Until goodtimes is published in a public Maven repository, the library needs to be built from source and added to the runtime classpath.
+Add the goodtimes jar to your classpath in your preferred way and you're set.
+
+### Grape
+```groovy
+@Grab('com.github.bdkosher:goodtimes:1.0') 
+```
+
+### Gradle
+```groovy
+compile group: 'com.github.bdkosher', name: 'goodtimes', version: '1.0'
+```
+
+### Maven
+```xml
+ <dependency>
+    <groupId>com.github.bdkosher</groupId>
+    <artifactId>goodtimes</artifactId>
+    <version>1.0</version>
+</dependency>
+```
+
+## Building from Source
+
+Clone the repo or [download a source release](https://github.com/bdkosher/goodtimes/archive/v1.0.tar.gz) and build with Gradle. 
 
 ```bash
     gradlew install
-    cp build/libs/goodtimes-0.1.jar $USER_HOME/.groovy/lib
+    cp build/libs/goodtimes-1.0.jar $USER_HOME/.groovy/lib
 ```
 
 ## API Features
