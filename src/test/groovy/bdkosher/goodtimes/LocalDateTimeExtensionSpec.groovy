@@ -510,6 +510,23 @@ class LocalDateTimeExtensionSpec extends Specification {
         }        
     }
 
+    def "clearTime() sets the time fields to zero"() {
+        given:
+        LocalDateTime ldt = LocalDateTime.of(2017, Month.MAY, 5, 8, 9, 10, 11)
+        
+        when:
+        LocalDateTime justTheDate = ldt.clearTime()
+
+        then:
+        justTheDate.year == 2017
+        justTheDate.month == Month.MAY
+        justTheDate.dayOfMonth == 5
+        justTheDate.hour == 0
+        justTheDate.minute == 0
+        justTheDate.second == 0
+        justTheDate.nano == 0
+    }
+
     def "left shifting a ZoneOffset produces an OffsetDateTime"() {
         given:
         LocalDateTime datetime = LocalDateTime.of(2017, Month.JULY, 4, 12, 34, 56)

@@ -83,7 +83,14 @@ class LocalDateTimeExtension {
      */
     static String getTimeString(final LocalDateTime self) {
         self.toLocalTime().timeString
-    }    
+    }
+
+    /**
+     * Sets the time-related fields of the LocalDateTime instance to 0.
+     */
+    static LocalDateTime clearTime(final LocalDateTime self) {
+        self.truncatedTo(ChronoUnit.DAYS)
+    }
 
     /**
      * The next second.

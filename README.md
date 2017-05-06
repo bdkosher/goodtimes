@@ -3,9 +3,9 @@ Java 8 Date/Time API enhancements for Groovy
 
 ![goodtimes logo](https://raw.githubusercontent.com/bdkosher/goodtimes/master/logo.gif)
 
-Groovy provides useful extension methods for working with [`java.util.Date`](http://docs.groovy-lang.org/latest/html/groovy-jdk/java/util/Date.html) and [`java.util.Calendar`](http://docs.groovy-lang.org/latest/html/groovy-jdk/java/util/Calendar.html) but as of yet does not include extension methods for the newer Java 8 Date/Time API classes.
+Groovy provides useful extension methods for working with [`java.util.Date`](http://docs.groovy-lang.org/latest/html/groovy-jdk/java/util/Date.html) and [`java.util.Calendar`](http://docs.groovy-lang.org/latest/html/groovy-jdk/java/util/Calendar.html) but as of yet does not include comparable extension methods for the newer Java 8 Date/Time API classes.
 
-Goodtimes primarily provides extension methods for the classes in the `java.time` package, as well as extra methods on `java.util.Date` and `java.time.Calendar` for converting to `java.time` types, such as `Date` into a `LocalDate` or `Calendar` into `LocalDateTime`.
+Goodtimes primarily provides extension methods for the classes in the `java.time` package, as well as some extra methods on `java.util.Date` and `java.time.Calendar` for converting to their `java.time` equivalents.
 
 ## Prerequisites
 
@@ -18,11 +18,13 @@ Until goodtimes is published in a public Maven repository, the library needs to 
     gradlew install
     cp build/libs/goodtimes-0.1.jar $USER_HOME/.groovy/lib
 
-## Overloaded Operators
+## API Features
+
+### Overloaded Operators
 
 Most extension methods are used to overload operators on the `java.time` types.
 
-### The `++` and `--` Operators
+#### The `++` and `--` Operators
 
 Increment or decrement `Instant`, `LocalTime`, `LocalDateTime`, `Year` and `Duration` by 1 second,. For  `LocalDate`, `Period`, and `DayOfWeek`, increment or decrement by a day.
 
@@ -34,7 +36,7 @@ Increment or decrement `Instant`, `LocalTime`, `LocalDateTime`, `Year` and `Dura
     LocalDate tomorrow = now++
 ```
 
-### The `+` and `-` Operators
+#### The `+` and `-` Operators
 
 Add seconds using a `long` or `int` primitive directly to  `Instant`, `LocalTime`, `LocalDateTime`, and `Duration`. Add or substract days for `LocalDate`, `Period`, and `DayOfWeek`.
 
@@ -56,7 +58,7 @@ The `-` operator can be used to create a `Period` from two `LocalDate` values or
     Period negOneDay = tomorrow - today
 ```
 
-### The `[]` Operator
+#### The `[]` Operator
 
 Delegates to the `get()` or `getLong()` methods, enabling retrieval of the specified `TemporalField` of `Instant`, `LocalTime`, and `LocalDateTime`. For `Period` and `Duration`, allows retrieval of the specified `TemporalUnit`. Although `Duration.getLong()` only supports `ChronoUnit.SECONDS` and `ChronoUnit.NANOS` but `[]` works for additional `ChronoUnit` enums.
 
@@ -65,7 +67,17 @@ Delegates to the `get()` or `getLong()` methods, enabling retrieval of the speci
     assert sixtySeconds[ChronoUnit.MINUTES] == 1
 ```
 
-### The `<<` Operator
+In addition to supporting `TemporalField` arguments, the `LocalDate`, `LocalTime`, and `LocalDateTime` classes can accept `java.util.Calendar` constants:
+
+```groovy
+    def lastChristmas = LocalDate.of(2016, 12, 25)
+
+    assert lastChristmas[Calendar.YEAR] == 2016
+    assert lastChristmas[Calendar.MONTH] == Calendar.DECEMBER
+    assert lastChristmas[Calendar.DATE] == 25
+```
+
+#### The `<<` Operator
 
 Left shifting can be used to merge two smaller types into an aggregate type. For example, left-shifting a `LocalTime` into a `LocalDate` (or vice versa) results in a `LocalDateTime`.
 
@@ -79,7 +91,7 @@ Left shifting can be used to merge two smaller types into an aggregate type. For
     OffsetDateTime chirstmasAtNoonInGreenwich = christmasAtNoon << ZoneOffset.UTC
 ```
 
-### The `*` and `/` Operators
+#### The `*` and `/` Operators
 
 A `Period` and `Duration` can be multiplied by a scalar. Only a `Duration` can be divided.
 
@@ -91,7 +103,7 @@ A `Period` and `Duration` can be multiplied by a scalar. Only a `Duration` can b
     Duration thirtySeconds = minute / 2
 ```
 
-### The `+` and `-` Operators
+#### The `+` and `-` Operators
 
 A `Period`, `Duration`, or `Year` can be forced positive or negated via the `+` and `-` operators.
 
@@ -101,22 +113,76 @@ A `Period`, `Duration`, or `Year` can be forced positive or negated via the `+` 
 
     assert +oneWeek == oneWeek
     assert -oneHour == Duration.ofHours(-1)
-```    
+```
 
-## Bridging Over From `java.util.Date` and `java.util.Calendar`
+### Groovy JDK Mimicking Methods
 
-Extension methods exist on `Date` and `Calendar` that converted to their reasonably equivalent `java.time` types.
+Other extension methods seek to mimic those found in the Groovy JDK for [`java.util.Date`](http://docs.groovy-lang.org/latest/html/groovy-jdk/java/util/Date.html) and [`java.util.Calendar`](http://docs.groovy-lang.org/latest/html/groovy-jdk/java/util/Calendar.html).
+
+#### Iterating Methods
+
+The `LocalTime`, `LocalDateTime`, and `Instant` have `upto()` and `downto()` methods iterate on a per second basis. The `LocalDate` methods iterate on a per day basis.
 
 ```groovy
-    def cal = Calendar.instance
-    def date = new Date()
+        def now = LocalTime.now()
+        def aMinuteAgo = now - 60
 
-    Instant i1 = cal.toInstant()
-    Instant i2 = date.toInstant()
-    LocalDate ld1 = cal.toLocalDate()
-    LocalDate ld2 = date.toLocalDate()
-    LocalTime lt1 = cal.toLocalTime()
-    LocalTime lt2 = date.toLocalTime()
-    LocalDateTime ldt1 = cal.toLocalDateTime()
-    LocalDateTime ldt2 = date.toLocalDateTime()
+        now.downto(aMinuteAgo) { LocalTime t ->
+            // this closure will be called 61 times for each sceond between a minute ago and now
+        }
+
+        def today = LocalDate.now()
+        def tomorrow = today + 1
+
+        today.upto(tomorrow) { LocalDate d -> 
+            // this closure will be called twice, once for today and once for tomorrow
+        }
+```
+
+#### Formatting Methods
+
+The `getDateString` method exists for `LocalDate` and `LocalDateTime`; the `getTimeString` method exists for `LocalTime` and `LocalDateTime`. `LocalDateTime` also has a `getDateTimeString` method. These methods are equivalent to formatting by `FormatStyle.SHORT`.
+
+## Bridging Between `java.util.Date/Calendar` and Java 8's Time API
+
+Extension methods have been added to `Date` and `Calendar` that produce a reasonably equivalent `java.time` type. 
+
+```groovy
+    def c = Calendar.instance
+    def d = new Date()
+
+    Instant cInstant = c.toInstant()
+    Instant dInstant = d.toInstant()
+
+    LocalDate cLocalDate = c.toLocalDate()
+    LocalDate dLocalDate = d.toLocalDate()
+    
+    LocalTime cLocalTime = c.toLocalTime()
+    LocalTime dLocalTime = d.toLocalTime()
+
+    LocalDateTime cLocalDateTime = c.toLocalDateTime()
+    LocalDateTime dLocalDateTime = d.toLocalDateTime()
+
+    ZonedDateTime cZonedDateTime = c.toZonedDateTime()
+    ZonedDateTime dZonedDateTime = d.toZonedDateTime()
+```
+
+An optional `ZoneOffset`, `ZoneId`, or `java.util.TimeZone` may be passed to the above conversion methods to alter the Time Zone of the returned `Date` or `Calendar`. The `toOffsetDateTime` method requires a `ZoneOffset` argument.
+
+```groovy
+    def c = Calendar.instance
+    def d = new Date()
+    def offset = ZoneOffset.UTC
+
+    OffsetDateTime cOffsetDateTime = c.toOffsetDateTime(offset)
+    OffsetDateTime dOffsetDateTime = d.toOffsetDateTime(offset)
+```
+
+The `LocalDate`, `LocalTime`, and `LocalDateTime` types have `toDate()` and `toCalendar()` methods as well.
+
+```groovy
+    def nows = [LocalDate.now(), LocalTime.now(), LocalDateTime.now()]
+
+    List<Date> dates = nows.collect { it.toDate() }
+    List<Calendar> cals = nows.collect { it.toCalendar() } 
 ```
