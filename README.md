@@ -1,11 +1,20 @@
 # Goodtimes
-Java 8 Date/Time API enhancements for Groovy
+*Java 8 Date/Time API enhancements for Groovy*
 
 ![goodtimes logo](https://raw.githubusercontent.com/bdkosher/goodtimes/master/logo.gif)
 
-Groovy provides useful extension methods for working with [`java.util.Date`](http://docs.groovy-lang.org/latest/html/groovy-jdk/java/util/Date.html) and [`java.util.Calendar`](http://docs.groovy-lang.org/latest/html/groovy-jdk/java/util/Calendar.html) but as of yet does not include comparable extension methods for the newer Java 8 Date/Time API classes.
+The [Groovy JDK](http://groovy-lang.org/gdk.html) adds useful methods to [`java.util.Date`](http://docs.groovy-lang.org/latest/html/groovy-jdk/java/util/Date.html) and [`java.util.Calendar`](http://docs.groovy-lang.org/latest/html/groovy-jdk/java/util/Calendar.html) but as of yet does not include comparable methods for the newer Java 8 Date/Time API classes.
 
-Goodtimes primarily provides extension methods for the classes in the `java.time` package, as well as some extra methods on `java.util.Date` and `java.time.Calendar` for converting to their `java.time` equivalents.
+Goodtimes fills this gap by providing such  methods for classes in the `java.time` package, as well as methods on `java.util.Date` and `java.time.Calendar` for converting to `java.time` equivalents.
+
+## Contents
+ * [Prerequisites](#prerequisites)
+ * [Installation](#installation)
+ * [API Features](#api-features)
+   * [Overloaded Operators](#overloaded-operators)
+   * [Groovy JDK Mimicking Methods](groovy-jdk-mimicking-methods)
+   * [Java 8 and Legacy API Bridging Methods](java-8-and-legacy-api-bridging-methods)
+ * [Future Changes](#future-changes)
 
 ## Prerequisites
 
@@ -36,7 +45,7 @@ Increment or decrement `Instant`, `LocalTime`, `LocalDateTime`, `Year` and `Dura
     LocalDate tomorrow = now++
 ```
 
-#### The `+` and `-` Operators
+#### The `+` and `-` Binary Operators
 
 Add seconds using a `long` or `int` primitive directly to  `Instant`, `LocalTime`, `LocalDateTime`, and `Duration`. Add or substract days for `LocalDate`, `Period`, and `DayOfWeek`.
 
@@ -60,7 +69,7 @@ The `-` operator can be used to create a `Period` from two `LocalDate` values or
 
 #### The `[]` Operator
 
-This operator, backed by the `getAt()` method, delegates to the `get()` or `getLong()` methods, enabling retrieval of the specified `TemporalField` (for `Instant`, `LocalTime`, and `LocalDateTime`) or `TemporalUnit`(for `Period` and `Duration`). Although `Duration.getLong()` only supports `ChronoUnit.SECONDS` and `ChronoUnit.NANOS`, the `[]` operator supports additional `ChronoUnit` values.
+This operator delegates to the `java.time` types' `get()` or `getLong()` methods, enabling retrieval of the specified `TemporalField` (for `Instant`, `LocalTime`, and `LocalDateTime`) or `TemporalUnit`(for `Period` and `Duration`). Although `Duration.getLong()` only supports `ChronoUnit.SECONDS` and `ChronoUnit.NANOS`, the `[]` operator supports additional `ChronoUnit` values.
 
 ```groovy
     def sixtySeconds = Duration.parse('PT60S')
@@ -79,7 +88,7 @@ In addition to supporting `TemporalField` arguments, the `LocalDate`, `LocalTime
 
 #### The `<<` Operator
 
-Left shifting can be used to merge two finite types into a larger aggregate type. For example, left-shifting a `LocalTime` into a `LocalDate` (or vice versa) results in a `LocalDateTime`.
+Left shifting can be used to merge two different `java.time` types into a larger aggregate type. For example, left-shifting a `LocalTime` into a `LocalDate` (or vice versa) results in a `LocalDateTime`.
 
 ```groovy
     def thisYear = Year.of(2017)
@@ -103,7 +112,7 @@ A `Period` and `Duration` can be multiplied by a scalar. Only a `Duration` can b
     Duration thirtySeconds = minute / 2
 ```
 
-#### The `+` and `-` Operators
+#### The  `+` and `-` Unary Operators
 
 A `Period`, `Duration`, or `Year` can be made positive or negated via the `+` and `-` operators.
 
@@ -121,7 +130,7 @@ Other extension methods seek to mimic those found in the Groovy JDK for [`java.u
 
 #### Iterating Methods
 
-The `upto()` and `downto()` methods or `LocalTime`, `LocalDateTime`, and `Instant` iterate on a per second basis. The methods on `LocalDate` iterate on a per day basis.
+The `upto()` and `downto()` methods of `LocalTime`, `LocalDateTime`, and `Instant` iterate on a per second basis. The methods on `LocalDate` iterate on a per day basis.
 
 ```groovy
         def now = LocalTime.now()
@@ -141,17 +150,30 @@ The `upto()` and `downto()` methods or `LocalTime`, `LocalDateTime`, and `Instan
 
 #### Formatting Methods
 
- * The `getDateString` method exists for `LocalDate` and `LocalDateTime` and is equivalent to calling `localDate.format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT))`. 
- * The `getTimeString` method exists for `LocalTime` and `LocalDateTime` and is equivalent to calling `localTime.format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT))`.
- * The `getDateTimeString` method exists for `LocalDateTime` and is equivalent to calling `localDateTime.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))`.
- * The `format(String pattern)` method on `LocalDate`, `LocalTime`, and `LocalDateTime` is equivalent to `.format(DateTimeFormatter.ofPattern(pattern))`. 
- * The `format(String pattern, Locale locale)` method on `LocalDate`, `LocalTime`, and `LocalDateTime` is equivalent to `.format(DateTimeFormatter.ofPattern(pattern, locale))`. 
+ * The `getDateString` method
+   * Exists for `LocalDate` and `LocalDateTime` 
+   * Equivalent to calling `localDate.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT))`
+   * Example: `5/5/17`
+ * The `getTimeString` method
+   * Exists for `LocalTime` and `LocalDateTime` 
+   * Equivalent to calling `localTime.format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT))`
+   * Example: `10:59 PM`
+ * The `getDateTimeString` method
+   * Exists for `LocalDateTime` 
+   * Equivalent to calling `localDateTime.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))`
+   * Example: `5/5/17 10:59 PM`
+ * The `format(String pattern)` method
+   * Exists on `LocalDate`, `LocalTime`, and `LocalDateTime`
+   * Equivalent to `.format(DateTimeFormatter.ofPattern(pattern))`
+ * The `format(String pattern, Locale locale)` method
+   * Exists on `LocalDate`, `LocalTime`, and `LocalDateTime`
+   * Equivalent to `.format(DateTimeFormatter.ofPattern(pattern, locale))`
 
 #### Mutating Methods
 
 `LocalDateTime` has a `clearTime()` method that sets the hours, minutes, seconds, and nanos to zero.
 
-### Java 8 Date/Time API and `java.util.Date/Calendar` Bridging Methods 
+### Java 8 and Legacy API Bridging Methods 
 
 Extension methods exist on `Date` and `Calendar` that produce a reasonably equivalent `java.time` type. 
 
