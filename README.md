@@ -12,8 +12,8 @@ Goodtimes fills this gap by providing such  methods for classes in the `java.tim
  * [Installation](#installation)
  * [API Features](#api-features)
    * [Overloaded Operators](#overloaded-operators)
-   * [Groovy JDK Mimicking Methods](groovy-jdk-mimicking-methods)
-   * [Java 8 and Legacy API Bridging Methods](java-8-and-legacy-api-bridging-methods)
+   * [Groovy JDK Mimicking Methods](#groovy-jdk-mimicking-methods)
+   * [Java 8 and Legacy API Bridging Methods](#java-8-and-legacy-api-bridging-methods)
  * [Future Changes](#future-changes)
 
 ## Prerequisites
@@ -24,8 +24,10 @@ Goodtimes requires Java 8 or later.
 
 Until goodtimes is published in a public Maven repository, the library needs to be built from source and added to the runtime classpath.
 
+```bash
     gradlew install
     cp build/libs/goodtimes-0.1.jar $USER_HOME/.groovy/lib
+```
 
 ## API Features
 
