@@ -1,8 +1,8 @@
 package bdkosher.goodtimes
 
-import java.time.*
+import java.time.LocalDate
+import java.time.YearMonth
 import java.time.temporal.TemporalField
-import org.codehaus.groovy.runtime.DefaultGroovyMethods
 
 class YearMonthExtension {
 
