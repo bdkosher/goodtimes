@@ -22,7 +22,7 @@ class MonthStaticExtension {
     }
 
     /**
-     * Calls the closure for each month of the weyearek, starting with the given month.
+     * Calls the closure for each month of the year, starting with the given month.
      */
     static void eachMonth(final Month type, Month start, Closure closure) {
         def paramTypes = closure.parameterTypes
