@@ -186,7 +186,7 @@ class InstantExtensionSpec extends Specification {
         duration.seconds == 1000
     }
 
-    def "subtracting Instants produces a positive Duration"() {
+    def "subtracting Instants produces a negative Duration"() {
         given:
         Instant now = Instant.now()
         Instant later = now.plusSeconds(1000)
