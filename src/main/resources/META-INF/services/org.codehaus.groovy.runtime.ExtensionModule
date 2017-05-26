@@ -1,18 +1,19 @@
 moduleName = goodtimes
 moduleVersion = 1.1
 extensionClasses = \
-    bdkosher.goodtimes.DateCalendarExtension, \
-    bdkosher.goodtimes.LocalDateExtension, \
-    bdkosher.goodtimes.LocalTimeExtension, \
-    bdkosher.goodtimes.LocalDateTimeExtension, \
     bdkosher.goodtimes.DayOfWeekExtension, \
-    bdkosher.goodtimes.MonthExtension, \
-    bdkosher.goodtimes.MonthDayExtension, \
-    bdkosher.goodtimes.YearExtension, \
-    bdkosher.goodtimes.YearMonthExtension, \
-    bdkosher.goodtimes.PeriodExtension, \
+    bdkosher.goodtimes.DateCalendarExtension, \
     bdkosher.goodtimes.DurationExtension, \
     bdkosher.goodtimes.InstantExtension, \
+    bdkosher.goodtimes.LocalDateExtension, \
+    bdkosher.goodtimes.LocalDateTimeExtension, \
+    bdkosher.goodtimes.LocalTimeExtension, \
+    bdkosher.goodtimes.MonthExtension, \
+    bdkosher.goodtimes.MonthDayExtension, \
+    bdkosher.goodtimes.PeriodExtension, \
+    bdkosher.goodtimes.YearExtension, \
+    bdkosher.goodtimes.YearMonthExtension, \
+    bdkosher.goodtimes.ZonedDateTimeExtension, \
     bdkosher.goodtimes.ZoneIdExtension
 staticExtensionClasses = \
     bdkosher.goodtimes.DayOfWeekStaticExtension, \
