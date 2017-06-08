@@ -299,4 +299,59 @@ class ZoneOffsetExtensionSpec extends Specification {
         odt.offset == zoneOffset
     }
 
+    def "positive operator on a positive offset has no effect"() {
+        given:
+        ZoneOffset orig = ZoneOffset.MAX
+
+        when:
+        ZoneOffset mod = +orig
+
+        then:
+        mod == orig
+    }
+
+    def "negating operator on a positive offset makes it negative"() {
+        given:
+        ZoneOffset orig = ZoneOffset.MAX
+
+        when:
+        ZoneOffset mod = -orig
+
+        then:
+        mod == ZoneOffset.MIN
+    }
+
+    def "negating a negative offset makes it positive"() {
+        given:
+        ZoneOffset orig = ZoneOffset.MIN
+
+        when:
+        ZoneOffset mod = -orig
+
+        then:
+        mod == ZoneOffset.MAX
+    }
+
+    def "positive operator on a negative offset makes it positive"() {
+        given:
+        ZoneOffset orig = ZoneOffset.MIN
+
+        when:
+        ZoneOffset mod = +orig
+
+        then:
+        mod == ZoneOffset.MAX
+    }
+
+    def "negating a zero offset has no effect"() {
+        given:
+        ZoneOffset orig = ZoneOffset.UTC
+
+        when:
+        ZoneOffset mod = -orig
+
+        then:
+        mod == orig
+    }
+
 }

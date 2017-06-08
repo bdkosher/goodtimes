@@ -44,7 +44,14 @@ class DateCalendarExtension {
      */
     static getMonth(final Calendar self) {
         Month.of(self.get(Calendar.MONTH) + 1)
-    }        
+    }
+
+    /**
+     * Returns the java.time.MonthDay of the Calendar.
+     */
+    static getMonthDay(final Calendar self) {
+        MonthDay.of(getMonth(self), self.get(Calendar.DAY_OF_MONTH))
+    }
 
     /**
      * Returns the java.time.YearMonth of the Calendar.

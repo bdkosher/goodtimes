@@ -136,6 +136,20 @@ class ZoneOffsetExtension {
     }
 
     /**
+     * If this offset is less than zero, makes it positive.
+     */
+    static ZoneOffset positive(final ZoneOffset self) {
+        ZoneOffset.ofTotalSeconds(Math.abs(self.totalSeconds))
+    }
+
+    /**
+     * Negates this offset.
+     */
+    static ZoneOffset negative(final ZoneOffset self) {
+        ZoneOffset.ofTotalSeconds(Math.negateExact(self.totalSeconds))
+    }
+
+    /**
      * Returns the hours component of the ZoneOffset.
      */
     static int getHours(final ZoneOffset self) {
@@ -168,5 +182,5 @@ class ZoneOffsetExtension {
      */
     static OffsetDateTime leftShift(final ZoneOffset self, LocalDateTime dateTime) {
         OffsetDateTime.of(dateTime, self)
-    }    
+    }
 }

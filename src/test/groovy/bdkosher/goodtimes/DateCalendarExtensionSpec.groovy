@@ -21,6 +21,7 @@ class DateCalendarExtensionSpec extends Specification {
         cal.month == Month.FEBRUARY
         cal.yearMonth == YearMonth.of(2017, Month.FEBRUARY)
         cal.dayOfWeek == DayOfWeek.SATURDAY
+        cal.monthDay == MonthDay.of(Month.FEBRUARY, 4)
     }
 
     def "Calendar toLocalDate"() {
