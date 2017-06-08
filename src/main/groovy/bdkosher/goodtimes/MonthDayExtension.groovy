@@ -29,4 +29,11 @@ class MonthDayExtension {
     static getAt(final MonthDay self, TemporalField field) {
         self.get(field)
     }
+
+    /**
+     * An alias for getDayOfMonth.
+     */
+    static getDay(final MonthDay self) {
+        self.getDayOfMonth()
+    }
 }

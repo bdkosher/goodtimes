@@ -14,6 +14,7 @@ extensionClasses = \
     bdkosher.goodtimes.YearExtension, \
     bdkosher.goodtimes.YearMonthExtension, \
     bdkosher.goodtimes.ZonedDateTimeExtension, \
+    bdkosher.goodtimes.ZoneOffsetExtension, \
     bdkosher.goodtimes.ZoneIdExtension
 staticExtensionClasses = \
     bdkosher.goodtimes.DayOfWeekStaticExtension, \

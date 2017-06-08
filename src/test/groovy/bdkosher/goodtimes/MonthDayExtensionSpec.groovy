@@ -42,6 +42,14 @@ class MonthDayExtensionSpec extends Specification {
         date.year == 2017
         date.month == Month.MARCH
         date.day == 26
-    }    
+    }
+
+    def "getDay method supported"() {
+        given:
+        MonthDay md = MonthDay.of(Month.JUNE, 7)
+
+        expect:
+        md.day == 7
+    }
 
 }
