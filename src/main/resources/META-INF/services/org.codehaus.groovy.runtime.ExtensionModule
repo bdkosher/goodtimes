@@ -10,6 +10,7 @@ extensionClasses = \
     bdkosher.goodtimes.LocalTimeExtension, \
     bdkosher.goodtimes.MonthExtension, \
     bdkosher.goodtimes.MonthDayExtension, \
+    bdkosher.goodtimes.OffsetDateTimeExtension, \
     bdkosher.goodtimes.PeriodExtension, \
     bdkosher.goodtimes.YearExtension, \
     bdkosher.goodtimes.YearMonthExtension, \
