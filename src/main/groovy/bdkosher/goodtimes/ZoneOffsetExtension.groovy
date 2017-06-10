@@ -62,50 +62,6 @@ class ZoneOffsetExtension {
     }
 
     /**
-     * Adds the given value of the id to this offset. The offset id may be in the forms supported by the getId() method.
-     * <ul>
-     * <li>Z</li>
-     * <li>+h</li>
-     * <li>+hh</li>
-     * <li>+hh:mm</li>
-     * <li>-hh:mm</li>
-     * <li>+hhmm</li>
-     * <li>-hhmm</li>
-     * <li>+hh:mm:ss</li>
-     * <li>-hh:mm:ss</li>
-     * <li>+hhmmss</li>
-     * <li>-hhmmss</li>
-     * </ul>
-     * The +/- prefix is optional and, if absent, will be assumed to be positive.
-     * If the result is outside of the supported range of -18 to +18 hours, a DateTimeException will be thrown.
-     */
-    static ZoneOffset plus(final ZoneOffset self, String offsetId) {
-        plus(self, ZoneOffset.of(prefixOffsetId(offsetId)))
-    }
-
-    /**
-     * Subtracts the given value of the id to this offset. The offset id may be in the forms supported by the getId() method.
-     * <ul>
-     * <li>Z</li>
-     * <li>+h</li>
-     * <li>+hh</li>
-     * <li>+hh:mm</li>
-     * <li>-hh:mm</li>
-     * <li>+hhmm</li>
-     * <li>-hhmm</li>
-     * <li>+hh:mm:ss</li>
-     * <li>-hh:mm:ss</li>
-     * <li>+hhmmss</li>
-     * <li>-hhmmss</li>
-     * </ul>
-     * The +/- prefix is optional and, if absent, will be assumed to be positive.
-     * If the result is outside of the supported range of -18 to +18 hours, a DateTimeException will be thrown.
-     */
-    static ZoneOffset minus(final ZoneOffset self, String offsetId) {
-        minus(self, ZoneOffset.of(prefixOffsetId(offsetId)))
-    }
-
-    /**
      * Adds the given number of hours to this ZoneOffset, returning a new ZoneOffset for the total hours.
      * If the result is outside of the supported range of -18 to +18 hours, a DateTimeException will be thrown.
      */

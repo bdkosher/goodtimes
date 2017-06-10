@@ -25,7 +25,6 @@ class ZonedDateTimeExtensionSpec extends Specification {
 
         then:
         cal.timeZone == TimeZone.getTimeZone('GMT')
-
     }
 
     def "toDate preserves time zone"() {
@@ -337,7 +336,7 @@ class ZonedDateTimeExtensionSpec extends Specification {
         ldt[Calendar.SHORT_STANDALONE]
 
         then:
-            thrown IllegalArgumentException
+        thrown IllegalArgumentException
     }
 
     def "getAt invalid Calendar field"() {

@@ -171,84 +171,6 @@ class ZoneOffsetExtensionSpec extends Specification {
         
         then:
         thrown DateTimeException
-    }    
-
-    def "adding and subtracting ZoneOffset ID strings with no sign symbol are considered positive"() {
-        given:
-        ZoneOffset zero = ZoneOffset.ofHours(0)
-
-        expect:
-        ['1', '01', '01:00', '0100', '01:00:00', '010000'].each { id ->
-            assert zero + id == ZoneOffset.ofHours(1)
-            assert zero - id == ZoneOffset.ofHours(-1)
-        }
-    }
-
-    def "adding and subtracting ZoneOffset ID strings of positive sign symbol"() {
-        given:
-        ZoneOffset zero = ZoneOffset.ofHours(0)
-
-        expect:
-        ['+1', '+01', '+01:00', '+0100', '+01:00:00', '+010000'].each { id ->
-            assert zero + id == ZoneOffset.ofHours(1)
-            assert zero - id == ZoneOffset.ofHours(-1)
-        }
-    }
-
-    def "adding and subtracting ZoneOffset ID strings of positive sign symbol"() {
-        given:
-        ZoneOffset zero = ZoneOffset.ofHours(0)
-
-        expect:
-        ['+1', '+01', '+01:00', '+0100', '+01:00:00', '+010000'].each { id ->
-            assert zero + id == ZoneOffset.ofHours(1)
-            assert zero - id == ZoneOffset.ofHours(-1)
-        }
-    }
-
-    def "adding and subtracting ZoneOffset ID strings of negative sign symbol"() {
-        given:
-        ZoneOffset zero = ZoneOffset.ofHours(0)
-
-        expect:
-        ['-1', '-01', '-01:00', '-0100', '-01:00:00', '-010000'].each { id ->
-            assert zero + id == ZoneOffset.ofHours(-1)
-            assert zero - id == ZoneOffset.ofHours(1)
-        }   
-    }
-
-    def "adding and subtracting ZoneOffset ID string with minutes and seconds"() {
-        given:
-        ZoneOffset oneTwoThree = ZoneOffset.ofHoursMinutesSeconds(1, 2, 3)
-
-        when:
-        ZoneOffset sum = oneTwoThree + '+01:02:03'
-        ZoneOffset difference = oneTwoThree - '-01:02:03'
-
-        then:
-        sum == ZoneOffset.ofHoursMinutesSeconds(2, 4, 6)
-        difference == sum
-    }
-
-    def "adding and subtracting 'Z' has no effect"() {
-        given:
-        ZoneOffset zo = ZoneOffset.ofHoursMinutes(10, 30)
-
-        when:
-        ZoneOffset sum = zo + 'Z'
-        ZoneOffset difference = zo - 'Z'
-
-        then:
-        sum == zo
-        difference == zo
-    }
-
-    def "attempting to add invalid ZoneOffset ID string"() {
-        when:
-        ZoneOffset.MIN + 'ohio'
-
-        then:
-        thrown DateTimeException
     }
 
     def "getAt with supported field"() {
@@ -352,6 +274,19 @@ class ZoneOffsetExtensionSpec extends Specification {
 
         then:
         mod == orig
+    }
+
+    def "negating an offset with hours, minutes, and seconds negates all units"() {
+        given:
+        ZoneOffset orig = ZoneOffset.ofHoursMinutesSeconds(10, 30, 30)
+
+        when:
+        ZoneOffset mod = -orig
+
+        then:
+        mod.hours == -10
+        mod.minutes == -30
+        mod.seconds == -30
     }
 
 }
