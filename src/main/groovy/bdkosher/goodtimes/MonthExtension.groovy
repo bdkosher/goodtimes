@@ -13,18 +13,18 @@ class MonthExtension {
     static final Map<Month, Integer> monthToCalendarMonth = Month.values().collectEntries { [it, Calendar.@"$it"]}  
 
     /** 
-     * Returns the Month that is {@code days} many days after this Month.
+     * Returns the Month that is {@code months} many months after this Month.
      */
-    static Month plus(final Month self, int days) {
-        int val = ((self.value + days - 1) % 12) + 1
+    static Month plus(final Month self, int months) {
+        int val = ((self.value + months - 1) % 12) + 1
         Month.of(val > 0 ? val : 12 + val)
     }
 
     /** 
-     * Returns the Month that is {@code days} many days before this Month.
+     * Returns the Month that is {@code months} many months before this Month.
      */
-    static Month minus(final Month self, int days) {
-        plus(self, days * -1)
+    static Month minus(final Month self, int months) {
+        plus(self, months * -1)
     }
 
     /**

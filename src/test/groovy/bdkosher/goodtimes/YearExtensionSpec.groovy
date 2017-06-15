@@ -118,48 +118,32 @@ class YearExtensionSpec extends Specification {
         later.value == 0
     }
 
-    def "adding positive years by type"() {
+    def "period between 2000 and 2017 is 17 years"() {
         given:
-        Year y = Year.of(0)
+        Year y2k = Year.of(2000)
+        Year y2k17 = Year.of(2017)
 
         when:
-        Year later = y + Year.of(10)
+        Period period = y2k - y2k17
 
         then:
-        later.value == 10
+        period.years == 17
+        period.months == 0
+        period.days == 0
     }
 
-    def "adding negaive years by type"() {
+    def "period between 2017 and 2000 is -17 years"() {
         given:
-        Year y = Year.of(10)
+        Year y2k = Year.of(2000)
+        Year y2k17 = Year.of(2017)
 
         when:
-        Year later = y + Year.of(-10)
+        Period period = y2k17 - y2k
 
         then:
-        later.value == 0
-    }
-
-    def "subtracting positive years by type"() {
-        given:
-        Year y = Year.of(0)
-
-        when:
-        Year later = y - Year.of(10)
-
-        then:
-        later.value == -10
-    }
-
-    def "subtracting negative years by type"() {
-        given:
-        Year y = Year.of(-10)
-
-        when:
-        Year later = y - Year.of(-10)
-
-        then:
-        later.value == 0
+        period.years == -17
+        period.months == 0
+        period.days == 0
     }    
 
     def "creating a YearMonth from a Month"() {

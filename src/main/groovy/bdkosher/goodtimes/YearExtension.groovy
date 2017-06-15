@@ -51,17 +51,10 @@ class YearExtension {
     }
 
     /**
-     * Returns the Year that is the sum of this year and the given year.
+     * Returns the Period of time between this year and the given year.
      */
-    static Year plus(final Year self, Year other) {
-        Year.of(self.value + other.value)
-    }
-
-    /**
-     * Returns the Year that is the difference between this year and the given year.
-     */
-    static Year minus(final Year self, Year other) {
-        Year.of(self.value - other.value)
+    static Period minus(final Year self, Year to) {
+        Period.ofYears(to.value - self.value)
     }
 
     /**

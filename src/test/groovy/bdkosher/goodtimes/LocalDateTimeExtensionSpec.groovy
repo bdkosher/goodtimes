@@ -34,6 +34,7 @@ class LocalDateTimeExtensionSpec extends Specification {
         cal.get(Calendar.MINUTE) == 34
         cal.get(Calendar.SECOND) == 56
         cal.get(Calendar.MILLISECOND) == 78
+        cal.get(Calendar.ZONE_OFFSET) == Calendar.instance.get(Calendar.ZONE_OFFSET)
     }
 
     def "toCalendar works decently enough as you could expect, explicit Locale"() {
@@ -51,7 +52,25 @@ class LocalDateTimeExtensionSpec extends Specification {
         cal.get(Calendar.MINUTE) == 34
         cal.get(Calendar.SECOND) == 56
         cal.get(Calendar.MILLISECOND) == 78
-    }        
+    }
+
+def "toCalendar works decently enough as you could expect, explicit TimeZone"() {
+        given:
+        LocalDateTime time = LocalDateTime.of(2017, Month.MARCH, 25, 12, 34, 56, 78e6 as int)
+
+        when:
+        Calendar cal = time.toCalendar(TimeZone.getTimeZone('GMT-1:00'))
+
+        then:
+        cal.get(Calendar.YEAR) == 2017
+        cal.get(Calendar.MONTH) == Calendar.MARCH
+        cal.get(Calendar.DATE) == 25
+        cal.get(Calendar.HOUR_OF_DAY) == 12
+        cal.get(Calendar.MINUTE) == 34
+        cal.get(Calendar.SECOND) == 56
+        cal.get(Calendar.MILLISECOND) == 78
+        cal.get(Calendar.ZONE_OFFSET) == -1 * 60 * 60 * 1000
+    }            
 
     def "plus seconds"() {
         given:
