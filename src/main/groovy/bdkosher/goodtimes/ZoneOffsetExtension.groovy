@@ -3,7 +3,9 @@ package bdkosher.goodtimes
 import java.time.Duration
 import java.time.Instant
 import java.time.LocalDateTime
+import java.time.LocalTime
 import java.time.OffsetDateTime
+import java.time.OffsetTime
 import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
@@ -17,32 +19,13 @@ import groovy.transform.PackageScope
 class ZoneOffsetExtension {
 
     /**
-     * Prefixes an offsetId if there is no prefix (and it's not equal to "Z")
-     */
-    @PackageScope
-    static final prefixOffsetId = { String offsetId ->
-        if (offsetId != null && offsetId != 'Z' && offsetId.length() > 0 && !['+', '-'].contains(offsetId[0])) {
-            '+' + offsetId
-        } else {
-            offsetId
-        }
-    }
-
-    @PackageScope
-    static final describeAsDuration = { ZoneOffset zoneOfset ->
-        Duration.ofSeconds(zoneOfset.totalSeconds).describe()
-    }
-
-    /**
      * Describes this ZoneOffset as a Map of ChronoUnit keys (HOURS, MINUTES, and SECONDS) and integer values. The values
      * are normalized. For example, <code>ZoneOffset.ofTotalSeconds(60 * 60 * 3 + 60 * 15).describe()</code> would return
      * <code>[ChronoUnit.HOURS) : 3, (ChronoUnit.MINUTES) : 15, (ChronoUnit.SECONDS) : 0]</code>.
      * If a ZoneOffset is negative, then all of the non-zero fields will be negative.
      */
     static Map<TemporalUnit, Integer> describe(final ZoneOffset self) {
-        DurationExtension.describe(toDuration(self))
-                .findAll { k, v -> k != ChronoUnit.NANOS }
-                .collectEntries { k, v -> [(k): v as Integer]}
+        Duration.ofSeconds(self.totalSeconds).describe().findAll { k, v -> k != ChronoUnit.NANOS }
     }
 
     /**
@@ -109,21 +92,21 @@ class ZoneOffsetExtension {
      * Returns the hours component of the ZoneOffset.
      */
     static int getHours(final ZoneOffset self) {
-        describeAsDuration(self)[ChronoUnit.HOURS]
+        describe(self)[ChronoUnit.HOURS]
     }
 
     /**
      * Returns the minutes component of the ZoneOffset. All current, legitimate offsets are in increments of 15 minutes.
      */
     static int getMinutes(final ZoneOffset self) {
-        describeAsDuration(self)[ChronoUnit.MINUTES]
+        describe(self)[ChronoUnit.MINUTES]
     }
 
     /**
      * Returns the seconds component of the ZoneOffset--not the total seconds. All current, legitimate offsets will have a seconds component of 0.
      */
     static int getSeconds(final ZoneOffset self) {
-        describeAsDuration(self)[ChronoUnit.SECONDS]
+        describe(self)[ChronoUnit.SECONDS]
     }
 
     /**
@@ -138,5 +121,12 @@ class ZoneOffsetExtension {
      */
     static OffsetDateTime leftShift(final ZoneOffset self, LocalDateTime dateTime) {
         OffsetDateTime.of(dateTime, self)
+    }
+
+    /**
+     * Returns an OffsetTime of this ZoneOffset and the given time.
+     */
+    static OffsetTime leftShift(final ZoneOffset self, LocalTime time) {
+        OffsetTime.of(time, self)
     }
 }

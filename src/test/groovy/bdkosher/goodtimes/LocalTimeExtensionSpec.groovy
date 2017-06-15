@@ -21,7 +21,7 @@ class LocalTimeExtensionSpec extends Specification {
 
     def "plus seconds"() {
         given:
-        LocalTime orig = LocalTime.of(12, 34, 56)
+        LocalTime orig = LocalTime.of(12, 34, 56, 78)
 
         when:
         LocalTime mod = orig + 2
@@ -30,12 +30,12 @@ class LocalTimeExtensionSpec extends Specification {
         mod.hour == orig.hour
         mod.minute == orig.minute
         mod.second == orig.second + 2
-        mod.nano == 0
+        mod.nano == orig.nano
     }
 
     def "minus seconds"() {
         given:
-        LocalTime orig = LocalTime.of(12, 34, 56)
+        LocalTime orig = LocalTime.of(12, 34, 56, 78)
 
         when:
         LocalTime mod = orig - 2
@@ -44,12 +44,12 @@ class LocalTimeExtensionSpec extends Specification {
         mod.hour == orig.hour
         mod.minute == orig.minute
         mod.second == orig.second - 2
-        mod.nano == 0
+        mod.nano == orig.nano
     }
 
     def "next second"() {
         given:
-        LocalTime orig = LocalTime.of(12, 34, 56)
+        LocalTime orig = LocalTime.of(12, 34, 56, 78)
 
         when:
         LocalTime next = orig.next()
@@ -67,123 +67,6 @@ class LocalTimeExtensionSpec extends Specification {
 
         then:
         prev.second == orig.second - 1
-    }    
-
-    def "plus Duration of seconds only"() {
-        given:
-        LocalTime orig = LocalTime.of(12, 34, 56)
-
-        when:
-        LocalTime mod = orig + Duration.ofSeconds(1)
-
-        then:
-        mod.hour == orig.hour
-        mod.minute == orig.minute
-        mod.second == orig.second + 1
-    }
-
-    def "plus Duration of negative seconds only"() {
-        given:
-        LocalTime orig = LocalTime.of(12, 23, 56)
-
-        when:
-        LocalTime mod = orig + Duration.ofSeconds(-1)
-
-        then:
-        mod.hour == orig.hour
-        mod.minute == orig.minute
-        mod.second == orig.second - 1
-    }    
-
-    def "plus Duration of minutes only"() {
-        given:
-        LocalTime orig = LocalTime.of(12, 34, 56)
-
-        when:
-        LocalTime mod = orig + Duration.ofMinutes(1)
-
-        then:
-        mod.hour == orig.hour
-        mod.minute == orig.minute + 1
-        mod.second == orig.second
-    }
-
-    def "plus Duration of hours only"() {
-        given:
-        LocalTime orig = LocalTime.of(12, 34, 56)
-
-        when:
-        LocalTime mod = orig + Duration.ofHours(1)
-
-        then: 
-        mod.hour == orig.hour + 1
-        mod.minute == orig.minute
-        mod.second == orig.second
-    }
-
-    def "plus Duration of hours, minutes, and seconds"() {
-        given:
-        LocalTime orig = LocalTime.of(12, 34, 56)
-
-        when:
-        LocalTime mod = orig + Duration.ofHours(1).plusMinutes(1).plusSeconds(1)
-
-        then:
-        mod.hour == orig.hour + 1
-        mod.minute == orig.minute + 1
-        mod.second == orig.second + 1
-    }
-
-    def "plus Duration of negative hours, minutes, and seconds"() {
-        given:
-        LocalTime orig = LocalTime.of(12, 34, 56)
-
-        when:
-        LocalTime mod = orig + Duration.ofHours(-1).plusMinutes(-1).plusSeconds(-1)
-
-        then:
-        mod.hour == orig.hour - 1
-        mod.minute == orig.minute - 1
-        mod.second == orig.second - 1
-    }    
-
-    def "minus Duration of seconds only"() {
-        given:
-        LocalTime orig = LocalTime.of(12, 34, 56)
-
-        when:
-        LocalTime mod = orig - Duration.ofSeconds(1)
-
-        then:
-        mod.hour == orig.hour
-        mod.minute == orig.minute
-        mod.second == orig.second - 1
-    }
-
-    def "minus Duration of minutes only"() {
-        given:
-        LocalTime orig = LocalTime.of(12, 34, 56)
-
-        when:
-        LocalTime mod = orig - Duration.ofMinutes(1)
-
-        then:
-        mod.hour == orig.hour
-        mod.minute == orig.minute - 1
-        mod.second == orig.second
-    }
-
-    def "minus Duration of hours only"() {
-        given:
-        LocalTime orig = LocalTime.of(12, 34, 56)
-
-        when:
-        LocalTime mod = orig - Duration.ofHours(1)
-
-        then:
-        mod.hour == orig.hour - 1
-        mod.minute == orig.minute
-        mod.second == orig.second
     }
 
     def "getAt Calendar field"() {
@@ -205,7 +88,7 @@ class LocalTimeExtensionSpec extends Specification {
         lt[Calendar.ERA]
 
         then:
-            thrown IllegalArgumentException
+        thrown IllegalArgumentException
     }
 
     def "getAt invalid Calendar field"() {
@@ -414,5 +297,22 @@ class LocalTimeExtensionSpec extends Specification {
         datetime.hour == time.hour
         datetime.minute == time.minute
         datetime.second == time.second
-    }    
+        datetime.nano == time.nano
+    }
+
+    def "leftShifting a ZoneOffset produces a OffsetTime"() {
+        given:
+        LocalTime lt = LocalTime.of(12, 34, 56)
+        ZoneOffset zoneOffset = ZoneOffset.UTC
+        
+        when:
+        OffsetTime ot = lt << zoneOffset
+
+        then:
+        ot.hour == lt.hour
+        ot.minute == lt.minute
+        ot.second == lt.second
+        ot.nano == lt.nano
+        ot.offset == zoneOffset     
+    }       
 }

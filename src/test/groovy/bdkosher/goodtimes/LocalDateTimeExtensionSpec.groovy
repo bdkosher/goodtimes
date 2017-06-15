@@ -19,6 +19,40 @@ class LocalDateTimeExtensionSpec extends Specification {
         date.format('yyyy-MM-dd HH:mm:ss.SSS') == '2017-03-25 00:34:56.001'
     }
 
+    def "toCalendar works decently enough as you could expect"() {
+        given:
+        LocalDateTime time = LocalDateTime.of(2017, Month.MARCH, 25, 12, 34, 56, 78e6 as int)
+
+        when:
+        Calendar cal = time.toCalendar()
+
+        then:
+        cal.get(Calendar.YEAR) == 2017
+        cal.get(Calendar.MONTH) == Calendar.MARCH
+        cal.get(Calendar.DATE) == 25
+        cal.get(Calendar.HOUR_OF_DAY) == 12
+        cal.get(Calendar.MINUTE) == 34
+        cal.get(Calendar.SECOND) == 56
+        cal.get(Calendar.MILLISECOND) == 78
+    }
+
+    def "toCalendar works decently enough as you could expect, explicit Locale"() {
+        given:
+        LocalDateTime time = LocalDateTime.of(2017, Month.MARCH, 25, 12, 34, 56, 78e6 as int)
+
+        when:
+        Calendar cal = time.toCalendar(Locale.US)
+
+        then:
+        cal.get(Calendar.YEAR) == 2017
+        cal.get(Calendar.MONTH) == Calendar.MARCH
+        cal.get(Calendar.DATE) == 25
+        cal.get(Calendar.HOUR_OF_DAY) == 12
+        cal.get(Calendar.MINUTE) == 34
+        cal.get(Calendar.SECOND) == 56
+        cal.get(Calendar.MILLISECOND) == 78
+    }        
+
     def "plus seconds"() {
         given:
         LocalDateTime orig = LocalDateTime.of(2017, Month.MARCH, 25, 12, 34, 56)
@@ -74,182 +108,6 @@ class LocalDateTimeExtensionSpec extends Specification {
         then:
         prev.second == orig.second - 1
     }    
-
-    def "plus Duration of seconds only"() {
-        given:
-        LocalDateTime orig = LocalDateTime.of(2017, Month.MARCH, 25, 12, 34, 56)
-
-        when:
-        LocalDateTime mod = orig + Duration.ofSeconds(1)
-
-        then:
-        mod.year == orig.year
-        mod.month == orig.month
-        mod.dayOfMonth == orig.dayOfMonth
-        mod.hour == orig.hour
-        mod.minute == orig.minute
-        mod.second == orig.second + 1
-    }
-
-    def "plus Duration of negative seconds only"() {
-        given:
-        LocalDateTime orig = LocalDateTime.of(2017, Month.MARCH, 25, 12, 23, 56)
-
-        when:
-        LocalDateTime mod = orig + Duration.ofSeconds(-1)
-
-        then:
-        mod.year == orig.year
-        mod.month == orig.month
-        mod.dayOfMonth == orig.dayOfMonth
-        mod.hour == orig.hour
-        mod.minute == orig.minute
-        mod.second == orig.second - 1
-    }    
-
-    def "plus Duration of minutes only"() {
-        given:
-        LocalDateTime orig = LocalDateTime.of(2017, Month.MARCH, 25, 12, 34, 56)
-
-        when:
-        LocalDateTime mod = orig + Duration.ofMinutes(1)
-
-        then:
-        mod.year == orig.year
-        mod.month == orig.month
-        mod.dayOfMonth == orig.dayOfMonth
-        mod.hour == orig.hour
-        mod.minute == orig.minute + 1
-        mod.second == orig.second
-    }
-
-    def "plus Duration of hours only"() {
-        given:
-        LocalDateTime orig = LocalDateTime.of(2017, Month.MARCH, 25, 12, 34, 56)
-
-        when:
-        LocalDateTime mod = orig + Duration.ofHours(1)
-
-        then:
-        mod.year == orig.year
-        mod.month == orig.month
-        mod.dayOfMonth == orig.dayOfMonth
-        mod.hour == orig.hour + 1
-        mod.minute == orig.minute
-        mod.second == orig.second
-    }
-
-    def "plus Duration of hours, minutes, and seconds"() {
-        given:
-        LocalDateTime orig = LocalDateTime.of(2017, Month.MARCH, 25, 12, 34, 56)
-
-        when:
-        LocalDateTime mod = orig + Duration.ofHours(1).plusMinutes(1).plusSeconds(1)
-
-        then:
-        mod.year == orig.year
-        mod.month == orig.month
-        mod.dayOfMonth == orig.dayOfMonth
-        mod.hour == orig.hour + 1
-        mod.minute == orig.minute + 1
-        mod.second == orig.second + 1
-    }
-
-    def "plus Duration of negative hours, minutes, and seconds"() {
-        given:
-        LocalDateTime orig = LocalDateTime.of(2017, Month.MARCH, 25, 12, 34, 56)
-
-        when:
-        LocalDateTime mod = orig + Duration.ofHours(-1).plusMinutes(-1).plusSeconds(-1)
-
-        then:
-        mod.year == orig.year
-        mod.month == orig.month
-        mod.dayOfMonth == orig.dayOfMonth
-        mod.hour == orig.hour - 1
-        mod.minute == orig.minute - 1
-        mod.second == orig.second - 1
-    }    
-
-    def "minus Duration of seconds only"() {
-        given:
-        LocalDateTime orig = LocalDateTime.of(2017, Month.MARCH, 25, 12, 34, 56)
-
-        when:
-        LocalDateTime mod = orig - Duration.ofSeconds(1)
-
-        then:
-        mod.year == orig.year
-        mod.month == orig.month
-        mod.dayOfMonth == orig.dayOfMonth
-        mod.hour == orig.hour
-        mod.minute == orig.minute
-        mod.second == orig.second - 1
-    }
-
-    def "minus Duration of minutes only"() {
-        given:
-        LocalDateTime orig = LocalDateTime.of(2017, Month.MARCH, 25, 12, 34, 56)
-
-        when:
-        LocalDateTime mod = orig - Duration.ofMinutes(1)
-
-        then:
-        mod.year == orig.year
-        mod.month == orig.month
-        mod.dayOfMonth == orig.dayOfMonth
-        mod.hour == orig.hour
-        mod.minute == orig.minute - 1
-        mod.second == orig.second
-    }
-
-    def "minus Duration of hours only"() {
-        given:
-        LocalDateTime orig = LocalDateTime.of(2017, Month.MARCH, 25, 12, 34, 56)
-
-        when:
-        LocalDateTime mod = orig - Duration.ofHours(1)
-
-        then:
-        mod.year == orig.year
-        mod.month == orig.month
-        mod.dayOfMonth == orig.dayOfMonth
-        mod.hour == orig.hour - 1
-        mod.minute == orig.minute
-        mod.second == orig.second
-    }
-
-    def "minus Duration of days, months, and hours"() {
-        given:
-        LocalDateTime orig = LocalDateTime.of(2017, Month.MARCH, 25, 12, 34, 56)
-
-        when:
-        LocalDateTime mod = orig - Duration.ofHours(1).plusMinutes(1).plusSeconds(1)
-
-        then:
-        mod.year == orig.year
-        mod.month == orig.month
-        mod.dayOfMonth == orig.dayOfMonth
-        mod.hour == orig.hour - 1
-        mod.minute == orig.minute - 1
-        mod.second == orig.second - 1
-    }
-
-    def "minus Duration of negative days, months, and hours"() {
-        given:
-        LocalDateTime orig = LocalDateTime.of(2017, Month.MARCH, 25, 12, 34, 56)
-
-        when:
-        LocalDateTime mod = orig -Duration.ofHours(-1).plusMinutes(-1).plusSeconds(-1)
-
-        then:
-        mod.year == orig.year
-        mod.month == orig.month
-        mod.dayOfMonth == orig.dayOfMonth
-        mod.hour == orig.hour + 1
-        mod.minute == orig.minute + 1
-        mod.second == orig.second + 1
-    }
 
     def "getAt Calendar field"() {
         given:

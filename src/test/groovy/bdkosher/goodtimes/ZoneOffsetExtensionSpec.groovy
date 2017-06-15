@@ -3,12 +3,15 @@ package bdkosher.goodtimes
 import java.time.DateTimeException
 import java.time.Instant
 import java.time.LocalDateTime
+import java.time.LocalTime
 import java.time.Month
 import java.time.OffsetDateTime
+import java.time.OffsetTime
 import java.time.ZonedDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.temporal.ChronoField
+import java.time.temporal.ChronoUnit
 import java.time.temporal.UnsupportedTemporalTypeException
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -221,6 +224,22 @@ class ZoneOffsetExtensionSpec extends Specification {
         odt.offset == zoneOffset
     }
 
+    def "left-shifting a LocalTime yields an OffsetTime"() {
+        given:
+        ZoneOffset zoneOffset = ZoneOffset.UTC
+        LocalTime lt = LocalTime.now()
+
+        when:
+        OffsetTime ot = zoneOffset << lt
+
+        then:
+        ot.hour == lt.hour
+        ot.minute == lt.minute
+        ot.second == lt.second
+        ot.nano == lt.nano
+        ot.offset == zoneOffset        
+    }
+
     def "positive operator on a positive offset has no effect"() {
         given:
         ZoneOffset orig = ZoneOffset.MAX
@@ -287,6 +306,20 @@ class ZoneOffsetExtensionSpec extends Specification {
         mod.hours == -10
         mod.minutes == -30
         mod.seconds == -30
+    }
+
+    def "describe() method does not include NANOS"() {
+        given:
+        ZoneOffset zo = ZoneOffset.UTC
+
+        when:
+        Map desc = zo.describe()
+
+        then:
+        desc[ChronoUnit.HOURS] == 0
+        desc[ChronoUnit.MINUTES] == 0
+        desc[ChronoUnit.SECONDS] == 0
+        desc.containsKey(ChronoUnit.NANOS) == false
     }
 
 }

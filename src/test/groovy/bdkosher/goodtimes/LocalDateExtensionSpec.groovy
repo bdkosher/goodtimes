@@ -19,15 +19,15 @@ class LocalDateExtensionSpec extends Specification {
         d.format('yyyy-MM-dd HH:mm:ss.SSS') == '2017-02-21 00:00:00.000'
     }
 
-    def "toDate works decently enough as you could expect with specified time zone"() {
+    def "toDate works decently enough as you could expect with specified Locale"() {
         given:
         LocalDate ld = LocalDate.of(2017, 2, 21)
 
         when:
-        Date d = ld.toDate(TimeZone.getTimeZone('EST'))
+        Date d = ld.toDate(Locale.US)
 
         then:
-        d.format('yyyy-MM-dd HH:mm:ss.SSS z') == '2017-02-21 00:00:00.000 EST'
+        d.format('yyyy-MM-dd HH:mm:ss.SSS') == '2017-02-21 00:00:00.000'
     }    
 
     def "plus days"() {
@@ -75,149 +75,6 @@ class LocalDateExtensionSpec extends Specification {
         then:
         yesterday.dayOfMonth == date.dayOfMonth - 1
     }    
-
-    def "plus Period of days only"() {
-        given:
-        LocalDate orig = LocalDate.of(2017, 1, 8)
-
-        when:
-        LocalDate mod = orig + Period.ofDays(1)
-
-        then:
-        mod.year == orig.year
-        mod.monthValue == orig.monthValue
-        mod.dayOfMonth == orig.dayOfMonth + 1
-    }
-
-    def "plus Period of negative days only"() {
-        given:
-        LocalDate orig = LocalDate.of(2017, 1, 8)
-
-        when:
-        LocalDate mod = orig + Period.ofDays(-1)
-
-        then:
-        mod.year == orig.year
-        mod.monthValue == orig.monthValue
-        mod.dayOfMonth == orig.dayOfMonth - 1
-    }    
-
-    def "plus Period of months only"() {
-        given:
-        LocalDate orig = LocalDate.of(2017, 1, 8)
-
-        when:
-        LocalDate mod = orig + Period.ofMonths(1)
-
-        then:
-        mod.year == orig.year
-        mod.monthValue == orig.monthValue + 1
-        mod.dayOfMonth == orig.dayOfMonth
-    }
-
-    def "plus Period of years only"() {
-        given:
-        LocalDate orig = LocalDate.of(2017, 1, 8)
-
-        when:
-        LocalDate mod = orig + Period.ofYears(1)
-
-        then:
-        mod.year == orig.year + 1
-        mod.monthValue == orig.monthValue
-        mod.dayOfMonth == orig.dayOfMonth
-    }
-
-    def "plus Period of days, months, and years"() {
-        given:
-        LocalDate orig = LocalDate.of(2017, 1, 8)
-
-        when:
-        LocalDate mod = orig + Period.of(1, 1, 1)
-
-        then:
-        mod.year == orig.year + 1
-        mod.monthValue == orig.monthValue + 1
-        mod.dayOfMonth == orig.dayOfMonth + 1
-    }
-
-    def "plus Period of negative days, months, and years"() {
-        given:
-        LocalDate orig = LocalDate.of(2017, 2, 8)
-
-        when:
-        LocalDate mod = orig + Period.of(-1, -1, -1)
-
-        then:
-        mod.year == orig.year - 1
-        mod.monthValue == orig.monthValue - 1
-        mod.dayOfMonth == orig.dayOfMonth - 1
-    }    
-
-    def "minus Period of days only"() {
-        given:
-        LocalDate orig = LocalDate.of(2017, 1, 8)
-
-        when:
-        LocalDate mod = orig - Period.ofDays(1)
-
-        then:
-        mod.year == orig.year
-        mod.monthValue == orig.monthValue
-        mod.dayOfMonth == orig.dayOfMonth - 1
-    }
-
-    def "minus Period of months only"() {
-        given:
-        LocalDate orig = LocalDate.of(2017, 2, 8)
-
-        when:
-        LocalDate mod = orig - Period.ofMonths(1)
-
-        then:
-        mod.year == orig.year
-        mod.monthValue == orig.monthValue - 1
-        mod.dayOfMonth == orig.dayOfMonth
-    }
-
-    def "minus Period of years only"() {
-        given:
-        LocalDate orig = LocalDate.of(2017, 2, 8)
-
-        when:
-        LocalDate mod = orig - Period.ofYears(1)
-
-        then:
-        mod.year == orig.year - 1
-        mod.monthValue == orig.monthValue
-        mod.dayOfMonth == orig.dayOfMonth
-    }
-
-    def "minus Period of days, months, and years"() {
-        given:
-        LocalDate orig = LocalDate.of(2017, 2, 8)
-
-        when:
-        LocalDate mod = orig - Period.of(1, 1, 1)
-
-        then:
-        mod.year == orig.year - 1
-        mod.monthValue == orig.monthValue - 1
-        mod.dayOfMonth == orig.dayOfMonth - 1
-    }
-
-    def "minus Period of negative days, months, and years"() {
-        given:
-        LocalDate orig = LocalDate.of(2017, 2, 8)
-
-        when:
-        LocalDate mod = orig - Period.of(-1, -1, -1)
-
-        then:
-        mod.year == orig.year + 1
-        mod.monthValue == orig.monthValue + 1
-        mod.dayOfMonth == orig.dayOfMonth + 1
-    }
 
     def "getAt Calendar field"() {
         given:
@@ -472,6 +329,7 @@ class LocalDateExtensionSpec extends Specification {
         datetime.hour == offsetTime.hour
         datetime.minute == offsetTime.minute
         datetime.second == offsetTime.second
+        datetime.nano == offsetTime.nano
         datetime.offset == ZoneOffset.UTC
     }    
 }
