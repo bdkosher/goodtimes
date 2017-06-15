@@ -180,11 +180,19 @@ class LocalDateExtension {
     }
 
     /**
-     * Converts a LocalDate to a (mostly) equivalent instance of java.util.Date. The time value of the returned Date is cleared,
-     * and the TimeZone and Locale are set to system defaults unless explicitly specified.
+     * Converts a LocalDate to a (mostly) equivalent instance of java.util.Date. The time value of the returned Date is cleared
+     * and the TimeZone is the system default. The Locale is also the system default unless explicitly specified.
      */
-    static Date toDate(final LocalDate self, TimeZone timeZone = null, Locale locale = null) {
-        toCalendar(self, timeZone, locale).time
+    static Date toDate(final LocalDate self, Locale locale = null) {
+        toCalendar(self, locale).time
+    }
+
+    /**
+     * Converts a LocalDate to a (mostly) equivalent instance of java.util.Calendar for the given Locale. The time value of the 
+     * returned Calendar is cleared and the TimeZone is set to the system default unless explicitly specified.
+     */
+    static Calendar toCalendar(final LocalDate self, Locale locale) {
+        toCalendar(self, null, locale)
     }
 
     /**

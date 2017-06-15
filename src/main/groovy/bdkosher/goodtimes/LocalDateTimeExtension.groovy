@@ -190,11 +190,19 @@ class LocalDateTimeExtension {
     }
 
     /**
-     * Converts a LocalDateTime to a (mostly) equivalent instance of java.util.Date.
-     * The TimeZone and Locale are set to system defaults unless explicitly specified.
+     * Converts a LocalDateTime to a (mostly) equivalent instance of java.util.Date. The TimeZone is set to the system default.
+     * The Locale is also the system default unless explicitly specified. Time is truncated to the nearest millisecond.
      */
-    static Date toDate(final LocalDateTime self, TimeZone timeZone = null, Locale locale = null) {
-        toCalendar(self, timeZone, locale).time
+    static Date toDate(final LocalDateTime self, Locale locale = null) {
+        toCalendar(self, null, locale).time
+    }    
+
+    /**
+     * Converts a LocalDateTime to a (mostly) equivalent instance of java.util.Calendar for the given Locale.
+     * The TimeZone is set to system default. Time is truncated to nearest millisecond.
+     */
+    static Calendar toCalendar(final LocalDateTime self, Locale locale) {
+        toCalendar(self, null, locale)
     }
 
     /**

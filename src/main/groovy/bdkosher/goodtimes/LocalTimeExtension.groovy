@@ -146,14 +146,30 @@ class LocalTimeExtension {
      */
     static LocalDateTime leftShift(final LocalTime self, LocalDate date) {
         LocalDateTime.of(date, self)
-    }    
+    }
+
+    /**
+     * Returns an OffsetTime of this LocalTime and the given ZoneOffset.
+     */
+    static OffsetTime leftShift(final LocalTime self, ZoneOffset offset) {
+        OffsetTime.of(self, offset)
+    }
 
     /**
      * Converts a LocalTime to a (mostly) equivalent instance of java.util.Date. The day-month-year value of the returned Date is now,
-     * and the TimeZone and Locale are set to system defaults unless explicitly specified. Time is truncated to nearest millisecond.
+     * the TimeZone is the system default, and the Locale is the system defaults unless explicitly specified. 
+     * Time is truncated to nearest millisecond.
      */
-    static Date toDate(final LocalTime self, TimeZone timeZone = null, Locale locale = null) {
-        toCalendar(self, timeZone, locale).time
+    static Date toDate(final LocalTime self, Locale locale = null) {
+        toCalendar(self, locale).time
+    }
+
+    /**
+     * Converts a LocalTime to a (mostly) equivalent instance of java.util.Calendar for the given Locale. The time value of the returned 
+     * Calendar is cleared and the TimeZone is set to the system default. Time is truncated to nearest millisecond.
+     */
+    static Calendar toCalendar(final LocalTime self, Locale locale) {
+        toCalendar(self, null, locale)
     }
 
     /**
