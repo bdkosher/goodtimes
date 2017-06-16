@@ -19,15 +19,40 @@ class LocalDateExtensionSpec extends Specification {
         d.format('yyyy-MM-dd HH:mm:ss.SSS') == '2017-02-21 00:00:00.000'
     }
 
-    def "toDate works decently enough as you could expect with specified Locale"() {
+    def "toCalendar works decently enough as you could expect with specified Locale"() {
         given:
         LocalDate ld = LocalDate.of(2017, 2, 21)
 
         when:
-        Date d = ld.toDate(Locale.US)
+        Calendar cal = ld.toCalendar(Locale.US)
 
         then:
-        d.format('yyyy-MM-dd HH:mm:ss.SSS') == '2017-02-21 00:00:00.000'
+        cal.get(Calendar.YEAR) == 2017
+        cal.get(Calendar.MONTH) == Calendar.FEBRUARY
+        cal.get(Calendar.DATE) == 21
+        cal.get(Calendar.HOUR_OF_DAY) == 0
+        cal.get(Calendar.MINUTE) == 0
+        cal.get(Calendar.SECOND) == 0
+        cal.get(Calendar.MILLISECOND) == 0
+        cal.get(Calendar.ZONE_OFFSET) == Calendar.instance.get(Calendar.ZONE_OFFSET)
+    }
+
+    def "toCalendar works decently enough as you could expect with specified TimeZone"() {
+        given:
+        LocalDate ld = LocalDate.of(2017, 2, 21)
+
+        when:
+        Calendar cal = ld.toCalendar(TimeZone.getTimeZone('GMT+07:00'))
+
+        then:
+        cal.get(Calendar.YEAR) == 2017
+        cal.get(Calendar.MONTH) == Calendar.FEBRUARY
+        cal.get(Calendar.DATE) == 21
+        cal.get(Calendar.HOUR_OF_DAY) == 0
+        cal.get(Calendar.MINUTE) == 0
+        cal.get(Calendar.SECOND) == 0
+        cal.get(Calendar.MILLISECOND) == 0
+        cal.get(Calendar.ZONE_OFFSET) == 7 * 60 * 60 * 1000
     }    
 
     def "plus days"() {

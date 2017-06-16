@@ -166,15 +166,14 @@ class OffsetDateTimeExtension {
     }
 
     /**
-     * Converts a OffsetDateTime to a (mostly) equivalent instance of java.util.Date.
-     * The Locale is set to system defaults unless explicitly specified.
+     * Converts a OffsetDateTime to a (mostly) equivalent instance of java.util.Date. Time is truncated to the nearest millisecond.
      */
     static Date toDate(final OffsetDateTime self, Locale locale = null) {
-        toCalendar(self, locale).time
+        toCalendar(self).time
     }
 
     /**
-     * Converts a OffsetDateTime to a (mostly) equivalent instance of java.util.Calendar.
+     * Converts a OffsetDateTime to a (mostly) equivalent instance of java.util.Calendar. Time is truncated to the nearest millisecond.
      * The Locale is set to system defaults unless explicitly specified.
      */
     static Calendar toCalendar(final OffsetDateTime self, Locale locale = null) {

@@ -141,15 +141,15 @@ class OffsetTimeExtension {
 
     /**
      * Converts a OffsetTime to a (mostly) equivalent instance of java.util.Date. The day-month-year value of the returned Date is now,
-     * and the TimeZone and Locale are set to system defaults unless explicitly specified. Time is truncated to nearest millisecond.
+     * and the time is truncated to nearest millisecond.
      */
     static Date toDate(final OffsetTime self, Locale locale = null) {
-        toCalendar(self, locale).time
+        toCalendar(self).time
     }
 
     /**
-     * Converts a OffsetTime to a (mostly) equivalent instance of java.util.Calendar. The time value of the returned Calendar is cleared,
-     * and the TimeZone and Locale are set to system defaults unless explicitly specified. Time is truncated to nearest millisecond.
+     * Converts a OffsetTime to a (mostly) equivalent instance of java.util.Calendar. The day-month-year value of the returned Date is now
+     * and the Locale is set to the system defaults unless explicitly specified. Time is truncated to nearest millisecond.
      */
     static Calendar toCalendar(final OffsetTime self, Locale locale = null) {
         int offsetMilli = self.offset.totalSeconds * 1000

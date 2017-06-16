@@ -168,15 +168,14 @@ class ZonedDateTimeExtension {
 
     /**
      * Converts a ZonedDateTime to a (mostly) equivalent instance of java.util.Date.
-     * The Locale is set to system defaults unless explicitly specified.
      */
-    static Date toDate(final ZonedDateTime self, Locale locale = null) {
-        toCalendar(self, locale).time
+    static Date toDate(final ZonedDateTime self) {
+        toCalendar(self).time
     }
 
     /**
-     * Converts a ZonedDateTime to a (mostly) equivalent instance of java.util.Calendar.
-     * The Locale is set to system defaults unless explicitly specified.
+     * Converts a ZonedDateTime to a (mostly) equivalent instance of java.util.Calendar. Time is truncated to the nearest millisecond.
+     * The Locale is set to the system default unless explicitly specified.
      */
     static Calendar toCalendar(final ZonedDateTime self, Locale locale = null) {
         int day = self.dayOfMonth
