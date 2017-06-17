@@ -31,4 +31,41 @@ class YearMonthExtensionSpec extends Specification {
         date.day == 26
     }
 
+    def "a lesser YearMonth minus a greater YearMonth yields a positive Period"() {
+        given:
+        YearMonth first = YearMonth.of(2000, Month.MARCH)
+        YearMonth second = YearMonth.of(2017, Month.FEBRUARY)
+
+        when:
+        Period p = first - second
+
+        then:
+        p.years == 16
+        p.months == 11 
+    }
+
+    def "a greater YearMonth minus a lesser YearMonth yields a negative Period"() {
+        given:
+        YearMonth first = YearMonth.of(2000, Month.MARCH)
+        YearMonth second = YearMonth.of(2017, Month.FEBRUARY)
+
+        when:
+        Period p = second - first
+
+        then:
+        p.years == -16
+        p.months == -11 
+    }
+
+    def "a YearMonth minus itself is a Period of zero"() {
+        given:
+        YearMonth ym = YearMonth.of(2017, Month.JUNE)
+
+        when:
+        Period p = ym - ym
+
+        then:
+        p.isZero()
+    }
+
 }
