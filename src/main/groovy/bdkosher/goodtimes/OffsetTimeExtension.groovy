@@ -143,7 +143,7 @@ class OffsetTimeExtension {
      * Converts a OffsetTime to a (mostly) equivalent instance of java.util.Date. The day-month-year value of the returned Date is now,
      * and the time is truncated to nearest millisecond.
      */
-    static Date toDate(final OffsetTime self, Locale locale = null) {
+    static Date toDate(final OffsetTime self) {
         toCalendar(self).time
     }
 
