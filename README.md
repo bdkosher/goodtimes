@@ -1,5 +1,5 @@
 # Goodtimes
-*Java 8 Date/Time API enhancements for Groovy*  [![Maven Central](https://img.shields.io/maven-central/v/com.github.bdkosher/goodtimes.svg)](http://repo1.maven.org/maven2/com/github/bdkosher/goodtimes/1.0/goodtimes-1.0.jar)  [![GitHub release](https://img.shields.io/github/tag/bdkosher/goodtimes.svg)](https://github.com/bdkosher/goodtimes/releases/tag/v1.0)
+*Java 8 Date/Time API enhancements for Groovy*  [![Maven Central](https://img.shields.io/maven-central/v/com.github.bdkosher/goodtimes.svg)](http://repo1.maven.org/maven2/com/github/bdkosher/goodtimes/1.1/goodtimes-1.1.jar)  [![GitHub release](https://img.shields.io/github/tag/bdkosher/goodtimes.svg)](https://github.com/bdkosher/goodtimes/releases/tag/v1.1)
 
 ![goodtimes logo](https://raw.githubusercontent.com/bdkosher/goodtimes/master/logo.gif)
 
