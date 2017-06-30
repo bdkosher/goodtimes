@@ -64,7 +64,7 @@ Most extension methods are used to overload operators on the `java.time` types.
 
 #### The `++` and `--` Operators
 
-Increment or decrement `Instant`, `LocalTime`, `LocalDateTime`, `OffsetTime`, `OffsetDateTime`, `ZoneDateTime`, and `Duration` by 1 second. For `LocalDate`, `Period`, and `DayOfWeek`, increment or decrement by a day. Increment or decrement by an hour for `ZoneOffset`. Increment or decrement by a month for `Month` or a year for `Year`.
+Increment or decrement `Instant`, `LocalTime`, `LocalDateTime`, `OffsetTime`, `OffsetDateTime`, `ZoneDateTime`, and `Duration` by one second. For `LocalDate`, `Period`, and `DayOfWeek`, increment or decrement by one day. Increment or decrement by one hour for `ZoneOffset`, one month for `Month`, and one year for `Year`.
 
 ```groovy
     def now = LocalTime.now()
@@ -80,7 +80,7 @@ Increment or decrement `Instant`, `LocalTime`, `LocalDateTime`, `OffsetTime`, `O
 
 #### The `+` and `-` Binary Operators
 
-Add seconds using a `long` or `int` primitive directly to  `Instant`, `LocalTime`, `LocalDateTime`, `OffsetTime`, `OffsetDateTime`, `ZoneDateTime`, and `Duration`. Add or substract days for `LocalDate`, `Period`, and `DayOfWeek`. Add or subtract hours for `ZoneOffset`. Add or subtract months for `Month`. Add or subtract years for `Year`.
+A `long` or `int` operand adds seconds directly to  `Instant`, `LocalTime`, `LocalDateTime`, `OffsetTime`, `OffsetDateTime`, `ZoneDateTime`, and `Duration`. Add or subtract days for `LocalDate`, `Period`, and `DayOfWeek`. Add or subtract hours for `ZoneOffset`. Add or subtract months for `Month`. Add or subtract years for `Year`.
 
 ```groovy
     def now = LocalDateTime.now()
@@ -106,7 +106,7 @@ The `-` operator, which can be read as meaning "through," can be used to create 
 
 #### The `[]` Operator
 
-This operator delegates to the `java.time` types' `get()` or `getLong()` methods, enabling retrieval of the specified `TemporalField` (for `Instant`, `LocalTime`, and `LocalDateTime`) or `TemporalUnit`(for `Period` and `Duration`).
+This operator delegates to the `java.time` types' `get()` or `getLong()` methods, enabling retrieval of the specified `TemporalField` (for `Instant`, `LocalTime`, `LocalDateTime`, `OffsetDateTime`, and `ZonedDateTime`) or `TemporalUnit`(for `Period` and `Duration`).
 
 ```groovy
     def sixtySeconds = Duration.parse('PT60S')
@@ -125,7 +125,7 @@ In addition to supporting `TemporalField` arguments, the `LocalDate`, `LocalTime
 
 #### The `<<` Operator
 
-Left shifting can be used to merge two different `java.time` types into a larger aggregate type. For example, left-shifting a `LocalTime` into a `LocalDate` (or vice versa) results in a `LocalDateTime`.
+Left shifting can be used to merge two different `java.time` types into a larger aggregate type. For example, left-shifting a `LocalTime` into a `LocalDate` results in a `LocalDateTime`. Left shifting is reflexive so that `A << B` yields the same result as `B << A`.
 
 ```groovy
     def thisYear = Year.of(2017)
@@ -254,25 +254,28 @@ A static `eachMonth` method exists on `Month` for iterating through every month.
 
 #### Other Methods
 
-Similar to `Date`, the `LocalDateTime`, `OffsetDateTime`, and `ZonedDateTime` classes have a `clearTime()` method that returns a new instance of the same type with the hours, minutes, seconds, and nanos set to zero. 
+**clearTime()** Similar to `Date`, the `LocalDateTime`, `OffsetDateTime`, and `ZonedDateTime` classes have a `clearTime()` method that returns a new instance of the same type with the hours, minutes, seconds, and nanos set to zero. 
 
-The `Duration` class has a `describe()` method which returns the normalized String representation as a map of `ChronoUnit` keys: `DAYS`, `HOURS`, `MINUTES`, `SECONDS`, and `NANOS`.
+**describe()** The `Duration` class has a `describe()` method which returns the normalized String representation as a map of `ChronoUnit` keys: `DAYS`, `HOURS`, `MINUTES`, `SECONDS`, and `NANOS`. The `Period` class also has a `describe()` method but with the `ChronoUnit` keys of `YEARS`, `MONTHS`, and `DAYS`.
 
 ```groovy
-    Map<TemporalUnit, Long> desc = Duration.parse('P2DT3H4M5.000000006S').describe()
+    Map<TemporalUnit, Long> durationDesc = Duration.parse('P2DT3H4M5.000000006S').describe()
 
-    assert desc[ChronoUnit.DAYS] == 2
-    assert desc[ChronoUnit.HOURS] == 3
-    assert desc[ChronoUnit.MINUTES] == 4
-    assert desc[ChronoUnit.SECONDS] == 5
-    assert desc[ChronoUnit.NANOS] == 6
+    assert durationDesc[ChronoUnit.DAYS] == 2
+    assert durationDesc[ChronoUnit.HOURS] == 3
+    assert durationDesc[ChronoUnit.MINUTES] == 4
+    assert durationDesc[ChronoUnit.SECONDS] == 5
+    assert durationDesc[ChronoUnit.NANOS] == 6
+
+    Map<TemporalUnit, Long> periodDesc = Period.parse('P6Y3M1D').describe()
+    assert periodDesc[ChronoUnit.DAYS] == 1
+    assert periodDesc[ChronoUnit.MONTHS] == 3
+    assert periodDesc[ChronoUnit.YEARS] == 6
 ```
-
-The `Period` class also has a `describe()` method but with the `ChronoUnit` keys of `YEARS`, `MONTHS`, and `DAYS`.
 
 ### Java 8 and Legacy API Bridging Methods 
 
-Extension methods exist on `Date` and `Calendar` that produce a reasonably equivalent `java.time` type. 
+Extension methods exist on `Date` and `Calendar` that produce a reasonably equivalent `java.time` type.
 
 ```groovy
     def c = Calendar.instance
@@ -294,7 +297,7 @@ Extension methods exist on `Date` and `Calendar` that produce a reasonably equiv
     ZonedDateTime dZonedDateTime = d.toZonedDateTime()
 ```
 
-An optional `ZoneOffset`, `ZoneId`, or `java.util.TimeZone` may be passed to the above conversion methods to alter the Time Zone of the returned `Date` or `Calendar`. 
+An optional `ZoneOffset`, `ZoneId`, or `java.util.TimeZone` may be passed to the above conversion methods to alter the Time Zone of the returned `Calendar` or to adjust the Time Zone of reference for the returned `Date`.
 
 ```groovy
     def d = new Date()
@@ -318,7 +321,7 @@ The `toOffsetDateTime` method requires a `ZoneOffset` argument.
     OffsetDateTime dOffsetDateTime = d.toOffsetDateTime(offset)
 ```
 
-The various `java.time` Date/Time types have `toDate()` and `toCalendar()` methods as well.
+The various `java.time` Date/Time types have `toDate()` and `toCalendar()` methods as well. Nanoseconds are truncated to the nearest millisecond.
 
 ```groovy
     def nows = [LocalDate.now(), LocalTime.now(), LocalDateTime.now(), OffsetDateTime.now(), ZonedDateTime.now()]
@@ -330,4 +333,5 @@ The various `java.time` Date/Time types have `toDate()` and `toCalendar()` metho
 ## Future Changes
 
  * Provide an equivalent to `groovy.time.TimeCategory`
+ * Static parsing methods like `Date.parse`
  * Consider adding missing Date/Calendar methods from Groovy JDK (e.g. `set` and `copyWith`)
