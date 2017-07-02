@@ -75,25 +75,25 @@ class InstantExtensionSpec extends Specification {
         prev.epochSecond == orig.epochSecond - 1
     }    
 
-    def "subtracting Instants produces a positive Duration"() {
+    def "duration between earlier and later Instants is positive"() {
         given:
         Instant now = Instant.now()
         Instant later = now.plusSeconds(1000)
 
         when:
-        Duration duration = now - later
+        Duration duration = now >> later
 
         then:
         duration.seconds == 1000
     }
 
-    def "subtracting Instants produces a negative Duration"() {
+    def "duration between later and earlier Instants is positive"() {
         given:
         Instant now = Instant.now()
         Instant later = now.plusSeconds(1000)
 
         when:
-        Duration duration = later - now
+        Duration duration = later >> now
 
         then:
         duration.seconds == -1000

@@ -124,7 +124,7 @@ class YearExtensionSpec extends Specification {
         Year y2k17 = Year.of(2017)
 
         when:
-        Period period = y2k - y2k17
+        Period period = y2k >> y2k17
 
         then:
         period.years == 17
@@ -138,7 +138,7 @@ class YearExtensionSpec extends Specification {
         Year y2k17 = Year.of(2017)
 
         when:
-        Period period = y2k17 - y2k
+        Period period = y2k17 >> y2k
 
         then:
         period.years == -17

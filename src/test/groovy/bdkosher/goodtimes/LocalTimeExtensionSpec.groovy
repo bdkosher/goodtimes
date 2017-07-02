@@ -129,7 +129,7 @@ class LocalTimeExtensionSpec extends Specification {
         LocalTime hourFromT = t.plusHours(1)
 
         when:
-        Duration duration = t - hourFromT
+        Duration duration = t >> hourFromT
 
         then:
         duration.seconds == 60 * 60
@@ -141,7 +141,7 @@ class LocalTimeExtensionSpec extends Specification {
         LocalTime hourFromT = t.plusHours(1)
 
         when:
-        Duration duration = hourFromT - t
+        Duration duration = hourFromT >> t
 
         then:
         duration.seconds == -1 * 60 * 60

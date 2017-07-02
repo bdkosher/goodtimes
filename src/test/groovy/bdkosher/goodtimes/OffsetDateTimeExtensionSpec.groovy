@@ -396,7 +396,7 @@ class OffsetDateTimeExtensionSpec extends Specification {
         OffsetDateTime later = earlier.plusSeconds(1)
 
         when:
-        Duration duration = earlier - later
+        Duration duration = earlier >> later
 
         then:
         duration.seconds == 1
@@ -408,7 +408,7 @@ class OffsetDateTimeExtensionSpec extends Specification {
         OffsetDateTime later = earlier.plusSeconds(1)
 
         when:
-        Duration duration = later - earlier
+        Duration duration = later >> earlier
 
         then:
         duration.negative

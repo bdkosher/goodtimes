@@ -23,13 +23,7 @@ class OffsetDateTimeExtension {
         if (to > self) {
             throw new GroovyRuntimeException("The argument ($to) to downto() cannot be later than the value ($self) it's called on.")
         }
-        def paramTypes = closure.parameterTypes
-        boolean acceptsDate = paramTypes.length > 0 && paramTypes[0].isAssignableFrom(OffsetDateTime)
-        def from = self
-        while (from >= to) {
-            acceptsDate ? closure(from) : closure()
-            from = from - 1
-        }
+        (self..to).each(closure)
     }
 
     /**
@@ -39,13 +33,7 @@ class OffsetDateTimeExtension {
         if (to < self) {
             throw new GroovyRuntimeException("The argument ($to) to upto() cannot be earlier than the value ($self) it's called on.")
         }
-        def paramTypes = closure.parameterTypes
-        boolean acceptsDate = paramTypes.length > 0 && paramTypes[0].isAssignableFrom(OffsetDateTime)
-        def from = self
-        while (from <= to) {
-            acceptsDate ? closure(from) : closure()
-            from = from + 1
-        }
+        (self..to).each(closure)
     }    
 
     /**
@@ -121,7 +109,7 @@ class OffsetDateTimeExtension {
     /**
      * Returns a Duration equivalent to the time between this LocalTime (inclusive) and the provided LocalTime (exclusive).
      */
-    static Duration minus(final OffsetDateTime self, OffsetDateTime other) {
+    static Duration rightShift(final OffsetDateTime self, OffsetDateTime other) {
         Duration.between(self, other)
     }    
 

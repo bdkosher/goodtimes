@@ -218,7 +218,7 @@ def "toCalendar works decently enough as you could expect, explicit TimeZone"() 
         LocalDateTime later = earlier.plusSeconds(1)
 
         when:
-        Duration duration = earlier - later
+        Duration duration = earlier >> later
 
         then:
         duration.seconds == 1
@@ -230,7 +230,7 @@ def "toCalendar works decently enough as you could expect, explicit TimeZone"() 
         LocalDateTime later = earlier.plusSeconds(1)
 
         when:
-        Duration duration = later - earlier
+        Duration duration = later >> earlier
 
         then:
         duration.negative

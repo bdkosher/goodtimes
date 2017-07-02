@@ -19,13 +19,7 @@ class InstantExtension {
         if (to > self) {
             throw new GroovyRuntimeException("The argument ($to) to downto() cannot be later than the value ($self) it's called on.")
         }
-        def paramTypes = closure.parameterTypes
-        boolean acceptsDate = paramTypes.length > 0 && paramTypes[0].isAssignableFrom(Instant)
-        def from = self
-        while (from >= to) {
-            acceptsDate ? closure(from) : closure()
-            from = from - 1
-        }
+        (self..to).each(closure)
     }
 
     /**
@@ -35,13 +29,7 @@ class InstantExtension {
         if (to < self) {
             throw new GroovyRuntimeException("The argument ($to) to upto() cannot be earlier than the value ($self) it's called on.")
         }
-        def paramTypes = closure.parameterTypes
-        boolean acceptsDate = paramTypes.length > 0 && paramTypes[0].isAssignableFrom(Instant)
-        def from = self
-        while (from <= to) {
-            acceptsDate ? closure(from) : closure()
-            from = from + 1
-        }
+        (self..to).each(closure)
     }
 
     /**
@@ -75,7 +63,7 @@ class InstantExtension {
     /**
      * Returns a TemporalAmount equivalent to the time between this Instant (inclusive) and the provided Instant (exclusive).
      */
-    static Duration minus(final Instant self, Instant other) {
+    static Duration rightShift(final Instant self, Instant other) {
         Duration.between(self, other)
     }
 

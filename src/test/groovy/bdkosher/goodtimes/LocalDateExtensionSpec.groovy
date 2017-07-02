@@ -165,7 +165,7 @@ class LocalDateExtensionSpec extends Specification {
         LocalDate tomorrow = today.plusDays(1)
 
         when:
-        Period period = today - tomorrow
+        Period period = today >> tomorrow
 
         then:
         period.days == 1
@@ -204,7 +204,7 @@ class LocalDateExtensionSpec extends Specification {
         LocalDate tomorrow = today.plusDays(1)
 
         when:
-        Period period = tomorrow - today
+        Period period = tomorrow >> today
 
         then:
         period.days == -1

@@ -53,7 +53,7 @@ class YearExtension {
     /**
      * Returns the Period of time between this year and the given year.
      */
-    static Period minus(final Year self, Year to) {
+    static Period rightShift(final Year self, Year to) {
         Period.ofYears(to.value - self.value)
     }
 

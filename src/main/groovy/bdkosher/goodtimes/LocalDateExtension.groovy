@@ -39,13 +39,7 @@ class LocalDateExtension {
         if (to > self) {
             throw new GroovyRuntimeException("The argument ($to) to downto() cannot be later than the value ($self) it's called on.")
         }
-        def paramTypes = closure.parameterTypes
-        boolean acceptsDate = paramTypes.length > 0 && paramTypes[0].isAssignableFrom(LocalDate)
-        def from = self
-        while (from >= to) {
-            acceptsDate ? closure(from) : closure()
-            from = from - 1
-        }
+        (self..to).each(closure)
     }
 
     /**
@@ -55,13 +49,7 @@ class LocalDateExtension {
         if (to < self) {
             throw new GroovyRuntimeException("The argument ($to) to upto() cannot be earlier than the value ($self) it's called on.")
         }
-        def paramTypes = closure.parameterTypes
-        boolean acceptsDate = paramTypes.length > 0 && paramTypes[0].isAssignableFrom(LocalDate)
-        def from = self
-        while (from <= to) {
-            acceptsDate ? closure(from) : closure()
-            from = from + 1
-        }
+        (self..to).each(closure)
     }    
 
     /**
@@ -116,7 +104,7 @@ class LocalDateExtension {
     /**
      * Returns a TemporalAmount equivalent to the time between this LocalDate (inclusive) and the provided LocalDate (exclusive).
      */
-    static Period minus(final LocalDate self, LocalDate other) {
+    static Period rightShift(final LocalDate self, LocalDate other) {
         Period.between(self, other)
     }
  
