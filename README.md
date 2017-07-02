@@ -260,7 +260,6 @@ A static `eachMonth` method exists on `Month` for iterating through every month.
 
 ```groovy
     Map<TemporalUnit, Long> durationDesc = Duration.parse('P2DT3H4M5.000000006S').describe()
-
     assert durationDesc[ChronoUnit.DAYS] == 2
     assert durationDesc[ChronoUnit.HOURS] == 3
     assert durationDesc[ChronoUnit.MINUTES] == 4

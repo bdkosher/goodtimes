@@ -1,5 +1,5 @@
 moduleName = goodtimes
-moduleVersion = 1.1
+moduleVersion = 1.2
 extensionClasses = \
     bdkosher.goodtimes.DayOfWeekExtension, \
     bdkosher.goodtimes.DateCalendarExtension, \
