@@ -265,18 +265,23 @@ class DateCalendarExtensionSpec extends Specification {
         }
     }
 
-    def "toLocalDate is not impacted by Date's time zone"() {
+    def "Date toLocalDate"() {
+        given:
+        Date date = new Date()
+        Clock fixedClock = Clock.fixed(Instant.ofEpochMilli(date.time), ZoneId.systemDefault())
+
+        expect:  
+        date.toLocalDate() == LocalDate.now(fixedClock)
+    }
+
+    def "Date toLocalDate with time zone"() {
         expect:  
         eachTimeZone { timeZone ->
-            Calendar cal = new GregorianCalendar(timeZone)
-            cal.with {      
-                set(Calendar.YEAR, 2017)
-                set(Calendar.MONTH, Calendar.JANUARY)
-                set(Calendar.DAY_OF_MONTH, 7)
-                clearTime()
-            }
-            def localDate = cal.toLocalDate().format(DateTimeFormatter.ISO_LOCAL_DATE)
-            assert localDate == '2017-01-07' : "Unexpected calendar date of $localDate for time zone $timeZone"
+            ZoneId zoneId = timeZone.toZoneId()
+            Date date = new Date()
+            Clock tzClock = Clock.fixed(Instant.ofEpochMilli(date.time), zoneId)
+            LocalDate localDate = date.toLocalDate(zoneId)
+            assert localDate == LocalDate.now(tzClock) : "Unexpected LocalDate $localDate from Date $date for TZ $zoneId"
         }
     }
 
@@ -288,7 +293,7 @@ class DateCalendarExtensionSpec extends Specification {
         LocalTime lt = cal.toLocalTime()
 
         then:
-        lt.hour == cal.get(Calendar.HOUR)
+        lt.hour == cal.get(Calendar.HOUR_OF_DAY)
         lt.minute == cal.get(Calendar.MINUTE)
         lt.second == cal.get(Calendar.SECOND)
     }
@@ -302,7 +307,7 @@ class DateCalendarExtensionSpec extends Specification {
         LocalTime lt = date.toLocalTime()
 
         then:
-        lt.hour == cal.get(Calendar.HOUR)
+        lt.hour == cal.get(Calendar.HOUR_OF_DAY)
         lt.minute == cal.get(Calendar.MINUTE)
         lt.second == cal.get(Calendar.SECOND)
     }    
@@ -321,6 +326,45 @@ class DateCalendarExtensionSpec extends Specification {
         eachTimeZone { timeZone ->
             Calendar cal = new GregorianCalendar(timeZone)
             assert cal.zoneOffset.totalSeconds * 1000 == timeZone.getOffset(cal.time.time)
+        }
+    }
+
+    def "toLocalDateTime is not impacted by Calendar's time zone"() {
+        expect:  
+        eachTimeZone { timeZone ->
+            Calendar cal = new GregorianCalendar(timeZone)
+            cal.with {       
+                set(Calendar.YEAR, 2017)
+                set(Calendar.MONTH, Calendar.JANUARY)
+                set(Calendar.DAY_OF_MONTH, 7)
+                set(Calendar.HOUR_OF_DAY, 3)
+                set(Calendar.MINUTE, 45)
+                set(Calendar.SECOND, 30)
+                set(Calendar.MILLISECOND, 123)
+                delegate
+            }
+            def localDateTime = cal.toLocalDateTime().format('yyyy-MM-dd HH:mm:ss.SSS')
+            assert localDateTime == '2017-01-07 03:45:30.123' : "$localDateTime unexpected for Calendar for time zone $timeZone (cal's zone id=$cal.zoneId)"    
+        }
+    }
+
+    def "Date toLocalDateTime"() {
+        given:
+        Date date = new Date()
+        Clock fixedClock = Clock.fixed(Instant.ofEpochMilli(date.time), ZoneId.systemDefault())
+
+        expect:  
+        date.toLocalDateTime() == LocalDateTime.now(fixedClock)
+    }
+
+    def "Date toLocalDateTime with time zone"() {
+        expect:  
+        eachTimeZone { timeZone ->
+            ZoneId zoneId = timeZone.toZoneId()
+            Date date = new Date()
+            Clock tzClock = Clock.fixed(Instant.ofEpochMilli(date.time), zoneId)
+            LocalDateTime localDateTime = date.toLocalDateTime(zoneId)
+            assert localDateTime == LocalDateTime.now(tzClock) : "Unexpected LocalDateTime $localDateTime from Date $date for TZ $zoneId"
         }
     }
 }    
