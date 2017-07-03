@@ -29,6 +29,13 @@ class DateCalendarExtension {
             .collectEntries { day -> [Calendar."$day", java.time.DayOfWeek."$day"] }
 
     /**
+     * Returns the Time Zone offset of the Date as a java.time.ZoneOffset, which is most likely the same as the system's default offset.
+     */
+    static ZoneOffset getZoneOffset(final Date date) {
+        getZoneOffset(date.toCalendar())
+    }
+
+    /**
      * Returns the Time Zone offset of the Calendar as a java.time.ZoneOffset.
      */
     static ZoneOffset getZoneOffset(final Calendar self) {
@@ -43,6 +50,13 @@ class DateCalendarExtension {
      */
     static ZoneId getZoneId(final Calendar self) {
         self.timeZone.toZoneId()
+    }
+
+    /**
+     * Returns the Time Zone of the Date as a java.time.ZoneId. This will typically be equivalent to the system's default ZoneId.
+     */
+    static ZoneId getZoneId(final Date self) {
+        getZoneId(self.toCalendar())
     }
 
     /**
@@ -134,7 +148,7 @@ class DateCalendarExtension {
      * If the Date is of a different Time Zone than the provided Time Zone and depending on its time values, 
      * then the hour/min/sec/ms values of the LocalTime may differ from the hour/min/sec/ms values of the Date.
      */
-    static LocalTime toLocalTime(final Date self, ZoneId zoneId ) {
+    static LocalTime toLocalTime(final Date self, ZoneId zoneId) {
         toZonedDateTime(self, zoneId).toLocalTime()
     }
 
@@ -195,14 +209,40 @@ class DateCalendarExtension {
      */
     static LocalDateTime toLocalDateTime(final Date self, TimeZone timeZone) {
         toLocalDateTime(self, timeZone.toZoneId())
+    }
+
+    /**
+     * Converts the Date to a ZonedDateTime. 
+     */
+    static ZonedDateTime toZonedDateTime(final Date self) {
+        toZonedDateTime(self, getZoneId(self))
     }    
     
     /**
-     * Converts the Date to a ZonedDateTime according to the system default ZoneId. Pass in a different ZoneId to 
-     * translate the returned ZoneDateTime to that time zone.
+     * Converts the Date to a ZonedDateTime, using the provided ZoneId to adjust the LocalDateTime accordingly.
+     *
+     * If the Date is of a different Time Zone than the provided Time Zone and depending on its date and time values, 
+     * then the date and time values of the LocalDateTime may differ from the date and time values of the Date.
      */
-    static ZonedDateTime toZonedDateTime(final Date self, ZoneId zoneId = ZoneId.systemDefault()) {
+    static ZonedDateTime toZonedDateTime(final Date self, ZoneId zoneId) {
         self.toInstant().atZone(zoneId)
+    }
+
+    /**
+     * Converts the Date to a ZonedDateTime, using the provided TimeZone to adjust the LocalDateTime accordingly.
+     *
+     * If the Date is of a different Time Zone than the provided Time Zone and depending on its date and time values, 
+     * then the date and time values of the LocalDateTime may differ from the date and time values of the Date.
+     */
+    static ZonedDateTime toZonedDateTime(final Date self, TimeZone timeZone) {
+        toZonedDateTime(self, timeZone.toZoneId())
+    }
+
+    /**
+     * Converts the Date to an OffsetDateTime.
+     */
+    static OffsetDateTime toOffsetDateTime(final Date self) {
+        toOffsetDateTime(self, getZoneOffset(self))
     }
 
     /**
@@ -211,6 +251,13 @@ class DateCalendarExtension {
     static OffsetDateTime toOffsetDateTime(final Date self, ZoneOffset offset) {
         self.toInstant().atOffset(offset)
     }
+
+    /**
+     * Converts the Date to an OffsetTime.
+     */
+    static OffsetTime toOffsetTime(final Date self) {
+        toOffsetTime(self, getZoneOffset(self))
+    }    
 
     /**
      * Converts the Date to an OffsetTime according to the provided ZoneOffset.
@@ -349,11 +396,37 @@ class DateCalendarExtension {
     }       
     
     /**
-     * Converts the Calendar to a ZonedDateTime according to the system default ZoneId. Pass in a different ZoneId to 
-     * translate the returned ZoneDateTime to that time zone.
+     * Converts the Calendar to a ZonedDateTime, using the provided ZoneId to adjust the ZonedDateTime accordingly.
+     *
+     * If the Calendar is of a different Time Zone than the provided Time Zone and depending on its date and time values, 
+     * then the date and time values of the LocalDateTime may differ from the date and time values of the Calendar.
      */
-    static ZonedDateTime toZonedDateTime(final Calendar self, ZoneId zoneId = ZoneId.systemDefault()) {
+    static ZonedDateTime toZonedDateTime(final Calendar self, ZoneId zoneId) {
         toZonedDateTime(self.time, zoneId)
+    }
+
+    /**
+     * Converts the Calendar to a ZonedDateTime, using the provided TimeZone to adjust the ZonedDateTime accordingly.
+     *
+     * If the Calendar is of a different Time Zone than the provided Time Zone and depending on its date and time values, 
+     * then the date and time values of the LocalDateTime may differ from the date and time values of the Calendar.
+     */
+    static ZonedDateTime toZonedDateTime(final Calendar self, TimeZone timeZone) {
+        toZonedDateTime(self.time, timeZone)
+    }
+    
+    /**
+     * Converts the Calendar to a ZonedDateTime.
+     */
+    static ZonedDateTime toZonedDateTime(final Calendar self) {
+        toZonedDateTime(self.time)
+    }
+
+    /**
+     * Converts the Calendar to an OffsetDateTime.
+     */
+    static OffsetDateTime toOffsetDateTime(final Calendar self) {
+        toOffsetDateTime(self.time, getZoneOffset(self))
     }
 
     /**
@@ -362,6 +435,13 @@ class DateCalendarExtension {
     static OffsetDateTime toOffsetDateTime(final Calendar self, ZoneOffset offset) {
         toOffsetDateTime(self.time, offset)
     }
+
+    /**
+     * Converts the Calendar to an OffsetTime according to the provided ZoneOffset.
+     */
+    static OffsetTime toOffsetTime(final Calendar self) {
+        toOffsetTime(self.time, getZoneOffset(self))
+    }        
 
     /**
      * Converts the Calendar to an OffsetTime according to the provided ZoneOffset.
