@@ -56,4 +56,11 @@ class MonthExtension {
         MonthDay.of(self, dayOfMonth)
     }
 
+    /**
+     * Returns a java.time.YearMonth for the given year.
+     */
+    static YearMonth leftShift(final Month self, Year year) {
+        YearMonth.of(year.value, self)
+    }
+
 }

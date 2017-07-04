@@ -1,6 +1,9 @@
 package bdkosher.goodtimes
 
 import java.time.Month
+import java.time.MonthDay
+import java.time.Year
+import java.time.YearMonth
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -109,10 +112,22 @@ class MonthExtensionSpec extends Specification {
     
     def "leftShifting a day yields a MonthDay"() {
         when:
-        def md = Month.JANUARY << 1
+        MonthDay md = Month.JANUARY << 1
 
         then:
         md.month == Month.JANUARY
         md.dayOfMonth == 1
     }
+
+    def "leftShifting a Year yields a YearMonth"() {
+        given:
+        def year = Year.of(2017)
+
+        when:
+        YearMonth ym = Month.DECEMBER << year
+
+        then:
+        ym.month == Month.DECEMBER
+        ym.year == 2017
+    }    
 }
