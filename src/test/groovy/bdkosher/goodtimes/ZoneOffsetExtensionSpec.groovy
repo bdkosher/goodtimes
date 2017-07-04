@@ -322,4 +322,48 @@ class ZoneOffsetExtensionSpec extends Specification {
         desc.containsKey(ChronoUnit.NANOS) == false
     }
 
+    def "toTimeZone with positive offset"() {
+        given:
+        ZoneOffset zo = ZoneOffset.ofHoursMinutes(4, 30)
+
+        when:
+        TimeZone tz = zo.toTimeZone()
+
+        then:
+        tz.getID() == 'GMT+04:30'
+    }
+
+    def "toTimeZone with negative offset"() {
+        given:
+        ZoneOffset zo = ZoneOffset.ofHours(-8)
+
+        when:
+        TimeZone tz = zo.toTimeZone()
+
+        then:
+        tz.getID() == 'GMT-08:00'
+    }
+
+    def "toTimeZone when total seconds is zero"() {
+        given:
+        ZoneOffset zo = ZoneOffset.UTC
+
+        when:
+        TimeZone tz = zo.toTimeZone()
+
+        then:
+        tz.rawOffset == 0
+    }
+
+    def "toTimeZone truncates seconds"() {
+        given:
+        ZoneOffset zo = ZoneOffset.ofHoursMinutesSeconds(4, 30, 45)
+
+        when:
+        TimeZone tz = zo.toTimeZone()
+
+        then:
+        tz.getID() == 'GMT+04:30'
+    }
+
 }

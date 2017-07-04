@@ -29,6 +29,20 @@ class ZoneOffsetExtension {
     }
 
     /**
+     * Returns the ZoneOffset as a TimeZone. The offset of the TimeZone will be truncated to the nearest minute.
+     */
+    static TimeZone toTimeZone(final ZoneOffset self) {
+        if (self.totalSeconds == 0) {
+            TimeZone.getTimeZone('GMT') 
+        } else if (self.totalSeconds % 60 == 0) {
+            TimeZone.getTimeZone("GMT$self.id")
+        } else {
+            ZoneOffset noSeconds = ZoneOffset.ofHoursMinutes(getHours(self), getMinutes(self))
+            TimeZone.getTimeZone("GMT$noSeconds.id")
+        }
+    }
+
+    /**
      * Adds the given ZoneOffset to this offset.
      * If the result is outside of the supported range of -18 to +18 hours, a DateTimeException will be thrown.
      */
