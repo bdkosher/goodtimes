@@ -26,7 +26,7 @@ class OffsetTimeExtensionSpec extends Specification {
         cal.get(Calendar.ZONE_OFFSET) == -5 * 60 * 60 * 1000
     }
 
-    def "toCalendar preserves offset - alternate offset"() {
+    def "toCalendar preserves offset - offset seconds truncated"() {
         given:
         OffsetTime time = OffsetTime.of(LocalTime.of(12, 34, 56, 78e6 as int), hmsOffset)
 
@@ -38,18 +38,20 @@ class OffsetTimeExtensionSpec extends Specification {
         cal.get(Calendar.MINUTE) == 34
         cal.get(Calendar.SECOND) == 56
         cal.get(Calendar.MILLISECOND) == 78
-        cal.get(Calendar.ZONE_OFFSET) == (1 * 60 * 60 * 1000) + (1 * 60 * 1000) + (1 * 1000)
+        cal.get(Calendar.ZONE_OFFSET) == (1 * 60 * 60 * 1000) + (1 * 60 * 1000)
     }
 
     def "toDate works decently enough as you could expect"() {
         given:
-        OffsetTime time = OffsetTime.of(LocalTime.of(12, 34, 56), minusFive)
+        ZoneOffset defaultOffset = ZoneId.systemDefault().rules.getOffset(Instant.now())
+        ZoneOffset defaultPlusOne = ZoneOffset.ofTotalSeconds(defaultOffset.totalSeconds + (60 * 60))
+        OffsetTime time = OffsetTime.of(LocalTime.of(12, 34, 56), defaultPlusOne)
 
         when:
         Date date = time.toDate()
 
         then:
-        date.format('HH:mm:ss.SSS') == '12:34:56.000'
+        date.format('HH:mm:ss.SSS') == '11:34:56.000'
     }
 
     def "plus seconds"() {

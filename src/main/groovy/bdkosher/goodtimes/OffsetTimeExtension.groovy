@@ -129,20 +129,28 @@ class OffsetTimeExtension {
 
     /**
      * Converts a OffsetTime to a (mostly) equivalent instance of java.util.Date. The day-month-year value of the returned Date is now,
-     * and the time is truncated to nearest millisecond.
+     * and the time is truncated to nearest millisecond.  Note that the time of returned Date will be adjusted to the equivalent in the
+     * default TimeZone rather than the TimeZone of the ZonedDateTime.
      */
     static Date toDate(final OffsetTime self) {
         toCalendar(self).time
     }
 
     /**
-     * Converts a OffsetTime to a (mostly) equivalent instance of java.util.Calendar. The day-month-year value of the returned Date is now
-     * and the Locale is set to the system defaults unless explicitly specified. Time is truncated to nearest millisecond.
+     * Converts a OffsetTime to a (mostly) equivalent instance of java.util.Calendar. The day-month-year value of the returned Date is today
+     * and the Locale is set to the system default unless explicitly specified. Time is truncated to nearest millisecond. The Calendar's
+     * offset is truncated to the nearest minute.
      */
     static Calendar toCalendar(final OffsetTime self, Locale locale = null) {
-        int offsetMilli = self.offset.totalSeconds * 1000
-        Calendar cal = self.toLocalTime().toCalendar((Locale) locale)
-        cal.set(Calendar.ZONE_OFFSET, offsetMilli)
-        cal
+        int milli = (self.nano - self.truncatedTo(ChronoUnit.SECONDS).nano) / 1e6
+        TimeZone timeZone = ZoneOffsetExtension.toTimeZone(self.offset)
+        Calendar cal = locale ? Calendar.getInstance(timeZone, locale) : Calendar.getInstance(timeZone)
+        cal.with {
+            set(Calendar.HOUR_OF_DAY, self.hour)
+            set(Calendar.MINUTE, self.minute)
+            set(Calendar.SECOND, self.second)
+            set(Calendar.MILLISECOND, milli)
+            delegate
+        }
     }
 }

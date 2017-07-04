@@ -155,7 +155,8 @@ class ZonedDateTimeExtension {
     }
 
     /**
-     * Converts a ZonedDateTime to a (mostly) equivalent instance of java.util.Date.
+     * Converts a ZonedDateTime to a (mostly) equivalent instance of java.util.Date, truncated to the nearest millisecond. Note that the time of 
+     * returned Date will be adjusted to the equivalent in the default TimeZone rather than the TimeZone of the ZonedDateTime.
      */
     static Date toDate(final ZonedDateTime self) {
         toCalendar(self).time

@@ -154,7 +154,8 @@ class OffsetDateTimeExtension {
     }
 
     /**
-     * Converts a OffsetDateTime to a (mostly) equivalent instance of java.util.Date. Time is truncated to the nearest millisecond.
+     * Converts a OffsetDateTime to a (mostly) equivalent instance of java.util.Date. Time is truncated to the nearest millisecond. Note 
+     * that the time of returned Date will be adjusted to the equivalent in the default TimeZone rather than the TimeZone of the ZonedDateTime.
      */
     static Date toDate(final OffsetDateTime self, Locale locale = null) {
         toCalendar(self).time
