@@ -1,6 +1,6 @@
 package bdkosher.goodtimes
 
-import java.time.*
+import java.time.DayOfWeek
 
 /**
  * Static extension methods for java.time.DayOfWeek

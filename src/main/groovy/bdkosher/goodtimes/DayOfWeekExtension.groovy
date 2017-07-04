@@ -49,4 +49,18 @@ class DayOfWeekExtension {
         dayOfWeekToCalendarDay[self]
     }
 
+    /**
+     * Returns true if this DayOfWeek is Saturday or Sunday.
+     */
+    static boolean isWeekend(final DayOfWeek self) {
+        self == DayOfWeek.SATURDAY || self == DayOfWeek.SUNDAY
+    }
+
+    /**
+     * Returns true if this DayOfWeek is Monday through Friday.
+     */
+    static boolean isWeekday(final DayOfWeek self) {
+        !isWeekend(self)
+    }
+
 }

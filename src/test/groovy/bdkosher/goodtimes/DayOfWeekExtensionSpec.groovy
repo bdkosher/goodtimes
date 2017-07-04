@@ -87,5 +87,21 @@ class DayOfWeekExtensionSpec extends Specification {
         SUNDAY    | -7   | SUNDAY
         SUNDAY    | -8   | MONDAY
     }
+
+    @Unroll("#day should be weekend #is_weekend")
+    def "is weekend"() {
+        expect:
+        is_weekend == day.weekend
+
+        where:
+        day       | is_weekend
+        SUNDAY    | true
+        MONDAY    | false
+        TUESDAY   | false
+        WEDNESDAY | false
+        THURSDAY  | false
+        FRIDAY    | false
+        SATURDAY  | true
+    }    
     
 }
