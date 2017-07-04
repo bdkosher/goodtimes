@@ -457,4 +457,20 @@ class DateCalendarExtension {
     static Instant toInstant(final Calendar self) {
         self.time.toInstant()
     }
+
+    /**
+     * Converts this TimeZone to a ZoneOffset. The offset is based on the current date/time.
+     */
+    static ZoneOffset toZoneOffset(final TimeZone self) {
+        toZoneOffset(self, Instant.now())
+    }
+
+    /**
+     * Converts this TimeZone to a ZoneOffset at the specified Instant.
+     */
+    static ZoneOffset toZoneOffset(final TimeZone self, Instant instant) {
+        self.getOffset(instant.epochSecond)
+        //self.toZoneId().rules.getOffset(instant)
+    }
+
 }

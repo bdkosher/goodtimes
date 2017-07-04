@@ -585,5 +585,5 @@ class DateCalendarExtensionSpec extends Specification {
             OffsetTime otFromZoneOffset = date.toOffsetTime(zoneOffset)
             assert otFromZoneOffset == OffsetTime.now(tzClock) : "Unexpected OffsetTime $otFromZoneOffset from Date $date for offset $zoneOffset"    
         }
-    }    
+    }
 }    
