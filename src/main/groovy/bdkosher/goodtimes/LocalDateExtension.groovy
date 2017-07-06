@@ -1,10 +1,15 @@
 package bdkosher.goodtimes
 
-import java.time.*
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.OffsetDateTime
+import java.time.OffsetTime
+import java.time.Period
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
-import java.time.temporal.*
-
+import java.time.temporal.ChronoField
+import java.time.temporal.TemporalField
 import groovy.transform.PackageScope
 
 /**

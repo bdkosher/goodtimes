@@ -1,6 +1,5 @@
 package bdkosher.goodtimes
 
-import java.text.SimpleDateFormat
 import java.time.Duration
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter

@@ -1,9 +1,9 @@
 package bdkosher.goodtimes
 
-import java.time.*
-import java.time.temporal.*
-
-import groovy.transform.PackageScope
+import java.time.Duration
+import java.time.Instant
+import java.time.temporal.ChronoField
+import java.time.temporal.TemporalField
 
 /**
  * Extension methods for java.time.Instant

@@ -3,9 +3,12 @@ package bdkosher.goodtimes
 import java.time.Duration
 import java.time.temporal.ChronoUnit
 import java.time.temporal.TemporalUnit
-import static java.time.temporal.ChronoUnit.*
-
 import groovy.transform.PackageScope
+import static java.time.temporal.ChronoUnit.DAYS
+import static java.time.temporal.ChronoUnit.HOURS
+import static java.time.temporal.ChronoUnit.MINUTES
+import static java.time.temporal.ChronoUnit.NANOS
+import static java.time.temporal.ChronoUnit.SECONDS
 
 /**
  * Extension methods for jave.time.Duration

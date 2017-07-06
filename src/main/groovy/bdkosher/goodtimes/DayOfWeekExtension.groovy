@@ -1,6 +1,6 @@
 package bdkosher.goodtimes
 
-import java.time.*
+import java.time.DayOfWeek
 import groovy.transform.PackageScope
 
 /**

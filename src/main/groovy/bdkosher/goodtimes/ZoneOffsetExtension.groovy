@@ -11,7 +11,6 @@ import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
 import java.time.temporal.TemporalField
 import java.time.temporal.TemporalUnit
-import groovy.transform.PackageScope
 
 /**
  * Extension methods for java.time.ZoneOffset
