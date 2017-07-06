@@ -469,8 +469,6 @@ class DateCalendarExtension {
      * Converts this TimeZone to a ZoneOffset at the specified Instant.
      */
     static ZoneOffset toZoneOffset(final TimeZone self, Instant instant) {
-        self.getOffset(instant.epochSecond)
-        //self.toZoneId().rules.getOffset(instant)
+        self.toZoneId().rules.getOffset(instant)
     }
-
 }
