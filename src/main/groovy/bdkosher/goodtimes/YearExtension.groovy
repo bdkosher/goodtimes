@@ -1,6 +1,11 @@
 package bdkosher.goodtimes
 
-import java.time.*
+import java.time.LocalDate
+import java.time.Month
+import java.time.MonthDay
+import java.time.Period
+import java.time.Year
+import java.time.YearMonth
 import org.codehaus.groovy.runtime.DefaultGroovyMethods
 
 /**
@@ -82,21 +87,6 @@ class YearExtension {
      * Permits the conversion of this Year into an integer representation.
      */
     static asType(final Year self, Class type) {
-        def originalAsType = Year.&asType
-        switch (type) {
-            case Integer:
-                return self.value as Integer
-            case Long:
-                return self.value as Long
-            case BigInteger:
-                return self.value as BigInteger
-            case Integer.TYPE:
-                return self.value as int
-            case Long.TYPE:
-                return self.value as long
-            default:
-                // XXX not sure this is the best way to implement 
-                return DefaultGroovyMethods.asType(self, type)
-        }
+        DefaultGroovyMethods.asType(self.value, type)
     }
 }
