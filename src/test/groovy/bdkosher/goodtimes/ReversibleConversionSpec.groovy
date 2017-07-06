@@ -8,6 +8,8 @@ import static java.time.Month.*
 
 /**
  * Ensures that when converting between java.util and java.time types that the conversions are reversible.
+ * We start with a java.util type because the java.time types are more precise; they store nanoseconds and 
+ * zone offsets in seconds.
  */
 class ReversibleConversionSpec extends Specification {
 
@@ -15,6 +17,39 @@ class ReversibleConversionSpec extends Specification {
         TimeZone.availableIDs.collect { id -> TimeZone.getTimeZone(id) }.each { timeZone ->
             closure(timeZone)
         }
+    }
+
+    def "Date and LocalDate reversibility"() {
+        given: 
+        Date oldType = new Date().clearTime()
+
+        when:
+        def newType = oldType.toLocalDate()
+
+        then:
+        newType.toDate() == oldType
+    }
+
+    def "Date and LocalDateTime reversibility"() {
+        given: 
+        Date oldType = new Date()
+
+        when:
+        def newType = oldType.toLocalDateTime()
+
+        then:
+        newType.toDate() == oldType
+    }
+
+    def "Date and LocalTime reversibility"() {
+        given: 
+        Date oldType = new Date()
+
+        when:
+        def newType = oldType.toLocalTime()
+
+        then:
+        newType.toDate() == oldType
     }
 
     def "Date and ZonedDateTime reversibility"() {
@@ -49,6 +84,73 @@ class ReversibleConversionSpec extends Specification {
 
         then:
         newType.toDate().format(offsetTimeFormat) == oldType.format(offsetTimeFormat)
+    }
+
+    def "Calendar and LocalDate reversibility"() {
+        given: 
+        Calendar oldType = Calendar.instance.clearTime()
+
+        when:
+        def newType = oldType.toLocalDate()
+
+        then:
+        newType.toCalendar() == oldType
+    }
+
+    def "Calendar and LocalDateTime reversibility"() {
+        given: 
+        Calendar oldType = Calendar.instance
+
+        when:
+        def newType = oldType.toLocalDateTime()
+
+        then:
+        newType.toCalendar() == oldType
+    }
+
+    def "Calendar and LocalTime reversibility"() {
+        given: 
+        Calendar oldType = Calendar.instance
+
+        when:
+        def newType = oldType.toLocalTime()
+
+        then:
+        newType.toCalendar() == oldType
+    }
+
+    def "Calendar and ZonedDateTime reversibility"() {
+        given: 
+        Calendar oldType = Calendar.instance
+
+        when:
+        def newType = oldType.toZonedDateTime()
+
+        then:
+        newType.toCalendar() == oldType
+    }
+
+    def "Calendar and OffsetDateTime reversibility"() {
+        given: 
+        Calendar oldType = Calendar.instance
+
+        when:
+        def newType = oldType.toOffsetDateTime()
+
+        then:
+        newType.toCalendar() == oldType
+    }
+
+    def "Calendar and OffsetTime reversibility"() {
+        given: 
+        Calendar oldType = Calendar.instance
+        String offsetTimeFormat = 'HH:mm:ss XXX'
+
+        when:
+        def newType = oldType.toOffsetTime()
+
+        then:
+        newType.toCalendar().format(offsetTimeFormat) == oldType.format(offsetTimeFormat)
     }
 
     def "TimeZone and ZoneOffset reversibility"() {
