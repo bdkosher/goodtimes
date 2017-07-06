@@ -1,7 +1,8 @@
 package bdkosher.goodtimes
 
 import java.time.Period
-import java.time.temporal.*
+import java.time.temporal.ChronoUnit
+import java.time.temporal.TemporalUnit
 
 /**
  * Extension methods for java.time.Period.
@@ -47,10 +48,10 @@ class PeriodExtension {
     }
 
     /**
-     * Turns any negative TemporalUnit value positive.
+     * Causes the Period to become positive if it's negative
      */
     static Period positive(final Period self) {
-        copyWith(self, describe(self).collectEntries { field, amount -> [(field) : Math.abs(amount)] })
+        self.isNegative() ? copyWith(self, describe(self).collectEntries { unit, amount -> [(unit) : Math.abs(amount)] }) : self
     }    
 
     /**
@@ -61,7 +62,7 @@ class PeriodExtension {
     }
 
     /**
-     * Returns the value corresponding to the given TemporalField, provided it is supported by Period as per its isSupported method.
+     * Returns the value corresponding to the given TemporalUnit, provided it is supported by Period as per its isSupported method.
      */
     static getAt(final Period self, TemporalUnit temporalUnit) {
         self.get(temporalUnit)
