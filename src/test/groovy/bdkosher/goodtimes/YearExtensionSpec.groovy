@@ -203,7 +203,7 @@ class YearExtensionSpec extends Specification {
         ybi == 2000G
     }
 
-    def "Year asType for non-numeric types"() {
+    def "Year asType for String"() {
         given:
         Year y = Year.of(2000)
 

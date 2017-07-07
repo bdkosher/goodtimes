@@ -5,6 +5,7 @@ import java.time.MonthDay
 import java.time.Year
 import java.time.YearMonth
 import groovy.transform.PackageScope
+import org.codehaus.groovy.runtime.DefaultGroovyMethods
 
 /**
  * Extension methods for java.time.Month
@@ -65,5 +66,12 @@ class MonthExtension {
     static YearMonth leftShift(final Month self, Year year) {
         YearMonth.of(year.value, self)
     }
+
+    /**
+     * Permits the conversion of this Month into an integer representation.
+     */
+    static asType(final Month self, Class type) {
+        type == String ? self.name() : DefaultGroovyMethods.asType(self.value, type)
+    }    
 
 }

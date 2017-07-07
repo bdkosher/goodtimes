@@ -2,6 +2,7 @@ package bdkosher.goodtimes
 
 import java.time.DayOfWeek
 import groovy.transform.PackageScope
+import org.codehaus.groovy.runtime.DefaultGroovyMethods
 
 /**
  * Extension methods for java.time.DayOfWeek
@@ -62,5 +63,12 @@ class DayOfWeekExtension {
     static boolean isWeekday(final DayOfWeek self) {
         !isWeekend(self)
     }
+
+    /**
+     * Permits the conversion of this DayOfWeek into an integer representation.
+     */
+    static asType(final DayOfWeek self, Class type) {
+        type == String ? self.name() : DefaultGroovyMethods.asType(self.value, type)
+    }        
 
 }

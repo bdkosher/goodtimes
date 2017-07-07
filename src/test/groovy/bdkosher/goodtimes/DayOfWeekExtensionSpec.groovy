@@ -118,6 +118,36 @@ class DayOfWeekExtensionSpec extends Specification {
         THURSDAY  | true
         FRIDAY    | true
         SATURDAY  | false
-    }    
+    }
+
+    def "DayOfWeek asType for numeric types"() {
+        given:
+        DayOfWeek d = DayOfWeek.SATURDAY
+
+        when:
+        int dint = d as int
+        Integer dInteger = d as Integer
+        long dlong = d as long
+        Long dLong = d as Long
+        BigInteger dbi = d as BigInteger
+
+        then:
+        dint == 6
+        dInteger == new Integer(6)
+        dlong == 6L
+        dLong == new Long(6L)
+        dbi == 6G
+    }
+
+    def "Month asType for String"() {
+        given:
+        DayOfWeek d = DayOfWeek.SUNDAY
+
+        when:
+        String ds = d as String
+
+        then:
+        ds == 'SUNDAY'
+    }
     
 }

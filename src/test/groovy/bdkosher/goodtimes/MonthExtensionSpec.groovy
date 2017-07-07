@@ -129,5 +129,35 @@ class MonthExtensionSpec extends Specification {
         then:
         ym.month == Month.DECEMBER
         ym.year == 2017
-    }    
+    }
+
+    def "Month asType for numeric types"() {
+        given:
+        Month m = Month.JUNE
+
+        when:
+        int mint = m as int
+        Integer mInteger = m as Integer
+        long mlong = m as long
+        Long mLong = m as Long
+        BigInteger mbi = m as BigInteger
+
+        then:
+        mint == 6
+        mInteger == new Integer(6)
+        mlong == 6L
+        mLong == new Long(6L)
+        mbi == 6G
+    }
+
+    def "Month asType for String"() {
+        given:
+        Month m = Month.JUNE
+
+        when:
+        String ms = m as String
+
+        then:
+        ms == 'JUNE'
+    }
 }
