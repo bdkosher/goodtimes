@@ -55,7 +55,7 @@ class LocalDateExtension {
             throw new GroovyRuntimeException("The argument ($to) to upto() cannot be earlier than the value ($self) it's called on.")
         }
         (self..to).each(closure)
-    }    
+    }
 
     /**
      * Formats the LocalDate with the given pattern and optional locale. The default Locale is used if none is provided.
@@ -90,7 +90,7 @@ class LocalDateExtension {
      */
     static LocalDate previous(final LocalDate self) {
         minus(self, 1)
-    }    
+    }
 
     /**
      * Adds the given number of days to the LocalDate, returning a new LocalDate instance.
@@ -156,7 +156,7 @@ class LocalDateExtension {
      */
     static int getDay(final LocalDate self) {
         self.dayOfMonth
-    }    
+    }
 
     /**
      * Returns a LocalDateTime of this LocalDate and the given LocalTime.

@@ -50,7 +50,7 @@ class LocalTimeExtension {
             throw new GroovyRuntimeException("The argument ($to) to upto() cannot be earlier than the value ($self) it's called on.")
         }
         (self..to).each(closure)
-    }    
+    }
 
     /**
      * Formats the LocalTime with the given pattern and optional locale. The default Locale is used if none is provided.
@@ -85,7 +85,7 @@ class LocalTimeExtension {
      */
     static LocalTime previous(final LocalTime self) {
         minus(self, 1)
-    }    
+    }
 
     /**
      * Adds the given number of seconds to the LocalTime, returning a new LocalTime instance.

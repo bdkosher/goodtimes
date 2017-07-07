@@ -41,7 +41,7 @@ class LocalDateTimeExtension {
             throw new GroovyRuntimeException("The argument ($to) to upto() cannot be earlier than the value ($self) it's called on.")
         }
         (self..to).each(closure)
-    }    
+    }
 
     /**
      * Formats the LocalDateTime with the given pattern and optional locale. The default Locale is used if none is provided.
@@ -62,7 +62,7 @@ class LocalDateTimeExtension {
      */
     static String getDateTimeString(final LocalDateTime self) {
         format(self, FormatStyle.SHORT)
-    }    
+    }
 
     /**
      * Return a string representation of the date portion of this datetime according to the locale-specific FormatStyle#SHORT default format.
@@ -97,7 +97,7 @@ class LocalDateTimeExtension {
      */
     static LocalDateTime previous(final LocalDateTime self) {
         minus(self, 1)
-    }    
+    }
 
     /**
      * Adds the given number of seconds to the LocalDateTime, returning a new LocalDateTime instance.
@@ -118,7 +118,7 @@ class LocalDateTimeExtension {
      */
     static Duration rightShift(final LocalDateTime self, LocalDateTime other) {
         Duration.between(self, other)
-    }    
+    }
 
     /**
      * Checks if the specified java.util.Calendar field is supported.
@@ -187,7 +187,7 @@ class LocalDateTimeExtension {
      */
     static Date toDate(final LocalDateTime self) {
         toCalendar(self).time
-    }    
+    }
 
     /**
      * Converts a LocalDateTime to a (mostly) equivalent instance of java.util.Calendar for the given Locale.

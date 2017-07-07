@@ -46,5 +46,5 @@ class ZoneIdExtension {
      */
     static ZonedDateTime leftShift(final ZoneId self, LocalDateTime dateTime) {
         ZonedDateTime.of(dateTime, self)
-    }    
+    }
 }

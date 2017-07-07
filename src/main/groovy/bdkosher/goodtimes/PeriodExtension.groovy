@@ -52,7 +52,7 @@ class PeriodExtension {
      */
     static Period positive(final Period self) {
         self.isNegative() ? copyWith(self, describe(self).collectEntries { unit, amount -> [(unit) : Math.abs(amount)] }) : self
-    }    
+    }
 
     /**
      * Equivalent to calling Period's multipliedBy() method.
@@ -67,5 +67,4 @@ class PeriodExtension {
     static getAt(final Period self, TemporalUnit temporalUnit) {
         self.get(temporalUnit)
     }
-
 }

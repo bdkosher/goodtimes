@@ -9,7 +9,6 @@ import java.time.format.FormatStyle
 import java.time.temporal.ChronoField
 import java.time.temporal.ChronoUnit
 import java.time.temporal.TemporalField
-
 import groovy.transform.PackageScope
 
 /**
@@ -18,7 +17,7 @@ import groovy.transform.PackageScope
  * Aims to mimic the Groovy JDK extension methods available for java.util.Date and java.util.Calendar instances.
  */
 class OffsetTimeExtension {
-    
+
     /**
      * Iterates from this OffsetTime down to the given OffsetTime, inclusive, decrementing by one second each time.
      */
@@ -37,7 +36,7 @@ class OffsetTimeExtension {
             throw new GroovyRuntimeException("The argument ($to) to upto() cannot be earlier than the value ($self) it's called on.")
         }
         (self..to).each(closure)
-    }    
+    }
 
     /**
      * Formats the OffsetTime with the given pattern and optional locale. The default Locale is used if none is provided.
@@ -72,7 +71,7 @@ class OffsetTimeExtension {
      */
     static OffsetTime previous(final OffsetTime self) {
         minus(self, 1)
-    }    
+    }
 
     /**
      * Adds the given number of seconds to the OffsetTime, returning a new OffsetTime instance.
@@ -130,7 +129,7 @@ class OffsetTimeExtension {
      */
     static OffsetDateTime leftShift(final OffsetTime self, LocalDate date) {
         OffsetDateTime.of(date, self.toLocalTime(), self.offset)
-    }    
+    }
 
     /**
      * Converts a OffsetTime to a (mostly) equivalent instance of java.util.Date. The day-month-year value of the returned Date is now,

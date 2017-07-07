@@ -69,6 +69,5 @@ class DayOfWeekExtension {
      */
     static asType(final DayOfWeek self, Class type) {
         type == String ? self.name() : DefaultGroovyMethods.asType(self.value, type)
-    }        
-
+    }
 }

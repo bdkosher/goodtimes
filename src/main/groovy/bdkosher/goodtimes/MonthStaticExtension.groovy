@@ -12,7 +12,7 @@ class MonthStaticExtension {
      */
     static Month[] values(final Month type, Month start) {    
         Month.values().collect { it + start.value - 1} as Month[]
-    }    
+    }
 
     /**
      * Calls the closure for each month of the year, starting with January.

@@ -34,7 +34,7 @@ class ZonedDateTimeExtension {
             throw new GroovyRuntimeException("The argument ($to) to upto() cannot be earlier than the value ($self) it's called on.")
         }
         (self..to).each(closure)
-    }    
+    }
 
     /**
      * Formats the ZonedDateTime with the given pattern and optional locale. The default Locale is used if none is provided.
@@ -55,7 +55,7 @@ class ZonedDateTimeExtension {
      */
     static String getDateTimeString(final ZonedDateTime self) {
         format(self, FormatStyle.SHORT)
-    }    
+    }
 
     /**
      * Return a string representation of the date portion of this datetime according to the locale-specific FormatStyle#SHORT default format.
@@ -111,7 +111,7 @@ class ZonedDateTimeExtension {
      */
     static Duration rightShift(final ZonedDateTime self, ZonedDateTime other) {
         Duration.between(self, other)
-    }    
+    }
 
     /**
      * Checks if the specified java.util.Calendar field is supported.

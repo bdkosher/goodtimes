@@ -72,6 +72,5 @@ class MonthExtension {
      */
     static asType(final Month self, Class type) {
         type == String ? self.name() : DefaultGroovyMethods.asType(self.value, type)
-    }    
-
+    }
 }

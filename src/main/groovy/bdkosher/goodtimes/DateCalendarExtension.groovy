@@ -216,7 +216,7 @@ class DateCalendarExtension {
      */
     static ZonedDateTime toZonedDateTime(final Date self) {
         toZonedDateTime(self, getZoneId(self))
-    }    
+    }
     
     /**
      * Converts the Date to a ZonedDateTime, using the provided ZoneId to adjust the LocalDateTime accordingly.

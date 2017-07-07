@@ -22,7 +22,7 @@ class MonthDayExtension {
      */
     static LocalDate leftShift(final MonthDay self, Year year) {
         year.atMonthDay(self)
-    }    
+    }
 
     /**
      * Returns the value corresponding to the given TemporarlField, provided it is supported as per its isSupported method.

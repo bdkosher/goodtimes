@@ -34,7 +34,7 @@ class OffsetDateTimeExtension {
             throw new GroovyRuntimeException("The argument ($to) to upto() cannot be earlier than the value ($self) it's called on.")
         }
         (self..to).each(closure)
-    }    
+    }
 
     /**
      * Formats the OffsetDateTime with the given pattern and optional locale. The default Locale is used if none is provided.
@@ -55,7 +55,7 @@ class OffsetDateTimeExtension {
      */
     static String getDateTimeString(final OffsetDateTime self) {
         format(self, FormatStyle.SHORT)
-    }    
+    }
 
     /**
      * Return a string representation of the date portion of this datetime according to the locale-specific FormatStyle#SHORT default format.
@@ -90,7 +90,7 @@ class OffsetDateTimeExtension {
      */
     static OffsetDateTime previous(final OffsetDateTime self) {
         minus(self, 1)
-    }    
+    }
 
     /**
      * Adds the given number of seconds to the OffsetDateTime, returning a new OffsetDateTime instance.
@@ -111,7 +111,7 @@ class OffsetDateTimeExtension {
      */
     static Duration rightShift(final OffsetDateTime self, OffsetDateTime other) {
         Duration.between(self, other)
-    }    
+    }
 
     /**
      * Checks if the specified java.util.Calendar field is supported.
