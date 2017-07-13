@@ -270,12 +270,12 @@ class DateCalendarExtensionSpec extends Specification {
         Calendar cal = Calendar.instance
         Clock fixedClock = Clock.fixed(Instant.ofEpochMilli(cal.time.time), ZoneId.systemDefault())
 
-        expect:  
+        expect:
         cal.toLocalDate() == LocalDate.now(fixedClock)
     }
 
     def "Calendar toLocalDate with TimeZone and ZoneId arguments"() {
-        expect:  
+        expect:
         eachTimeZone { timeZone ->
             ZoneId zoneId = timeZone.toZoneId()
             Calendar cal = Calendar.getInstance(timeZone)
@@ -294,12 +294,12 @@ class DateCalendarExtensionSpec extends Specification {
         Date date = new Date()
         Clock fixedClock = Clock.fixed(Instant.ofEpochMilli(date.time), ZoneId.systemDefault())
 
-        expect:  
+        expect:
         date.toLocalDate() == LocalDate.now(fixedClock)
     }
 
     def "Date toLocalDate with TimeZone and ZoneId arguments"() {
-        expect:  
+        expect:
         eachTimeZone { timeZone ->
             ZoneId zoneId = timeZone.toZoneId()
             Date date = new Date()
@@ -318,12 +318,12 @@ class DateCalendarExtensionSpec extends Specification {
         Calendar cal = Calendar.instance
         Clock fixedClock = Clock.fixed(Instant.ofEpochMilli(cal.time.time), ZoneId.systemDefault())
 
-        expect:  
+        expect:
         cal.toLocalTime() == LocalTime.now(fixedClock)
     }
 
     def "Calendar toLocalTime with TimeZone and ZoneId arguments"() {
-        expect:  
+        expect:
         eachTimeZone { timeZone ->
             ZoneId zoneId = timeZone.toZoneId()
             Calendar cal = Calendar.getInstance(timeZone)
@@ -342,12 +342,12 @@ class DateCalendarExtensionSpec extends Specification {
         Date date = new Date()
         Clock fixedClock = Clock.fixed(Instant.ofEpochMilli(date.time), ZoneId.systemDefault())
 
-        expect:  
+        expect:
         date.toLocalTime() == LocalTime.now(fixedClock)
     }
 
     def "Date toLocalTime with TimeZone and ZoneId arguments"() {
-        expect:  
+        expect:
         eachTimeZone { timeZone ->
             ZoneId zoneId = timeZone.toZoneId()
             Date date = new Date()
@@ -371,7 +371,7 @@ class DateCalendarExtensionSpec extends Specification {
     }
 
     def "ZoneOffset from Calendar"() {
-        expect:  
+        expect:
         eachTimeZone { timeZone ->
             Calendar cal = new GregorianCalendar(timeZone)
             assert cal.zoneOffset.totalSeconds * 1000 == timeZone.getOffset(cal.time.time)
@@ -379,7 +379,7 @@ class DateCalendarExtensionSpec extends Specification {
     }
 
     def "ZoneOffset from Date is always the default time zone's offset because Dates are funky"() {
-        expect:  
+        expect:
         eachTimeZone { timeZone ->
             Calendar cal = new GregorianCalendar(timeZone)
             Date date = cal.time
@@ -388,7 +388,7 @@ class DateCalendarExtensionSpec extends Specification {
     }
 
     def "ZoneId from Calendar equivalent to the TimeZone's ZoneId"() {
-        expect:  
+        expect:
         eachTimeZone { timeZone ->
             Calendar cal = new GregorianCalendar(timeZone)
             assert cal.zoneId == timeZone.toZoneId()
@@ -396,7 +396,7 @@ class DateCalendarExtensionSpec extends Specification {
     }
 
     def "ZoneId from Date equivalent to the system default ZoneId"() {
-        expect:  
+        expect:
         eachTimeZone { timeZone ->
             Calendar cal = new GregorianCalendar(timeZone)
             assert cal.time.zoneId == ZoneId.systemDefault()
@@ -413,7 +413,7 @@ class DateCalendarExtensionSpec extends Specification {
     }
 
     def "Calendar toLocalDateTime with TimeZone and ZoneId arguments"() {
-        expect:  
+        expect:
         eachTimeZone { timeZone ->
             ZoneId zoneId = timeZone.toZoneId()
             Calendar cal = Calendar.getInstance(timeZone)
@@ -432,12 +432,12 @@ class DateCalendarExtensionSpec extends Specification {
         Date date = new Date()
         Clock fixedClock = Clock.fixed(Instant.ofEpochMilli(date.time), ZoneId.systemDefault())
 
-        expect:  
+        expect:
         date.toLocalDateTime() == LocalDateTime.now(fixedClock)
     }
 
     def "Date toLocalDateTime with TimeZone and ZoneId arguments"() {
-        expect:  
+        expect:
         eachTimeZone { timeZone ->
             ZoneId zoneId = timeZone.toZoneId()
             Date date = new Date()
@@ -456,12 +456,13 @@ class DateCalendarExtensionSpec extends Specification {
         Calendar cal = Calendar.instance
         Clock fixedClock = Clock.fixed(Instant.ofEpochMilli(cal.time.time), ZoneId.systemDefault())
 
-        expect:  
-        cal.toZonedDateTime() == ZonedDateTime.now(fixedClock)
+        expect:
+        // call the extension method directly as cal.toZonedDateTime will delegate to GregorianCalendar.toZonedDateTime
+        DateCalendarExtension.toZonedDateTime(cal) == ZonedDateTime.now(fixedClock)
     }
 
     def "Calendar toZonedDateTime with TimeZone and ZoneId arguments"() {
-        expect:  
+        expect:
         eachTimeZone { timeZone ->
             ZoneId zoneId = timeZone.toZoneId()
             Calendar cal = Calendar.getInstance(timeZone)
@@ -480,12 +481,12 @@ class DateCalendarExtensionSpec extends Specification {
         Date date = new Date()
         Clock fixedClock = Clock.fixed(Instant.ofEpochMilli(date.time), ZoneId.systemDefault())
 
-        expect:  
+        expect:
         date.toZonedDateTime() == ZonedDateTime.now(fixedClock)
     }
 
     def "Date toZonedDateTime with TimeZone and ZoneId arguments"() {
-        expect:  
+        expect:
         eachTimeZone { timeZone ->
             ZoneId zoneId = timeZone.toZoneId()
             Date date = new Date()
@@ -504,7 +505,7 @@ class DateCalendarExtensionSpec extends Specification {
         Calendar cal = Calendar.instance
         Clock fixedClock = Clock.fixed(Instant.ofEpochMilli(cal.time.time), ZoneId.systemDefault())
 
-        expect:  
+        expect:
         cal.toOffsetDateTime() == OffsetDateTime.now(fixedClock)
     }
 
@@ -526,7 +527,7 @@ class DateCalendarExtensionSpec extends Specification {
         Date date = new Date()
         Clock fixedClock = Clock.fixed(Instant.ofEpochMilli(date.time), ZoneId.systemDefault())
 
-        expect:  
+        expect:
         date.toOffsetDateTime() == OffsetDateTime.now(fixedClock)
     }
 
@@ -548,7 +549,7 @@ class DateCalendarExtensionSpec extends Specification {
         Calendar cal = Calendar.instance
         Clock fixedClock = Clock.fixed(Instant.ofEpochMilli(cal.time.time), ZoneId.systemDefault())
 
-        expect:  
+        expect:
         cal.toOffsetTime() == OffsetTime.now(fixedClock)
     }
 
@@ -570,7 +571,7 @@ class DateCalendarExtensionSpec extends Specification {
         Date date = new Date()
         Clock fixedClock = Clock.fixed(Instant.ofEpochMilli(date.time), ZoneId.systemDefault())
 
-        expect:  
+        expect:
         date.toOffsetTime() == OffsetTime.now(fixedClock)
     }
 
@@ -585,5 +586,18 @@ class DateCalendarExtensionSpec extends Specification {
             OffsetTime otFromZoneOffset = date.toOffsetTime(zoneOffset)
             assert otFromZoneOffset == OffsetTime.now(tzClock) : "Unexpected OffsetTime $otFromZoneOffset from Date $date for offset $zoneOffset"    
         }
+    }
+
+    def "TimeZone toZoneOffset"() {
+        given:
+        TimeZone timeZone = TimeZone.getTimeZone('GMT-8')
+
+        when:
+        ZoneOffset offset = timeZone.toZoneOffset()
+
+        then:
+        offset.hours == -8
+        offset.minutes == 0
+        offset.seconds == 0
     }
 }    

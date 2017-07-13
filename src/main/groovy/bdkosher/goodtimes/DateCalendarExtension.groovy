@@ -416,7 +416,8 @@ class DateCalendarExtension {
     }
     
     /**
-     * Converts the Calendar to a ZonedDateTime.
+     * Converts the Calendar to a ZonedDateTime. GregorianCalendar has its own toZonedDateTime method, so this method will
+     * likely not be called when using typical Calendar instances.
      */
     static ZonedDateTime toZonedDateTime(final Calendar self) {
         toZonedDateTime(self.time)

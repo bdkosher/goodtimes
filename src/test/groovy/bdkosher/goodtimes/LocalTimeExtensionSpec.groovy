@@ -19,6 +19,19 @@ class LocalTimeExtensionSpec extends Specification {
         date.format('HH:mm:ss.SSS') == '12:34:56.000'
     }
 
+    def "toCalendar works decently enough as you could expect"() {
+        given:
+        LocalTime time = LocalTime.of(12, 34, 56)
+
+        when:
+        Calendar cal = time.toCalendar()
+        Calendar calDefaultLocale = time.toCalendar(Locale.default)
+
+        then:
+        cal == calDefaultLocale
+        cal.time.format('HH:mm:ss.SSS') == '12:34:56.000'
+    }
+
     def "plus seconds"() {
         given:
         LocalTime orig = LocalTime.of(12, 34, 56, 78)
