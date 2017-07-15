@@ -20,4 +20,5 @@ extensionClasses = \
     bdkosher.goodtimes.ZoneIdExtension
 staticExtensionClasses = \
     bdkosher.goodtimes.DayOfWeekStaticExtension, \
-    bdkosher.goodtimes.MonthStaticExtension
+    bdkosher.goodtimes.MonthStaticExtension, \
+    bdkosher.goodtimes.ParseMethodsStaticExtension
