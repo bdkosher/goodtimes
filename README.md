@@ -1,5 +1,5 @@
 # Goodtimes
-*Java 8 Date/Time API enhancements for Groovy*  [![Maven Central](https://img.shields.io/maven-central/v/com.github.bdkosher/goodtimes.svg)](http://repo1.maven.org/maven2/com/github/bdkosher/goodtimes/1.1/goodtimes-1.1.jar)  [![GitHub release](https://img.shields.io/github/tag/bdkosher/goodtimes.svg)](https://github.com/bdkosher/goodtimes/releases/tag/v1.1)
+*Java 8 Date/Time API enhancements for Groovy*  [![Maven Central](https://img.shields.io/maven-central/v/com.github.bdkosher/goodtimes.svg)](http://repo1.maven.org/maven2/com/github/bdkosher/goodtimes/1.2/goodtimes-1.2.jar)  [![GitHub release](https://img.shields.io/github/tag/bdkosher/goodtimes.svg)](https://github.com/bdkosher/goodtimes/releases/tag/v1.2)
 
 ![goodtimes logo](https://raw.githubusercontent.com/bdkosher/goodtimes/master/logo.gif)
 
@@ -16,6 +16,7 @@ Goodtimes fills this gap by providing these `java.time` extension methods, as we
    * [Accessor Properties](#accessor-properties)   
    * [Groovy JDK Mimicking Methods](#groovy-jdk-mimicking-methods)
    * [Java 8 and Legacy API Bridging Methods](#java-8-and-legacy-api-bridging-methods)
+   * [Parsing Methods](#parsing-methods)
  * [Future Changes](#future-changes)
 
 ## Prerequisites
@@ -28,12 +29,12 @@ Add the goodtimes jar to the classpath in your preferred way and you're set.
 
 ### Grape
 ```groovy
-@Grab('com.github.bdkosher:goodtimes:1.1') 
+@Grab('com.github.bdkosher:goodtimes:1.2') 
 ```
 
 ### Gradle
 ```groovy
-compile group: 'com.github.bdkosher', name: 'goodtimes', version: '1.1'
+compile group: 'com.github.bdkosher', name: 'goodtimes', version: '1.2'
 ```
 
 ### Maven
@@ -41,22 +42,22 @@ compile group: 'com.github.bdkosher', name: 'goodtimes', version: '1.1'
  <dependency>
     <groupId>com.github.bdkosher</groupId>
     <artifactId>goodtimes</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
 </dependency>
 ```
 
 ## Building from Source
 
-Clone the repo or [download a source release](https://github.com/bdkosher/goodtimes/archive/v1.1.tar.gz) and build with Gradle. 
+Clone the repo or [download a source release](https://github.com/bdkosher/goodtimes/archive/v1.2.tar.gz) and build with Gradle. 
 
 ```bash
     gradlew install
-    cp build/libs/goodtimes-1.1.jar $USER_HOME/.groovy/lib
+    cp build/libs/goodtimes-1.2.jar $USER_HOME/.groovy/lib
 ```
 
 ## API Features
 
-Consult the [goodtimes 1.1 Groovydocs](http://bdkosher.github.io/goodtimes/v1.1/groovydoc/) for complete API information. See the [Groovy metaprogramming documentation](http://groovy-lang.org/metaprogramming.html#_instance_methods) for details on how these methods manifest themselves at runtime.
+Consult the [goodtimes 1.2 Groovydocs](http://bdkosher.github.io/goodtimes/v1.2/groovydoc/) for complete API information. See the [Groovy metaprogramming documentation](http://groovy-lang.org/metaprogramming.html#_instance_methods) for details on how these methods manifest themselves at runtime.
 
 ### Overloaded Operators
 
@@ -92,21 +93,11 @@ A `long` or `int` operand adds seconds directly to  `Instant`, `LocalTime`, `Loc
     LocalDate oneWeekFromToday = today + 7
     Month january = march - 2
     ZoneOffset utcPlusFive = utc + 5
-```    
-
-The `-` operator, which can be read as meaning "through," can be used to create a `Period` from two `LocalDate`, `YearMonth`, or `Year` instances. Similarly, the `-` operator produces a `Duration` from two `Instant`, `LocalTime`, `LocalDateTime`, `OffsetTime`, `OffsetDateTime`, or `ZonedDateTime` instances.
-
-```groovy
-    def today = LocalDate.now()
-    def tomorrow = today + 1
-
-    Period oneDay = today - tomorrow
-    Period negOneDay = tomorrow - today
 ```
 
 #### The `[]` Operator
 
-This operator delegates to the `java.time` types' `get()` or `getLong()` methods, enabling retrieval of the specified `TemporalField` (for `Instant`, `LocalTime`, `LocalDateTime`, `OffsetDateTime`, and `ZonedDateTime`) or `TemporalUnit`(for `Period` and `Duration`).
+This operator delegates to the `java.time` types' `get()` or `getLong()` methods, enabling retrieval of the specified `TemporalField` (for `Instant`, `MonthDay`, `YearMonth`, `LocalTime`, `LocalDateTime`, `OffsetDateTime`, and `ZonedDateTime`) or `TemporalUnit`(for `Period` and `Duration`).
 
 ```groovy
     def sixtySeconds = Duration.parse('PT60S')
@@ -137,6 +128,18 @@ Left shifting can be used to merge two different `java.time` types into a larger
     LocalDateTime christmasAtNoon = christmas << noon
     ZonedDateTime chirstmasAtNoonInNYC = christmasAtNoon << ZoneId.of('America/New_York')
     OffsetDateTime chirstmasAtNoonInGreenwich = christmasAtNoon << ZoneOffset.UTC
+```
+
+#### The `>>` Operator
+
+The right shift operator, when read as meaning "through" or "to", is used to create a `Period` from two `LocalDate`, `YearMonth`, or `Year` instances. Similarly, the `>>` operator produces a `Duration` from two `Instant`, `LocalTime`, `LocalDateTime`, `OffsetTime`, `OffsetDateTime`, or `ZonedDateTime` instances.
+
+```groovy
+    def today = LocalDate.now()
+    def tomorrow = today + 1
+
+    Period oneDay = today >> tomorrow
+    Period negOneDay = tomorrow >> today
 ```
 
 #### The `*` and `/` Operators
@@ -329,8 +332,23 @@ The various `java.time` Date/Time types have `toDate()` and `toCalendar()` metho
     List<Calendar> cals = nows.collect { it.toCalendar() } 
 ```
 
+### Parsing Methods
+
+Each java.time type already having a `parse(CharSequence input, DateTimeFormatter formatter)` method gains two additional static methods:
+
+ * `parse(CharSequence input, String format)` - the format String is used to instantiate a new `DateTimeFormatter` of that formatting pattern.
+ * `parse(CharSequence input, String format, ZoneId zone)` - same as above plus the instantiated `DateTimeFormatter` is adjusted to the proivded zone via its `withZone` method.
+
+ ```groovy
+    def date = '2017-07-15'
+    def offsetDatetime = '111213 141516 +171819'
+
+    LocalDate parsedDate = LocalDate.parse(date, 'yyyy-MM-dd')
+    OffsetDateTime parsed = OffsetDateTime.parse(offsetDatetime, 'MMddyy HHmmss XX', ZoneId.of('UTC+0500'))
+```
+
 ## Future Changes
 
  * Provide an equivalent to `groovy.time.TimeCategory`
- * Static parsing methods like `Date.parse`
+ * TimeZone/ZoneId convenience methods (e.g. get all time zones at a given offset)
  * Consider adding missing Date/Calendar methods from Groovy JDK (e.g. `set` and `copyWith`)

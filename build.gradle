@@ -6,7 +6,7 @@ apply plugin: 'project-report'
 
 group = 'com.github.bdkosher'
 archivesBaseName = 'goodtimes'
-version = '1.2-SNAPSHOT'
+version = '1.2'
 
 jar.archiveName = "goodtimes-${version}.jar"
 
