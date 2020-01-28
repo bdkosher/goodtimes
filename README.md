@@ -1,11 +1,13 @@
 # Goodtimes
-*Java 8 Date/Time API enhancements for Groovy*  [![Maven Central](https://img.shields.io/maven-central/v/com.github.bdkosher/goodtimes.svg)](http://repo1.maven.org/maven2/com/github/bdkosher/goodtimes/1.2/goodtimes-1.2.jar)  [![GitHub release](https://img.shields.io/github/tag/bdkosher/goodtimes.svg)](https://github.com/bdkosher/goodtimes/releases/tag/v1.2)
+*Java 8 Date/Time API enhancements for Groovy 2.4 and earlier*  [![Maven Central](https://img.shields.io/maven-central/v/com.github.bdkosher/goodtimes.svg)](http://repo1.maven.org/maven2/com/github/bdkosher/goodtimes/1.2/goodtimes-1.2.jar)  [![GitHub release](https://img.shields.io/github/tag/bdkosher/goodtimes.svg)](https://github.com/bdkosher/goodtimes/releases/tag/v1.2)
 
 ![goodtimes logo](https://raw.githubusercontent.com/bdkosher/goodtimes/master/logo.gif)
 
 The [Groovy JDK](http://groovy-lang.org/gdk.html) adds useful methods to [`java.util.Date`](http://docs.groovy-lang.org/latest/html/groovy-jdk/java/util/Date.html) and [`java.util.Calendar`](http://docs.groovy-lang.org/latest/html/groovy-jdk/java/util/Calendar.html) but as of yet does not include comparable methods for the newer Java 8 Date/Time API classes.
 
 Goodtimes fills this gap by providing these `java.time` extension methods, as well as new methods on `java.util.Date` and `java.time.Calendar` for converting to `java.time` equivalents.
+
+Note: As of Groovy 2.5, Goodtimes-provided methods are now part of Groovy JDK itself.
 
 ## Contents
  * [Prerequisites](#prerequisites)
